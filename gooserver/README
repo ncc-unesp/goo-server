@@ -1,0 +1,10 @@
+README
+======
+
+
+Requirements
+------------
+
+  * django-piston
+  * django-extensions
+  * south
