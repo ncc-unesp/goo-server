@@ -8,3 +8,5 @@ Requirements
   * django-piston
   * django-extensions
   * south
+  * python-docutils
+  * uritemplate

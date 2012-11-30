@@ -1,14 +1,24 @@
 from django.conf.urls.defaults import *
 from piston.resource import Resource
-from api.handlers import ApplicationHandler
+from api.handlers import *
 from api import views
 from piston.doc import documentation_view
+from api.authentication import NCCAuthentication
 
-application_handler = Resource(ApplicationHandler)
+auth = NCCAuthentication(realm="NCC Auth")
+
+# Token handlers
+token = Resource(AuthTokenHandler, authentication=auth)
+
+# Jobs handlers
+jobs = Resource(JobsHandler)
+jobs_id = Resource(JobsIdHandler)
 
 urlpatterns = patterns('',
    url(r'^doc/', documentation_view),
 
-   url(r'^app/(?P<app_id>[^/]+)/', application_handler),
-   url(r'^apps/', application_handler),
+   url(r'^auth/get_token', token, name="token"),
+
+   url(r'^jobs/', jobs, name="jobs"),
+   url(r'^jobs/(?P<job_id>[^/]+)/', jobs_id, name="jobs_id"),
 )

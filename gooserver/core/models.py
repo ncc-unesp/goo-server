@@ -1,5 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime, timedelta
+from django.utils.timezone import utc
+import uuid
+
+class UserToken(models.Model):
+
+    user = models.ForeignKey(User)
+    token = models.CharField(max_length=512)
+    create_time = models.DateTimeField(auto_now=True)
+    expire_time = models.DateTimeField()
+
+    def save(self, *args, **kvargs):
+        self.token = uuid.uuid4()
+
+        now = datetime.now().replace(tzinfo=utc)
+        self.expire_time = now + timedelta(days=30)
+        super(UserToken, self).save(*args, **kvargs)
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
