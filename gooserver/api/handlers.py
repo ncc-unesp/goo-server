@@ -35,7 +35,7 @@ service.
         --------
         ::
 
-            $ curl -u username:password -X POST http://goo.ncc.unes.br/api/v1/auth/get_token/
+            $ curl -u username:password -X POST https://goo.ncc.unes.br/api/v1/auth/get_token/
 
         Return:
         -------
