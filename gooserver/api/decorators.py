@@ -1,6 +1,7 @@
 from django.http import HttpResponseForbidden
 from piston.utils import rc
 
+#TODO: Check if token is valid
 def check_token(function):
     """
     Make another a function more beautiful.
