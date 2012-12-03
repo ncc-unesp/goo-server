@@ -6,7 +6,7 @@ from api.decorators import *
 
 class AuthTokenHandler(BaseHandler):
     """This handler is responsible for performing authentication with the web
-service.
+    service.
     """
     allowed_methods = ('POST',)
     model = UserToken
