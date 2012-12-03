@@ -1,0 +1,1012 @@
+[
+  {
+    "pk": 1,
+    "model": "core.application",
+    "fields": {
+      "name": "BEAST"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "core.application",
+    "fields": {
+      "name": "Clustalw"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "core.application",
+    "fields": {
+      "name": "Crystal"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "core.application",
+    "fields": {
+      "name": "Dacapo"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "core.application",
+    "fields": {
+      "name": "Dirac"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "core.application",
+    "fields": {
+      "name": "Gamess"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "core.application",
+    "fields": {
+      "name": "Gamit"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "core.application",
+    "fields": {
+      "name": "Garli"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "core.application",
+    "fields": {
+      "name": "Gaussian"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "core.application",
+    "fields": {
+      "name": "GPAW"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "core.application",
+    "fields": {
+      "name": "Gromacs"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "core.application",
+    "fields": {
+      "name": "IM"
+    }
+  },
+  {
+    "pk": 13,
+    "model": "core.application",
+    "fields": {
+      "name": "IMa2"
+    }
+  },
+  {
+    "pk": 14,
+    "model": "core.application",
+    "fields": {
+      "name": "LAMMPS"
+    }
+  },
+  {
+    "pk": 15,
+    "model": "core.application",
+    "fields": {
+      "name": "MrBayes"
+    }
+  },
+  {
+    "pk": 16,
+    "model": "core.application",
+    "fields": {
+      "name": "Mugsy"
+    }
+  },
+  {
+    "pk": 17,
+    "model": "core.application",
+    "fields": {
+      "name": "NAMD"
+    }
+  },
+  {
+    "pk": 18,
+    "model": "core.application",
+    "fields": {
+      "name": "Orca"
+    }
+  },
+  {
+    "pk": 19,
+    "model": "core.application",
+    "fields": {
+      "name": "Python"
+    }
+  },
+  {
+    "pk": 20,
+    "model": "core.application",
+    "fields": {
+      "name": "POY"
+    }
+  },
+  {
+    "pk": 21,
+    "model": "core.application",
+    "fields": {
+      "name": "QuantumEspresso"
+    }
+  },
+  {
+    "pk": 22,
+    "model": "core.application",
+    "fields": {
+      "name": "RAxML"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "core.version",
+    "fields": {
+      "application": 1,
+      "version": "1.6.1"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "core.version",
+    "fields": {
+      "application": 2,
+      "version": "1.82"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "core.version",
+    "fields": {
+      "application": 3,
+      "version": "09"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "core.version",
+    "fields": {
+      "application": 4,
+      "version": "r474"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "core.version",
+    "fields": {
+      "application": 5,
+      "version": "11"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "core.version",
+    "fields": {
+      "application": 8,
+      "version": "2009"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "core.version",
+    "fields": {
+      "application": 7,
+      "version": "10.4"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "core.version",
+    "fields": {
+      "application": 8,
+      "version": "2.0"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "core.version",
+    "fields": {
+      "application": 9,
+      "version": "09"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "core.version",
+    "fields": {
+      "application": 10,
+      "version": "0.8.0"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "core.version",
+    "fields": {
+      "application": 11,
+      "version": "4.5.4"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "core.version",
+    "fields": {
+      "application": 12,
+      "version": "12_17_2009"
+    }
+  },
+  {
+    "pk": 13,
+    "model": "core.version",
+    "fields": {
+      "application": 13,
+      "version": "8.26.11"
+    }
+  },
+  {
+    "pk": 14,
+    "model": "core.version",
+    "fields": {
+      "application": 14,
+      "version": "18_10_2011"
+    }
+  },
+  {
+    "pk": 15,
+    "model": "core.version",
+    "fields": {
+      "application": 15,
+      "version": "3.1.2"
+    }
+  },
+  {
+    "pk": 16,
+    "model": "core.version",
+    "fields": {
+      "application": 16,
+      "version": "1.2.1"
+    }
+  },
+  {
+    "pk": 17,
+    "model": "core.version",
+    "fields": {
+      "application": 17,
+      "version": "2.7"
+    }
+  },
+  {
+    "pk": 18,
+    "model": "core.version",
+    "fields": {
+      "application": 18,
+      "version": "r1730"
+    }
+  },
+  {
+    "pk": 19,
+    "model": "core.version",
+    "fields": {
+      "application": 19,
+      "version": "2.7"
+    }
+  },
+  {
+    "pk": 20,
+    "model": "core.version",
+    "fields": {
+      "application": 20,
+      "version": "4.1.2"
+    }
+  },
+  {
+    "pk": 21,
+    "model": "core.version",
+    "fields": {
+      "application": 21,
+      "version": "4.3"
+    }
+  },
+  {
+    "pk": 22,
+    "model": "core.version",
+    "fields": {
+      "application": 22,
+      "version": "7.3.0"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": false,
+      "inputs": "",
+      "executable": "bla",
+      "name": "Serial",
+      "outputs": "",
+      "args": "args bla",
+      "multi_thread": false,
+      "version": 1,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 2,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": false,
+      "inputs": "",
+      "executable": "",
+      "name": "SMP",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 1,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 3,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": false,
+      "version": 2,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 4,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 3,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 5,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 4,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 6,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 4,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 7,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 5,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 8,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 5,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 9,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 6,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 10,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 6,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 11,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 7,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 12,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 8,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 13,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 8,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 14,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 9,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 15,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "SMP",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 9,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 16,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 9,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 17,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 10,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 18,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 10,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 19,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 11,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 20,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "SMP",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 11,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 21,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 11,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 22,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 12,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 23,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 13,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 24,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 14,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 25,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 14,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 26,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 15,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 27,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 15,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 28,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 16,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 29,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 17,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 30,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 18,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 31,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 19,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 32,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "SMP",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 19,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 33,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 19,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 34,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 20,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 35,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 20,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 36,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 21,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 37,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 21,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 38,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "Serial",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 22,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 39,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "SMP",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 22,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  },
+  {
+    "pk": 40,
+    "model": "core.type",
+    "fields": {
+      "multi_hosts": true,
+      "inputs": "",
+      "executable": "",
+      "name": "MPI",
+      "outputs": "",
+      "args": "",
+      "multi_thread": true,
+      "version": 22,
+      "checkpoints": "",
+      "shared_fs": true,
+      "obj_app_id": ""
+    }
+  }
+]

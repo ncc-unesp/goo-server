@@ -4,7 +4,7 @@ from piston.doc import generate_doc
 from django.contrib.auth.decorators import login_required
 from api.decorators import *
 
-class AuthTokenHandler(BaseHandler):
+class AuthHandler(BaseHandler):
     """This handler is responsible for performing authentication with the web
     service.
     """
@@ -50,11 +50,69 @@ class AuthTokenHandler(BaseHandler):
         user = request.user
         token = UserToken(user=user)
         token.save()
-        data = { "token": token.token }
+        data = { "token"  : token.token,
+                 "owner"  : user.username,
+                 "expires": token.expire_time }
+        return data
+
+class AppsHandler(BaseHandler):
+    """With this handler you can get informations about the NCC grid pre
+    installed applications. You will need of one application to submit a job to
+    the grid.
+    """
+
+    @staticmethod
+    def resource_uri():
+        return('apps', [])
+
+    def read(self, request):
+        """Get a list of all pre installed applications on NCC grid.
+
+        Arguments:
+        ----------
+
+        token: (required)
+            Your API auth token
+
+        Request:
+        --------
+        ::
+
+            $ curl -X GET https://goo.ncc.unesp.br/api/v1/apps/?token=18e2f86f-9a10-4cc4-a6aa-6a201ff2c558
+
+        Return:
+        -------
+        ::
+
+            [
+                {
+                    "app": "BEAST Serial",
+                    "version": "1.6.1",
+                    "id": 1
+                },
+                {
+                    "app": "BEAST SMP",
+                    "version": "1.6.1",
+                    "id": 2
+                },
+                {
+                    "app": "Clustalw MPI",
+                    "version": "1.82",
+                    "id": 3
+                }
+            ]
+        """
+
+        types = Type.objects.all()
+        data = []
+        for type in types:
+            data.append({'id': type.id, 'app': "%s %s" % (type.version.application.name,
+                                                          type.name),
+                         'version': type.version.version})
         return data
 
 class JobsHandler(BaseHandler):
-    allowed_methods = ('GET', 'POST',)
+    allowed_methods = ('GET', 'POST', 'PUT', 'DELETE',)
     model = Job
 
     @staticmethod
@@ -92,30 +150,6 @@ class JobsHandler(BaseHandler):
         print "Executing create"
         data = {"msg":"Hello world"}
         return data
-
-class JobsIdHandler(BaseHandler):
-    allowed_methods = ('GET', 'PUT', 'DELETE')
-    model = Job
-
-    @staticmethod
-    def resource_uri():
-        return('jobs_id', ['job_id'])
-
-    def read(self, request):
-        """Get job information.
-
-        Arguments:
-        ----------
-
-        token: `(required)`
-             Your API auth token
-        content
-            Content type to retrieve (`status` or `log`). \
-            Default is `status`.
-        """
-
-        print "Executing info"
-        return None
 
     def delete(self, request):
         """Delete a job from the system.

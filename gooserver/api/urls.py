@@ -8,17 +8,21 @@ from api.authentication import NCCAuthentication
 auth = NCCAuthentication(realm="NCC Auth")
 
 # Token handlers
-token = Resource(AuthTokenHandler, authentication=auth)
+token = Resource(AuthHandler, authentication=auth)
+
+# Applications handlers
+apps = Resource(AppsHandler)
 
 # Jobs handlers
 jobs = Resource(JobsHandler)
-jobs_id = Resource(JobsIdHandler)
 
 urlpatterns = patterns('',
    url(r'^doc/', documentation_view),
 
-   url(r'^auth/get_token', token, name="token"),
+   url(r'^auth/get_token/', token, name="token"),
+
+   url(r'^apps/', apps, name="apps"),
 
    url(r'^jobs/', jobs, name="jobs"),
-   url(r'^jobs/(?P<job_id>[^/]+)/', jobs_id, name="jobs_id"),
+   url(r'^jobs/(?P<job_id>[^/]+)/', jobs, name="job_info"),
 )

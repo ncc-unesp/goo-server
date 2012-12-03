@@ -46,8 +46,8 @@ class Type(models.Model):
     checkpoints = models.CharField(max_length=512)
 
     # Capabilities
-    multi_hosts = models.BooleanField(default='False')
-    multi_thread = models.BooleanField(default='False')
+    multi_hosts = models.BooleanField(default='False') # MPI
+    multi_thread = models.BooleanField(default='False') # SMP
     shared_fs = models.BooleanField(default='False')
 
 class Job(models.Model):
