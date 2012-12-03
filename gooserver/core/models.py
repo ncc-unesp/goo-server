@@ -8,14 +8,17 @@ class UserToken(models.Model):
 
     user = models.ForeignKey(User)
     token = models.CharField(max_length=512)
-    create_time = models.DateTimeField(auto_now=True)
+    create_time = models.DateTimeField(auto_now_add=True)
     expire_time = models.DateTimeField()
 
     def save(self, *args, **kvargs):
-        self.token = uuid.uuid4()
+        if not self.token:
+            self.token = uuid.uuid4()
 
-        now = datetime.now().replace(tzinfo=utc)
-        self.expire_time = now + timedelta(days=30)
+        if not self.expire_time:
+            now = datetime.now().replace(tzinfo=utc)
+            self.expire_time = now + timedelta(days=30)
+
         super(UserToken, self).save(*args, **kvargs)
 
 class UserProfile(models.Model):
@@ -91,7 +94,7 @@ class Job(models.Model):
 
     eta = models.PositiveIntegerField()
     return_code = models.IntegerField()
-    create_time = models.DateTimeField(auto_now=True)
-    modification_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
+    modification_time = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()

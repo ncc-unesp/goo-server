@@ -161,3 +161,22 @@ LOGGING = {
 }
 
 AUTH_PROFILE_MODULE = "core.UserProfile"
+
+AUTH_LDAP_SERVER_URI = "ldap://ldap.ncc.unesp.br"
+AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s,ou=people,dc=ncc,dc=unesp,dc=br"
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail"
+}
+
+# More options, like mapping admin groups, at:
+# http://packages.python.org/django-auth-ldap/
+
+AUTHENTICATION_BACKENDS = (
+    'core.authentication.DebugBackend',
+    'core.authentication.UserTokenBackend',
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)

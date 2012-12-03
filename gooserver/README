@@ -10,3 +10,5 @@ Requirements
   * south
   * python-docutils
   * uritemplate
+  * python-ldap
+  * python-django-auth-ldap

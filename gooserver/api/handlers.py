@@ -15,7 +15,6 @@ class AuthHandler(BaseHandler):
     def resource_uri():
         return('token', [])
 
-    # TODO: Double check authentication (winckler)
     def create(self, request):
         """Get a new authentication token. This is the first and most important
         method to be executed. You will need for all other request a token, and
@@ -65,6 +64,7 @@ class AppsHandler(BaseHandler):
     def resource_uri():
         return('apps', [])
 
+    @check_token
     def read(self, request):
         """Get a list of all pre installed applications on NCC grid.
 
@@ -134,6 +134,7 @@ class JobsHandler(BaseHandler):
         data = {"msg":"Hello world"}
         return data
 
+    @check_token
     def create(self, request):
         """Submmit a job to the system.
 
@@ -151,6 +152,7 @@ class JobsHandler(BaseHandler):
         data = {"msg":"Hello world"}
         return data
 
+    @check_token
     def delete(self, request):
         """Delete a job from the system.
 
@@ -162,6 +164,7 @@ class JobsHandler(BaseHandler):
         """
         return None
 
+    @check_token
     def update(self, request):
         """Update job informations or state.
 
