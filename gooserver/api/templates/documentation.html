@@ -3,40 +3,123 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-	<head>
-		<title>
-			Piston generated documentation
-		</title>
+    <head>
+        <title>
+            Piston generated documentation
+        </title>
 
     <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
     <link href="{% static "css/bootstrap-responsive.css" %}" rel="stylesheet">
 
-	</head>
-	<body>
-		<h1>API Documentation</h1>
-		{% for doc in docs %}
-			<h3>{{ doc.name|cut:"Handler" }}</h3>
-			<p>
-				{% for meth in doc.allowed_methods %}<b>{{ meth }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}
-				<b>{{ doc.get_resource_uri_template }}</b>
-			</p>
 
-			<p>
-				{{ doc.doc|default:""|restructuredtext }}
-			</p>
+    <style>
+    body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    }
 
-                        <dl>
+    .section h1{
+        font-size: 16px;
+    }
+
+    .handler-doc h1{
+        font-size: 24px;
+        color: #056d8a;
+    }
+
+    .method-doc h1{
+        padding-left:14px;
+        font-size: 14px;
+        color: #94ba65;
+        font-style: italic;
+    }
+
+    .method-doc p{
+        padding-left: 14px;
+        padding-top: 10px;
+        font-size: 14px;
+        font-style: italic !important;
+    }
+
+    .method-doc pre{
+        margin-left: 20px;
+        padding-top: 10px;
+        font-size: 14px;
+    }
+
+    .method-doc dl{
+        padding-left: 30px;
+    }
+    </style>
+
+    </head>
+    <body>
+
+   <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Goo</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <h1>GOO API Documentation</h1>
+        <p>The Goo API consists of a set of some endpoints. To perform an
+action using the Goo API, you need to select a calling convention, send a
+request to its endpoint  and some arguments, and will receive a formatted
+response. All request formats, listed on the API index page, take a list
+of named parameters.</p>
+
+        <p>The REQUIRED parameter auth_token is used to specify your API
+Key.</p>
+
+        <p>The optional parameter format is used to specify a response
+format.</p>
+
+    <div class="alert alert-error">
+    <strong>Warning!</strong> Use https for ALL requests. The only acceptable Goo
+API URL is <code>https://goo.ncc.unesp.br/api/</code>.
+    </div>
+        {% for doc in docs %}
+            <div class="handler-doc">
+            <h1>goo.api.{{ doc.name|cut:"Handler" }}</h1>
+                {{ doc.doc|default:""|restructuredtext }}
+            </div>
+            <div class="method-doc">
+                        <ul>
                                 {% for method in doc.get_all_methods %}
-                                        <dt>
-                                                method <i>{{ method.name}}</i>({{ method.signature }}){% if method.stale %} <i>- inherited</i>{% else %}:{% endif %}
-                                        </dt>
-                                        {% if method.doc %}
-                                                <dd>
-                                                        {{ method.doc|default:""|restructuredtext }}
-                                                <dd>
-                                        {% endif %}
+                                            {% if not method.stale %}
+                                                {% if method.name == "read" %}
+                                                 <span class="label label-success">GET</span>
+                                                {% elif method.name == "create" %}
+                                                 <span class="label label-inverse">POST</span>
+                                                {% elif method.name == "delete" %}
+                                                 <span class="label label-important">DELETE</span>
+                                                {% elif method.name == "update" %}
+                                                 <span class="label label-info">PUT</span>
+                                                {% endif %}
+                                                <b>{{ doc.get_resource_uri_template }}</b>
+                                            {% endif %}
+                                            {% if method.doc %}
+                                                {{ method.doc|default:""|restructuredtext }}
+                                            {% endif %}
                                 {% endfor %}
-                        </dl>
-		{% endfor %}
-	</body>
+                        </ul>
+            </div>
+        {% endfor %}
+
+    </div>
+    </body>
 </html>

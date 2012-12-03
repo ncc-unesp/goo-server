@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from api.decorators import *
 
 class AuthTokenHandler(BaseHandler):
+    """This handler is responsible for performing authentication with the web
+service.
+    """
     allowed_methods = ('POST',)
     model = UserToken
 
@@ -14,22 +17,34 @@ class AuthTokenHandler(BaseHandler):
 
     # TODO: Double check authentication (winckler)
     def create(self, request):
-        """Get a new authentication token.
+        """Get a new authentication token. This is the first and most important
+        method to be executed. You will need for all other request a token, and
+        this method give to you this token.
+
+        **Note:** A token has an expire date.
 
         Basic HTTP Authentication:
         --------------------------
 
-        user: `(required)`
+        user: (required)
             Your username
-        password: `(required)`
+        password: (required)
             Your password
 
-        Return Example:
-        ---------------
+        Request:
+        --------
+        ::
+
+            $ curl -u username:password -X POST http://goo.ncc.unes.br/api/v1/auth/get_token/
+
+        Return:
+        -------
         ::
 
             {
-                "token": "18e2f86f-9a10-4cc4-a6aa-6a201ff2c558"
+                "token": "18e2f86f-9a10-4cc4-a6aa-6a201ff2c558",
+                "owner": "username",
+                "expires": "2010-11-01T03:32:15-05:00",
             }
         """
         user = request.user
@@ -117,6 +132,7 @@ class JobsIdHandler(BaseHandler):
         """Update job informations or state.
 
         Arguments:
+        ----------
 
         token: `(required)`
             Your API auth token
@@ -126,6 +142,7 @@ class JobsIdHandler(BaseHandler):
         Supported actions:
         ------------------
 
-        :cancel: Cancel a job
+        cancel:
+            Cancel a job
         """
         return None
