@@ -60,14 +60,13 @@ class Type(models.Model):
     shared_fs = models.BooleanField(default='False')
 
 class Job(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, blank=False)
     type = models.ForeignKey(Version)
     progress = models.PositiveIntegerField(default=0)
-    hosts = models.PositiveIntegerField()
-    pph = models.PositiveIntegerField()
-    priority = models.PositiveIntegerField()
+    hosts = models.PositiveIntegerField(default=1)
+    pph = models.PositiveIntegerField(default=1)
+    priority = models.PositiveIntegerField(default=0)
     restart = models.BooleanField(default='False')
-    notify = models.BooleanField(default='False')
     user = models.ForeignKey(User)
 
     # objects id
@@ -76,11 +75,11 @@ class Job(models.Model):
     checkpoing_obj_id = models.CharField(max_length=512)
 
     # max seconds to run
-    ttl = models.PositiveIntegerField()
+    ttl = models.PositiveIntegerField(default=43200) # 12 hours
 
     # MegaBytes
-    disk_requirement = models.PositiveIntegerField()
-    memory_requirement = models.PositiveIntegerField()
+    disk_requirement = models.PositiveIntegerField(default=2048) # 2GB
+    memory_requirement = models.PositiveIntegerField(default=2048) # 2GB
 
     # Status info
     STATUS_CHOICES = (
@@ -98,8 +97,8 @@ class Job(models.Model):
     disk_in_use = models.PositiveIntegerField(default=0)
     memory_in_use = models.PositiveIntegerField(default=0)
 
-    eta = models.PositiveIntegerField()
-    return_code = models.IntegerField()
+    eta = models.PositiveIntegerField(null=True, default=None)
+    return_code = models.IntegerField(null=True, default=None)
     create_time = models.DateTimeField(auto_now_add=True)
     modification_time = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField(null=True, default=None)
