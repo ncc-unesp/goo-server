@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from django.utils.timezone import utc
 import uuid
 
+from dispacher.models import Pilot
+
 class UserToken(models.Model):
 
     user = models.ForeignKey(User)
@@ -98,3 +100,5 @@ class Job(models.Model):
     modification_time = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+
+    pilot = models.ForeignKey(Pilot, default=None, null=True)
