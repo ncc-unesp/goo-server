@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.utils.timezone import utc
 import uuid
 
-from dispacher.models import Pilot
+from dispatcher.models import Pilot
 
 class UserToken(models.Model):
 
