@@ -4,8 +4,13 @@ from datetime import datetime, timedelta
 from django.utils.timezone import utc
 import uuid
 
-class UserToken(models.Model):
+class UserFunctions:
+    def get_jobs(self):
+        return Job.objects.filter(user=self)
 
+User.__bases__ += (UserFunctions,)
+
+class UserToken(models.Model):
     user = models.ForeignKey(User)
     token = models.CharField(max_length=512)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -56,7 +61,7 @@ class Type(models.Model):
 class Job(models.Model):
     name = models.CharField(max_length=20)
     type = models.ForeignKey(Version)
-    progress = models.PositiveIntegerField()
+    progress = models.PositiveIntegerField(default=0)
     hosts = models.PositiveIntegerField()
     pph = models.PositiveIntegerField()
     priority = models.PositiveIntegerField()
@@ -89,12 +94,12 @@ class Job(models.Model):
                              choices=STATUS_CHOICES,
                              default='P')
     # MegaBytes
-    disk_in_use = models.PositiveIntegerField()
-    memory_in_use = models.PositiveIntegerField()
+    disk_in_use = models.PositiveIntegerField(default=0)
+    memory_in_use = models.PositiveIntegerField(default=0)
 
     eta = models.PositiveIntegerField()
     return_code = models.IntegerField()
     create_time = models.DateTimeField(auto_now_add=True)
     modification_time = models.DateTimeField(auto_now=True)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(null=True, default=None)
+    end_time = models.DateTimeField(null=True, default=None)

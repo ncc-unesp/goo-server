@@ -126,12 +126,48 @@ class JobsHandler(BaseHandler):
         Arguments:
         ----------
 
-        token: `(required)`
+        token: (required)
             Your API auth token
 
+
+        Request:
+        --------
+        ::
+
+            $ curl -X GET https://goo.ncc.unesp.br/api/v1/jobs/?token=18e2f86f-9a10-4cc4-a6aa-6a201ff2c558
+
+        Return:
+        -------
+        ::
+
+            [
+                {
+                    "app": "BEAST Serial",
+                    "version": "1.6.1",
+                    "id": 1
+                },
+                {
+                    "app": "BEAST SMP",
+                    "version": "1.6.1",
+                    "id": 2
+                },
+                {
+                    "app": "Clustalw MPI",
+                    "version": "1.82",
+                    "id": 3
+                }
+            ]
+
         """
-        print "Executing read"
-        data = {"msg":"Hello world"}
+        user = request.user
+        data = []
+        jobs = user.get_jobs()
+#        for job in jobs:
+#            data.append({'id': job.id,
+#                         'name': job.name,
+#                         'priority': job.priority,
+#                         'status': job.status,
+#                         'return_code': job.return_code})
         return data
 
     @check_token
