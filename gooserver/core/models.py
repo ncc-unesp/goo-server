@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
 import uuid
+from dispatcher.models import Pilot
 
 class UserFunctions:
     def get_jobs(self):
@@ -103,3 +104,5 @@ class Job(models.Model):
     modification_time = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField(null=True, default=None)
     end_time = models.DateTimeField(null=True, default=None)
+
+    pilot = models.ForeignKey(Pilot, default=None, null=True)
