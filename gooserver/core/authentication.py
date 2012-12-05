@@ -45,7 +45,7 @@ class UserTokenBackend(object):
         try:
             # query DB for token and return user
             tokens = UserToken.objects.filter(expire_time__gt=datetime.now().replace(tzinfo=utc))
-            return tokens.get(token=token)
+            return tokens.get(token=token).user
 
         except UserToken.DoesNotExist, UserToken.MultipleObjectsReturned:
             # error - no token (or more than one)
