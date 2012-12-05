@@ -1,4 +1,4 @@
-import os
+import os, sys
 # Django settings for gooserver project.
 
 DEBUG = True
@@ -22,6 +22,8 @@ DATABASES = {
 }
 
 PROJECT_PATH = "%s/.." % os.path.realpath(os.path.dirname(__file__))
+
+sys.path.insert(0, os.path.join(PROJECT_PATH, "vendors"))
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
