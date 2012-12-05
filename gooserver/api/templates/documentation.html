@@ -100,7 +100,7 @@ API URL is <code>https://goo.ncc.unesp.br/api/</code>.
             <div class="method-doc">
                         <ul>
                                 {% for method in doc.get_all_methods %}
-                                            {% if not method.stale %}
+                                                <strong>{{ method.name }} - {{ method.stale }}</strong><BR>
                                                 {% if method.name == "read" %}
                                                  <span class="label label-success">GET</span>
                                                 {% elif method.name == "create" %}
@@ -110,8 +110,7 @@ API URL is <code>https://goo.ncc.unesp.br/api/</code>.
                                                 {% elif method.name == "update" %}
                                                  <span class="label label-info">PUT</span>
                                                 {% endif %}
-                                                <b>{{ doc.get_resource_uri_template }}</b>
-                                            {% endif %}
+                                                <b>-- {{ doc.get_resource_uri_template }}</b>
                                             {% if method.doc %}
                                                 {{ method.doc|default:""|restructuredtext }}
                                             {% endif %}

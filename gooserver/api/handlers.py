@@ -59,6 +59,8 @@ class AppsHandler(BaseHandler):
     installed applications. You will need of one application to submit a job to
     the grid.
     """
+    allowed_methods = ('GET',)
+    model = Application
 
     @staticmethod
     def resource_uri():
@@ -102,7 +104,6 @@ class AppsHandler(BaseHandler):
                 }
             ]
         """
-
         types = Type.objects.all()
         data = []
         for type in types:
@@ -162,12 +163,12 @@ class JobsHandler(BaseHandler):
         user = request.user
         data = []
         jobs = user.get_jobs()
-#        for job in jobs:
-#            data.append({'id': job.id,
-#                         'name': job.name,
-#                         'priority': job.priority,
-#                         'status': job.status,
-#                         'return_code': job.return_code})
+        for job in jobs:
+            data.append({'id': job.id,
+                         'name': job.name,
+                         'priority': job.priority,
+                         'status': job.status,
+                         'return_code': job.return_code})
         return data
 
     @check_token
