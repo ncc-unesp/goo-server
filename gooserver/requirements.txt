@@ -1,10 +1,10 @@
-South==0.7.6
-django-auth-ldap==1.0.19
-django-extensions==1.0.1
+South>=0.7.6
+django-auth-ldap>=1.0.19
+django-extensions>=1.0.1
 -e git://github.com/toastdriven/django-tastypie.git@eee008f3eef0f756b32635e7b74c1c9732cf593c#egg=django_tastypie-dev
-docutils==0.8.1
-lxml==2.3.2
-pygraphviz==1.1
-python-dateutil==1.5
-python-ldap==2.4.10
-simplejson==2.6.2
+docutils>=0.8.1
+lxml>=2.3.2
+pygraphviz>=1.1
+python-dateutil>=1.5
+python-ldap>=2.4.10
+simplejson>=2.6.2
