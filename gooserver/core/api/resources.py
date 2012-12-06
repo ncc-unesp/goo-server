@@ -3,11 +3,6 @@ from tastypie import fields
 from django.db.models import Q
 from core.models import *
 
-class TypeResource(ModelResource):
-    class Meta:
-        queryset = Type.objects.all()
-        resource_name = 'type'
-
 class ApplicationResource(ModelResource):
     class Meta:
         queryset = Type.objects.all()
