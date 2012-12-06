@@ -1,7 +1,30 @@
 from tastypie.resources import ModelResource
 from tastypie import fields
+from tastypie.authentication import BasicAuthentication
+from tastypie.authorization import Authorization
 from django.db.models import Q
 from core.models import *
+from datetime import datetime
+
+class AuthResource(ModelResource):
+    class Meta:
+        authentication = BasicAuthentication()
+        authorization = Authorization()
+        resource_name = 'auth'
+        allowed_methods = ['get','post', 'delete']
+        fields = ['token', 'expire_time']
+        # only select valid tokens (not expired)
+        queryset = UserToken.objects.filter(expire_time__gt=datetime.now())
+        # return token on POST request
+        always_return_data = True
+
+    def apply_authorization_limits(self, request, object_list):
+        return object_list.filter(user=request.user)
+
+    def hydrate(self, bundle):
+        bundle.obj.user = bundle.request.user
+        return bundle
+
 
 class ApplicationResource(ModelResource):
     class Meta:
