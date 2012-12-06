@@ -7,6 +7,21 @@ from core.models import *
 from datetime import datetime
 
 class AuthResource(ModelResource):
+    """This resource handler auth requests.
+
+    Allowed Methods:
+    ----------------
+
+        GET    /auth/                # Get all tokens of an user
+        GET    /auth/{id}            # Get info about an user token
+        GET    /auth/schema/         # Get auth schema
+        GET    /auth/set/{id};{id}/  # Get a list of tokens
+
+        POST   /auth/                # Ask for a new token
+        DELETE /auth/                # Revoke all tokens of an user.
+        DELETE /auth/{id}            # Revoke an user token.
+
+    """
     class Meta:
         authentication = BasicAuthentication()
         authorization = Authorization()
