@@ -1,0 +1,58 @@
+[
+    {
+        "fields": {
+            "date_joined": "2012-12-05T16:00:19.345Z",
+            "email": "foo@foo.com",
+            "first_name": "",
+            "groups": [],
+            "is_active": true,
+            "is_staff": true,
+            "is_superuser": true,
+            "last_login": "2012-12-05T16:21:19.235Z",
+            "last_name": "",
+            "password": "pbkdf2_sha256$10000$w9T5r2YvOkMD$hhaPhk6D+Ihr/gktjOQ/3KYb/Bxzm941Fp44QMYrwt4=",
+            "user_permissions": [],
+            "username": "foo"
+        },
+        "model": "auth.user",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "date_joined": "2012-12-05T16:00:19.345Z",
+            "email": "bar@bar.com",
+            "first_name": "",
+            "groups": [],
+            "is_active": true,
+            "is_staff": true,
+            "is_superuser": true,
+            "last_login": "2012-12-05T16:21:19.235Z",
+            "last_name": "",
+            "password": "pbkdf2_sha256$10000$w9T5r2YvOkMD$hhaPhk6D+Ihr/gktjOQ/3KYb/Bxzm941Fp44QMYrwt4=",
+            "user_permissions": [],
+            "username": "bar"
+        },
+        "model": "auth.user",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "create_time": "2012-12-06T20:07:02.684Z",
+            "expire_time": "2013-01-05T14:07:02.684Z",
+            "token": "72024663-2c3a-48e7-87d4-178ecaead741",
+            "user": 1
+        },
+        "model": "core.usertoken",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "create_time": "2012-12-06T20:07:02.684Z",
+            "expire_time": "2013-01-05T14:07:02.684Z",
+            "token": "72024663-2c3a-48e7-87d4-178ecaead741",
+            "user": 2
+        },
+        "model": "core.usertoken",
+        "pk": 2
+    }
+]
