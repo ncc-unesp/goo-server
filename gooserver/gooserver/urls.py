@@ -5,6 +5,7 @@ from core.api.resources import *
 v1_api = Api(api_name='v1')
 v1_api.register(ApplicationResource())
 v1_api.register(JobResource())
+v1_api.register(AuthResource())
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
