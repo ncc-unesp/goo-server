@@ -2,3 +2,7 @@
 *.pyo
 *.py~
 gooserver/static/
+build/
+dist/
+src/
+gooserver/src/

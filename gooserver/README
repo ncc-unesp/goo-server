@@ -1,14 +1,7 @@
 README
 ======
 
+REQUIREMENTS
+============
 
-Requirements
-------------
-
-  * django-extensions
-  * django-tastypie
-  * south
-  * python-docutils
-  * uritemplate
-  * python-ldap
-  * python-django-auth-ldap
+   $ sudo pip install -r requirements.txt
