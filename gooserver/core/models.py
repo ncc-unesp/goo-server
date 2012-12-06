@@ -38,9 +38,21 @@ class Application(models.Model):
 
     name = models.CharField(max_length=255)
 
+    def __repr__ (self):
+        return '<Application %s>' % self
+
+    def __str__ (self):
+        return self.name
+
 class Version(models.Model):
     version = models.CharField(max_length=20)
     application = models.ForeignKey(Application)
+
+    def __repr__ (self):
+        return '<Version %s>' % self
+
+    def __str__ (self):
+        return '%s %s' % (self.application, self.version)
 
 class Type(models.Model):
     name = models.CharField(max_length=20)
@@ -59,9 +71,15 @@ class Type(models.Model):
     multi_thread = models.BooleanField(default='False') # SMP
     shared_fs = models.BooleanField(default='False')
 
+    def __repr__ (self):
+        return '<Type %s>' % self
+
+    def __str__ (self):
+        return '%s %s' % (self.version, self.name)
+
 class Job(models.Model):
     name = models.CharField(max_length=20, blank=False)
-    type = models.ForeignKey(Version)
+    type = models.ForeignKey(Type)
     progress = models.PositiveIntegerField(default=0)
     hosts = models.PositiveIntegerField(default=1)
     pph = models.PositiveIntegerField(default=1)

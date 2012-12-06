@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'django.contrib.staticfiles',
     'django_extensions',
+    'tastypie',
     'south',
     'core',
     'dispatcher',
@@ -182,3 +183,8 @@ AUTHENTICATION_BACKENDS = (
     'django_auth_ldap.backend.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+
+# Tastypie settings
+API_LIMIT_PER_PAGE = 500
+TASTYPIE_ALLOW_MISSING_SLASH = True

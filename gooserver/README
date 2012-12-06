@@ -6,6 +6,7 @@ Requirements
 ------------
 
   * django-extensions
+  * django-tastypie
   * south
   * python-docutils
   * uritemplate
