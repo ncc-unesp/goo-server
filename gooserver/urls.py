@@ -3,11 +3,13 @@
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
 from core.api.resources import *
+from dispatcher.api.resources import PilotJobResource
 
 v1_api = Api(api_name='v1')
 v1_api.register(ApplicationResource())
 v1_api.register(JobResource())
 v1_api.register(AuthResource())
+v1_api.register(PilotJobResource())
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin

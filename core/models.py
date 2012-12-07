@@ -60,7 +60,7 @@ class Type(models.Model):
     name = models.CharField(max_length=20)
     version = models.ForeignKey(Version)
     executable = models.CharField(max_length=512)
-    obj_app_id = models.CharField(max_length=512)
+    app_obj_id = models.CharField(max_length=512)
     args = models.CharField(max_length=512)
 
     # Files
@@ -89,10 +89,18 @@ class Job(models.Model):
     restart = models.BooleanField(default='False')
     user = models.ForeignKey(User)
 
+    # values for execution that could be customized
+    executable = models.CharField(max_length=512)
+    args = models.CharField(max_length=512)
+    inputs = models.CharField(max_length=512)
+    outputs = models.CharField(max_length=512)
+    checkpoints = models.CharField(max_length=512)
+    app_obj_id = models.CharField(max_length=512, default="")
+
     # objects id
-    input_obj_id = models.CharField(max_length=512)
-    output_obj_id = models.CharField(max_length=512)
-    checkpoing_obj_id = models.CharField(max_length=512)
+    input_obj_id = models.CharField(max_length=512, default="")
+    output_obj_id = models.CharField(max_length=512, default="")
+    checkpoing_obj_id = models.CharField(max_length=512, default="")
 
     # max seconds to run
     ttl = models.PositiveIntegerField(default=43200) # 12 hours

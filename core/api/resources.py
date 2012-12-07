@@ -3,7 +3,7 @@
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.authentication import BasicAuthentication
-from core.authentication import UserTokenAuthentication
+from core.auth import UserTokenAuthentication
 from tastypie.authorization import Authorization, ReadOnlyAuthorization
 from django.db.models import Q
 from core.models import *
