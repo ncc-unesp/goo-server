@@ -1,3 +1,5 @@
+# vim: tabstop=4 shiftwidth=4 softtabstop=4
+
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
 from core.api.resources import *

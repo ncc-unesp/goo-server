@@ -1,3 +1,5 @@
+# vim: tabstop=4 shiftwidth=4 softtabstop=4
+
 import os, sys
 # Django settings for gooserver project.
 

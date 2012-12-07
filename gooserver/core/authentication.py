@@ -1,3 +1,5 @@
+# vim: tabstop=4 shiftwidth=4 softtabstop=4
+
 from django.conf import settings
 from django.contrib.auth.models import User, check_password
 from core.models import UserToken

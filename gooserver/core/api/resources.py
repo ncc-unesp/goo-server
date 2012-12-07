@@ -1,3 +1,5 @@
+# vim: tabstop=4 shiftwidth=4 softtabstop=4
+
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.authentication import BasicAuthentication

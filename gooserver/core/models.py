@@ -1,3 +1,5 @@
+# vim: tabstop=4 shiftwidth=4 softtabstop=4
+
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
