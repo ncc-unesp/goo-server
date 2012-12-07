@@ -1,2 +1,7 @@
-Goo
-===
+README
+======
+
+REQUIREMENTS
+============
+
+   $ sudo pip install -r requirements.txt
