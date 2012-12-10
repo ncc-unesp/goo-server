@@ -60,12 +60,21 @@ class ApplicationResource(ModelResource):
         authentication = UserTokenAuthentication()
         authorization = ReadOnlyAuthorization()
         queryset = Type.objects.all()
-        fields = ['id', 'name', 'multi_hosts', 'multi_thread',]
         list_allowed_methods = ['get',]
         detail_allowed_methods = ['get',]
+        list_exclude = ['executable', 'obj_app_id', 'args', 'inputs',
+                        'outputs', 'checkpoints', 'shared_fs',]
+
 
     def dehydrate_name(self, bundle):
         return bundle.obj
+
+    def dehydrate(self, bundle):
+        if self.get_resource_uri(bundle) != bundle.request.path:
+            list_exclude = self._meta.list_exclude
+            for item in list_exclude:
+                del bundle.data[item]
+        return bundle
 
 #    def dehydrate(self, bundle):
 #        bundle.data['custom_field'] = "Whatever you want"
