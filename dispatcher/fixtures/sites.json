@@ -1,0 +1,13 @@
+[
+    {
+        "pk": 1,
+        "model": "dispatcher.site",
+        "fields": {
+            "name": "GridUNESP - long queue",
+            "url": "globus://ce.grid.unesp.br/jobmanager-pbs?queue=long",
+            "max_hosts": 512,
+            "max_cores": 8,
+            "max_time": 2592000
+        }
+    }
+]

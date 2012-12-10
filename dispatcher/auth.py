@@ -10,7 +10,7 @@ class PilotTokenAuthentication(Authentication):
 
         try:
             # query DB for token and return pilot
-            pilot = Pilot.objects.get(token=token)
+            pilot = Pilot.objects.filter(token=token).get()
         except Pilot.DoesNotExist, Pilot.MultipleObjectsReturned:
             # error - no token (or more than one)
             return False
