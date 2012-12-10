@@ -34,12 +34,12 @@ class PilotJobResource(ModelResource):
         return object_list.filter(pilot=request.pilot)
 
     def obj_create(self, bundle, **kwargs):
-        time_left = bundle.request.REQUEST.get('time_left', None)
-        if not time_left:
+        try:
+            time_left = int(bundle.data['time_left'])
+        except KeyError, ValueError:
             # missing mandatory param time_left (in seconds)
-            raise LookupError
-        else:
-            time_left = int(time_left)
+            # or not a int
+            raise NotFound("No time_left argument")
 
         try:
             bundle.obj = bundle.request.pilot.get_new_job(time_left)
