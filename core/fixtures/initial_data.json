@@ -1011,7 +1011,7 @@
   },
   {
       "fields": {
-          "checkpoing_obj_id": "",
+          "checkpoint_obj_id": "",
           "create_time": "2012-12-06T13:38:36.302Z",
           "disk_in_use": 0,
           "disk_requirement": 2048,
