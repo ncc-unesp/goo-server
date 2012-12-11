@@ -25,6 +25,9 @@ DATABASES = {
 
 PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
 
+# Set server contact url (to inform goo-pilot.py)
+BASE_URL = 'http://localhost:8000'
+
 sys.path.insert(0, os.path.join(PROJECT_PATH, "vendors"))
 
 # Local time zone for this installation. Choices can be found here:
