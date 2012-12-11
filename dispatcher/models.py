@@ -45,7 +45,7 @@ class Pilot(models.Model):
 
     def save(self, *args, **kvargs):
         if not self.token:
-            self.token = uuid.uuid4()
+            self.token = unicode(uuid.uuid4())
 
         super(Pilot, self).save(*args, **kvargs)
 

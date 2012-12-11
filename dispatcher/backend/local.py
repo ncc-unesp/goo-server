@@ -6,17 +6,15 @@ from subprocess import Popen, PIPE
 import os, signal
 from urlparse import urlparse
 
-from gooserver.settings import PROJECT_PATH
+from gooserver.settings import PROJECT_PATH, BASE_URL
 
 def submit(pilot):
     """
     submit a pilot job using local protocol
     """
     exec_path = os.path.join(PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
-    #TODO: FIX! (winckler)
-    base_url = 'http://localhost:8000/api/v1/dispatcher/'
-    print exec_path
-    pid = Popen([exec_path, base_url, pilot.token], close_fds=True).pid
+    url = BASE_URL + '/api/v1/dispatcher/'
+    pid = Popen([exec_path, url, pilot.token], close_fds=True).pid
     pilot.url = 'local://%d' % pid
     pilot.save()
 
@@ -29,4 +27,3 @@ def cancel(pilot):
     url = urlparse(pilot.url)
     os.kill(int(url.netloc), signal.SIGTERM)
     logger.info('Cancel job')
-    pass
