@@ -1,0 +1,14 @@
+[
+    {
+        "pk": 1,
+        "model": "dispatcher.pilot",
+        "fields": {
+            "url": "",
+            "site": 2,
+            "token": "78f47076-89b5-43ee-9eb4-19fe4eba5094",
+            "hosts": 1,
+            "memory": 2048,
+            "cores": 1
+        }
+    }
+]

@@ -23,7 +23,7 @@ DATABASES = {
     }
 }
 
-PROJECT_PATH = "%s/.." % os.path.realpath(os.path.dirname(__file__))
+PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
 
 sys.path.insert(0, os.path.join(PROJECT_PATH, "vendors"))
 

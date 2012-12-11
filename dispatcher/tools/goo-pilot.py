@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, urllib2, json
+import sys, urllib2, json, time
 
 class GooServer:
     def __init__(self, base_url, token):
@@ -23,19 +23,23 @@ class RequestWithMethod(urllib2.Request):
   def get_method(self):
     return self._method
     
-    
+def exec_loop():
+    # get a job
+    job = server.do(method="POST", data={"time_left": 400000})
+    print job
+
+    time.sleep(30)
+
+    # update info
+    job = server.do(path="%d/" % job["id"], method="PATCH", data={"status": "P"})
+    print job
 
 if __name__ == "__main__":
     # get server url and token from command line
     server = GooServer(sys.argv[1], sys.argv[2])
 
-    # get a job
-    job = server.do(method="POST", data={"time_left": 400000})
-    print job
-    
-    # update info
-    job = server.do(path="%d/" % job["id"], method="PATCH", data={"status": "P"})
-    print job
+    while True:
+        exec_loop()
 
 
 

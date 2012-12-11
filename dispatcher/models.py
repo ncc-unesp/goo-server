@@ -25,7 +25,7 @@ class Site(models.Model):
         p.site = self
         p.cores = job.pph
         p.hosts = job.hosts
-        p.memory = job.memory
+        p.memory = job.memory_requirement
         p.save()
 
         p.submit()
@@ -50,10 +50,10 @@ class Pilot(models.Model):
         super(Pilot, self).save(*args, **kvargs)
 
     def submit(self):
-        return _get_backend_method(submit)(self)
+        return self._get_backend_method('submit')(self)
 
     def cancel(self):
-        return _get_backend_method(cancel)(self)
+        return self._get_backend_method('cancel')(self)
 
     def _get_backend_method(self, method):
         scheme = urlparse(self.site.url).scheme
