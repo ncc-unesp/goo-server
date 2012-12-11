@@ -62,7 +62,7 @@ class ApplicationResource(ModelResource):
         queryset = Type.objects.all()
         list_allowed_methods = ['get',]
         detail_allowed_methods = ['get',]
-        list_exclude = ['executable', 'obj_app_id', 'args', 'inputs',
+        list_exclude = ['executable', 'app_obj_id', 'args', 'inputs',
                         'outputs', 'checkpoints', 'shared_fs',]
 
 
@@ -112,16 +112,21 @@ class JobResource(ModelResource):
                         'checkpoing_obj_id', 'disk_requirement', 'disk_in_use',
                         'create_time', 'end_time', 'modification_time', ]
 
+        # Return data on the POST query
+        always_return_data = True
+
+
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(user=request.user)
 
-    def dehydrate(self, bundle):
-        if self.get_resource_uri(bundle) != bundle.request.path:
-            list_exclude = self._meta.list_exclude
-            for item in list_exclude:
-                del bundle.data[item]
-        return bundle
+#    def dehydrate(self, bundle):
+#        if self.get_resource_uri(bundle) != bundle.request.path:
+#            list_exclude = self._meta.list_exclude
+#            for item in list_exclude:
+#                del bundle.data[item]
+#        return bundle
 
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
+        bundle.obj.type_id = int(bundle.data['app_id'])
         return bundle

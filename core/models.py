@@ -59,12 +59,12 @@ class Version(models.Model):
 class Type(models.Model):
     name = models.CharField(max_length=20)
     version = models.ForeignKey(Version)
-    executable = models.CharField(max_length=512)
+    executable = models.CharField(max_length=512) # if custom
     app_obj_id = models.CharField(max_length=512)
     args = models.CharField(max_length=512)
 
     # Files
-    inputs = models.CharField(max_length=512)
+    inputs = models.CharField(max_length=512) # gerar o input_obj_id
     outputs = models.CharField(max_length=512)
     checkpoints = models.CharField(max_length=512)
 
@@ -72,6 +72,7 @@ class Type(models.Model):
     multi_hosts = models.BooleanField(default='False') # MPI
     multi_thread = models.BooleanField(default='False') # SMP
     shared_fs = models.BooleanField(default='False')
+
 
     def __repr__ (self):
         return '<Type %s>' % self
@@ -100,7 +101,7 @@ class Job(models.Model):
     # objects id
     input_obj_id = models.CharField(max_length=512, default="")
     output_obj_id = models.CharField(max_length=512, default="")
-    checkpoing_obj_id = models.CharField(max_length=512, default="")
+    checkpoint_obj_id = models.CharField(max_length=512, default="")
 
     # max seconds to run
     ttl = models.PositiveIntegerField(default=43200) # 12 hours
