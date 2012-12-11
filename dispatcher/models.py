@@ -20,7 +20,10 @@ class Site(models.Model):
         else:
             return False
 
-    def submit_pilot(self, job):
+    def submit_pilot_based_on_job(self, job):
+        if not self.is_job_acceptable(job):
+            raise AttributeError
+
         p = Pilot()
         p.site = self
         p.cores = job.pph

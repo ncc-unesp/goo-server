@@ -14,7 +14,7 @@ def allocate(job):
     #TODO: select just the better sites
     #for now, selecting all
     for site in candidates:
-        site.submit_pilot(job)
+        site.submit_pilot_based_on_job(job)
 
 def match(pilot, time_left):
     """
