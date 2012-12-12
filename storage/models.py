@@ -28,10 +28,10 @@ class Object(models.Model):
     def __str__ (self):
         return self.name
 
-class ObjectProxy(models.Model):
+class DataProxyServer(models.Model):
     name = models.CharField(max_length=255)
     url = models.CharField(max_length=255)
-    enable = models.BooleanField(default=True)
+    enabled = models.BooleanField(default=True)
 
     def __repr__ (self):
         return '<ObjectProxy %s>' % self

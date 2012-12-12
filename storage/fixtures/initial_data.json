@@ -1,0 +1,20 @@
+[
+  {
+    "pk": 1,
+    "model": "storage.dataproxyserver",
+    "fields": {
+      "name": "Data Proxy NCC",
+      "url": "http://dps.ncc.unesp.br/",
+      "enabled": true
+    }
+  },
+  {
+    "pk": 2,
+    "model": "storage.dataproxyserver",
+    "fields": {
+      "name": "Data Proxy USP",
+      "url": "http://dps.usp.br/",
+      "enabled": true
+    }
+  }
+]
