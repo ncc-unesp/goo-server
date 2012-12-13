@@ -53,7 +53,6 @@ class Pilot(models.Model):
         super(Pilot, self).save(*args, **kvargs)
 
     def submit(self):
-        print self
         return self._get_backend_method('submit')(self)
 
     def cancel(self):
@@ -61,7 +60,6 @@ class Pilot(models.Model):
 
     def _get_backend_method(self, method):
         scheme = urlparse(self.site.url).scheme
-        print scheme
         try:
             module = getattr(backend, scheme)
             return getattr(module, method)
