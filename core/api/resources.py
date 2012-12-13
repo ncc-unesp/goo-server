@@ -1,13 +1,18 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource, Resource
 from tastypie import fields
-from tastypie.authentication import BasicAuthentication
-from core.auth import UserTokenAuthentication
-from tastypie.authorization import Authorization, ReadOnlyAuthorization
 from django.db.models import Q
 from core.models import *
+
+from core.auth import UserTokenAuthentication
+from tastypie.authentication import BasicAuthentication
+from tastypie.authorization import Authorization, ReadOnlyAuthorization
+
 from datetime import datetime
+
+from django.conf.urls import url
+from tastypie.utils import trailing_slash
 
 class AuthResource(ModelResource):
     """This resource handler auth requests.
@@ -42,6 +47,37 @@ class AuthResource(ModelResource):
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
         return bundle
+
+class CheckTokenResource(ModelResource):
+    """This resource handler auth token requests.
+
+    Allowed Methods:
+    ----------------
+
+        GET    /check_token/          # Return token ttl
+
+    """
+    class Meta:
+        resource_name = 'check_token'
+        authentication = UserTokenAuthentication()
+        authorization = ReadOnlyAuthorization()
+        list_allowed_methods = []
+        detail_allowed_methods = ['get']
+        fields = ['expire_time']
+        include_resource_uri = False
+        # only select valid tokens (not expired)
+        queryset = UserToken.objects.filter(expire_time__gt=datetime.now())
+
+    def override_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)%s$" % (self._meta.resource_name,
+                                                trailing_slash()),
+                self.wrap_view('dispatch_detail'),
+                name='api_dispatch_detail'),
+        ]
+
+    def apply_authorization_limits(self, request, object_list):
+        return object_list.filter(token=request.REQUEST['token'])
 
 
 class ApplicationResource(ModelResource):

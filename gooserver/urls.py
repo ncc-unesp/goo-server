@@ -7,9 +7,10 @@ from dispatcher.api.resources import *
 from storage.api.resources import *
 
 v1_api = Api(api_name='v1')
+v1_api.register(AuthResource())
+v1_api.register(CheckTokenResource())
 v1_api.register(ApplicationResource())
 v1_api.register(JobResource())
-v1_api.register(AuthResource())
 v1_api.register(PilotJobResource())
 v1_api.register(DataProxyServerResource())
 
