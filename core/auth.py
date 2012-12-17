@@ -66,9 +66,10 @@ class DebugBackend(object):
 class UserTokenAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
         # check if token exists inside the request
-        if not request.REQUEST['token']:
+        try:
+            token = request.REQUEST['token']
+        except KeyError:
             return False
-        token = request.REQUEST['token']
 
         try:
             # query DB for token and return user
