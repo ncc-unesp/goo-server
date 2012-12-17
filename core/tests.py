@@ -21,13 +21,13 @@ class AuthResourceTest(ResourceTestCase):
         self.token = self.user.usertoken_set.all()[0]
 
         self.password = '123'
-        self.detail = '/api/v1/auth/{0}'.format(self.token.id)
+        self.detail = '/api/v1/auth/{0}/'.format(self.token.id)
 
         # Get user 2 and token 2 from fixture
         self.user2 = User.objects.all()[1]
         self.token2 = self.user2.usertoken_set.all()[0]
 
-        self.detail2 = '/api/v1/auth/{0}'.format(self.token2.id)
+        self.detail2 = '/api/v1/auth/{0}/'.format(self.token2.id)
 
     def get_credentials(self):
         return self.create_basic(username=self.user.username,
