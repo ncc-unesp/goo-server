@@ -10,4 +10,4 @@ COVERAGE
 ========
 
 python-coverage run --source='.' manage.py test core dispatcher storage
-python-coverage html -d docs/coverage --omit='*/migrations/*'
+python-coverage html -d docs/coverage --omit='*/migrations/*,*/__init__.py,manage.py'
