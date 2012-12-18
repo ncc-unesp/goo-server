@@ -343,7 +343,7 @@
       "version": 1,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -360,7 +360,7 @@
       "version": 1,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -377,7 +377,7 @@
       "version": 2,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -394,7 +394,7 @@
       "version": 3,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -411,7 +411,7 @@
       "version": 4,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -428,7 +428,7 @@
       "version": 4,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -445,7 +445,7 @@
       "version": 5,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -462,7 +462,7 @@
       "version": 5,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -479,7 +479,7 @@
       "version": 6,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -496,7 +496,7 @@
       "version": 6,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -513,7 +513,7 @@
       "version": 7,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -530,7 +530,7 @@
       "version": 8,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -547,7 +547,7 @@
       "version": 8,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -564,7 +564,7 @@
       "version": 9,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -581,7 +581,7 @@
       "version": 9,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -598,7 +598,7 @@
       "version": 9,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -615,7 +615,7 @@
       "version": 10,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -632,7 +632,7 @@
       "version": 10,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -649,7 +649,7 @@
       "version": 11,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -666,7 +666,7 @@
       "version": 11,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -683,7 +683,7 @@
       "version": 11,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -700,7 +700,7 @@
       "version": 12,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -717,7 +717,7 @@
       "version": 13,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -734,7 +734,7 @@
       "version": 14,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -751,7 +751,7 @@
       "version": 14,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -768,7 +768,7 @@
       "version": 15,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -785,7 +785,7 @@
       "version": 15,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -802,7 +802,7 @@
       "version": 16,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -819,7 +819,7 @@
       "version": 17,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -836,7 +836,7 @@
       "version": 18,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -853,7 +853,7 @@
       "version": 19,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -870,7 +870,7 @@
       "version": 19,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -887,7 +887,7 @@
       "version": 19,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -904,7 +904,7 @@
       "version": 20,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -921,7 +921,7 @@
       "version": 20,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -938,7 +938,7 @@
       "version": 21,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -955,7 +955,7 @@
       "version": 21,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -972,7 +972,7 @@
       "version": 22,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -989,7 +989,7 @@
       "version": 22,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
@@ -1006,24 +1006,24 @@
       "version": 22,
       "checkpoints": "",
       "shared_fs": true,
-      "app_obj_id": ""
+      "app_obj": null
     }
   },
   {
       "fields": {
-          "checkpoint_obj_id": "",
+          "checkpoint_objs": [],
           "create_time": "2012-12-06T13:38:36.302Z",
           "disk_in_use": 0,
           "disk_requirement": 2048,
           "end_time": null,
           "eta": null,
           "hosts": 1,
-          "input_obj_id": "",
+          "input_objs": [],
           "memory_in_use": 0,
           "memory_requirement": 2048,
           "modification_time": "2012-12-06T13:38:36.302Z",
           "name": "Job Test",
-          "output_obj_id": "",
+          "output_objs": [],
           "pilot": null,
           "pph": 1,
           "priority": 0,

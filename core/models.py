@@ -8,6 +8,7 @@ from django.utils.timezone import now
 
 import uuid
 from dispatcher.models import Pilot
+from storage.models import Object
 
 class UserFunctions:
     def get_jobs(self):
@@ -61,7 +62,7 @@ class Type(models.Model):
     name = models.CharField(max_length=20)
     version = models.ForeignKey(Version)
     executable = models.CharField(max_length=512) # if custom
-    app_obj_id = models.CharField(max_length=512)
+    app_obj = models.ForeignKey(Object, null=True, related_name='application_set')
     args = models.CharField(max_length=512)
 
     # Files
@@ -97,12 +98,12 @@ class Job(models.Model):
     inputs = models.CharField(max_length=512)
     outputs = models.CharField(max_length=512)
     checkpoints = models.CharField(max_length=512)
-    app_obj_id = models.CharField(max_length=512, default="")
+    app_objs = models.ForeignKey(Object, null=True, related_name='app_for')
 
     # objects id
-    input_obj_id = models.CharField(max_length=512, default="")
-    output_obj_id = models.CharField(max_length=512, default="")
-    checkpoint_obj_id = models.CharField(max_length=512, default="")
+    input_objs = models.ManyToManyField(Object, null=True, related_name='input_for')
+    output_objs = models.ManyToManyField(Object, null=True, related_name='output_for')
+    checkpoint_objs = models.ManyToManyField(Object, null=True, related_name='checkpoint_for')
 
     # max seconds to run
     ttl = models.PositiveIntegerField(default=43200) # 12 hours
@@ -113,19 +114,26 @@ class Job(models.Model):
 
     # Status info
     STATUS_CHOICES = (
-        ('P', 'Pendding'),
+        ('P', 'Pending'),
         ('R', 'Running'),
         ('C', 'Completed'),
         ('D', 'Deleted'),
         ('E', 'Error'),
+        ('B', 'Blocked'),
     )
 
     status = models.CharField(max_length=1,
                              choices=STATUS_CHOICES,
                              default='P')
+    # for future use on DAG workflow
+    parent = models.ManyToManyField('self', symmetrical=False)
+
     # MegaBytes
     disk_in_use = models.PositiveIntegerField(default=0)
     memory_in_use = models.PositiveIntegerField(default=0)
+
+    # aka tail -f
+    progress_string = models.TextField(default='')
 
     eta = models.PositiveIntegerField(null=True, default=None)
     return_code = models.IntegerField(null=True, default=None)
