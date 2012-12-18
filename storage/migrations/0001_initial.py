@@ -16,25 +16,26 @@ class Migration(SchemaMigration):
             ('create_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('url', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('object_type', self.gf('django.db.models.fields.CharField')(default='A', max_length=1)),
         ))
         db.send_create_signal('storage', ['Object'])
 
-        # Adding model 'ObjectProxy'
-        db.create_table('storage_objectproxy', (
+        # Adding model 'DataProxyServer'
+        db.create_table('storage_dataproxyserver', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('url', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('enable', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('enabled', self.gf('django.db.models.fields.BooleanField')(default=True)),
         ))
-        db.send_create_signal('storage', ['ObjectProxy'])
+        db.send_create_signal('storage', ['DataProxyServer'])
 
 
     def backwards(self, orm):
         # Deleting model 'Object'
         db.delete_table('storage_object')
 
-        # Deleting model 'ObjectProxy'
-        db.delete_table('storage_objectproxy')
+        # Deleting model 'DataProxyServer'
+        db.delete_table('storage_dataproxyserver')
 
 
     models = {
@@ -74,21 +75,22 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        'storage.dataproxyserver': {
+            'Meta': {'object_name': 'DataProxyServer'},
+            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'url': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
         'storage.object': {
             'Meta': {'object_name': 'Object'},
             'create_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'object_type': ('django.db.models.fields.CharField', [], {'default': "'A'", 'max_length': '1'}),
             'size': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        },
-        'storage.objectproxy': {
-            'Meta': {'object_name': 'ObjectProxy'},
-            'enable': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'url': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
     }
 
