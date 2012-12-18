@@ -9,7 +9,7 @@ from core.auth import UserTokenAuthentication
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization, ReadOnlyAuthorization
 
-from datetime import datetime
+from django.utils.timezone import now
 
 from django.conf.urls import url
 from tastypie.utils import trailing_slash
@@ -37,7 +37,7 @@ class AuthResource(ModelResource):
         allowed_methods = ['get','post', 'delete']
         fields = ['token', 'expire_time']
         # only select valid tokens (not expired)
-        queryset = UserToken.objects.filter(expire_time__gt=datetime.now())
+        queryset = UserToken.objects.filter(expire_time__gt=now())
         # return token on POST request
         always_return_data = True
 
@@ -66,9 +66,9 @@ class CheckTokenResource(ModelResource):
         fields = ['expire_time']
         include_resource_uri = False
         # only select valid tokens (not expired)
-        queryset = UserToken.objects.filter(expire_time__gt=datetime.now())
+        queryset = UserToken.objects.filter(expire_time__gt=now())
 
-    def override_urls(self):
+    def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)%s$" % (self._meta.resource_name,
                                                 trailing_slash()),

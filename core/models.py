@@ -2,8 +2,10 @@
 
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime, timedelta
-from django.utils.timezone import utc
+
+from datetime import timedelta
+from django.utils.timezone import now
+
 import uuid
 from dispatcher.models import Pilot
 
@@ -24,8 +26,7 @@ class UserToken(models.Model):
             self.token = uuid.uuid4()
 
         if not self.expire_time:
-            now = datetime.now().replace(tzinfo=utc)
-            self.expire_time = now + timedelta(days=30)
+            self.expire_time = now() + timedelta(days=30)
 
         super(UserToken, self).save(*args, **kvargs)
 
