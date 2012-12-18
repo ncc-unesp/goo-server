@@ -143,8 +143,52 @@ class ApplicationTest(ResourceTestCase):
         request = self.client.get(url, self.format)
         self.assertValidJSONResponse(request)
 
-#GET jobs
-#GET jobs/{id}
-#POST jobs
-#PATCH jobs/{id}
-#DELETE jobs/{id}
+class JobTest(ResourceTestCase):
+    def setUp(self):
+        super(JobTest, self).setUp()
+
+        self.client = TestApiClient()
+
+        self.endpoint = '/api/v1/jobs/'
+        self.format = 'json'
+
+        # Create one user
+        self.user = User(username="testuser")
+        self.user.save()
+
+        # Create on token
+        self.token = UserToken(user=self.user)
+        self.token.save()
+
+        # create a job
+        self.job = Job(user=self.user, type=Type.objects.all()[0])
+        self.job.save()
+
+    def test_get_job_list(self):
+        url = "%s?token=%s" % (self.endpoint, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+    def test_get_job_detail(self):
+        url = "%s%d/?token=%s" % (self.endpoint, self.job.id, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+    def test_post_job(self):
+        data = {"app" : "/api/v1/apps/1/"}
+        url = "%s?token=%s" % (self.endpoint, self.token.token)
+        self.assertHttpCreated(self.client.post(url, self.format, data=data))
+
+    def test_patch_job(self):
+        job = Job(user=self.user, type=Type.objects.all()[0])
+        job.save()
+        data = {"progress":"50"}
+        url = "%s%d/?token=%s" % (self.endpoint, job.id, self.token.token)
+        resp = self.client.patch(url, self.format, data=data)
+        self.assertHttpAccepted(resp)
+
+    def test_delete_job(self):
+        job = Job(user=self.user, type=Type.objects.all()[0])
+        job.save()
+        url = "%s%d/?token=%s" % (self.endpoint, job.id, self.token.token)
+        self.assertHttpAccepted(self.client.delete(url, self.format))
