@@ -184,8 +184,6 @@ AUTH_LDAP_USER_ATTR_MAP = {
 # http://packages.python.org/django-auth-ldap/
 
 AUTHENTICATION_BACKENDS = (
-    'core.auth.DebugBackend',
-    # 'core.authentication.UserTokenBackend',
     'django_auth_ldap.backend.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )

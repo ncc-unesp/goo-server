@@ -42,7 +42,7 @@ class Application(models.Model):
 
     name = models.CharField(max_length=255)
 
-    def __repr__ (self):
+    def __repr__ (self): # pragma: no cover
         return '<Application %s>' % self
 
     def __str__ (self):
@@ -52,7 +52,7 @@ class Version(models.Model):
     version = models.CharField(max_length=20)
     application = models.ForeignKey(Application)
 
-    def __repr__ (self):
+    def __repr__ (self): # pragma: no cover
         return '<Version %s>' % self
 
     def __str__ (self):
@@ -76,7 +76,7 @@ class Type(models.Model):
     shared_fs = models.BooleanField(default='False')
 
 
-    def __repr__ (self):
+    def __repr__ (self): # pragma: no cover
         return '<Type %s>' % self
 
     def __str__ (self):

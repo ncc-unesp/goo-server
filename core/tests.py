@@ -33,9 +33,6 @@ class AuthResourceTest(ResourceTestCase):
         return self.create_basic(username=self.user.username,
                                  password=self.password)
 
-    def get_token(self):
-        return self.token.token
-
     # Try to get tokens without credentials
     def test_get_keys_unauthorzied(self):
         self.assertHttpUnauthorized(self.client.get(self.endpoint,
@@ -109,9 +106,13 @@ class CheckTokenTest(ResourceTestCase):
         self.assertValidJSONResponse(request)
 
     # check for the WRONG token ttl
-    def test_check_token(self):
+    def test_check_wrong_token(self):
         url = "%s?token=%s" % (self.endpoint, "not-a-valid-token")
         self.assertHttpUnauthorized(self.client.get(url, self.format))
+
+    # check for the NO token ttl
+    def test_check_no_token(self):
+        self.assertHttpUnauthorized(self.client.get(self.endpoint, self.format))
 
 class ApplicationTest(ResourceTestCase):
     def setUp(self):
