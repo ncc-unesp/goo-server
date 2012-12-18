@@ -5,6 +5,8 @@ from tastypie import fields
 from django.db.models import Q
 from core.models import *
 
+from storage.api.resources import ObjectResource
+
 from core.auth import UserTokenAuthentication
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization, ReadOnlyAuthorization
@@ -91,6 +93,9 @@ class ApplicationResource(ModelResource):
         GET    /apps/schema/         # Get app schema
         GET    /apps/set/{id};{id}/  # Get a list of apps
     """
+
+    app_obj = fields.ForeignKey(ObjectResource, 'app_obj', null=True)
+
     class Meta:
         resource_name = 'apps'
         authentication = UserTokenAuthentication()
@@ -98,7 +103,7 @@ class ApplicationResource(ModelResource):
         queryset = Type.objects.all()
         list_allowed_methods = ['get',]
         detail_allowed_methods = ['get',]
-        list_exclude = ['executable', 'app_obj_id', 'args', 'inputs',
+        list_exclude = ['executable', 'app_obj', 'args', 'inputs',
                         'outputs', 'checkpoints', 'shared_fs',]
 
 
@@ -127,7 +132,6 @@ class JobResource(ModelResource):
         GET    /jobs/schema/         # Get job schema
         GET    /jobs/set/{id};{id}/  # Get a list of jobs
         POST   /jobs/                # Submmit a new job
-        PUT    /jobs/{id}/           # Update a job
         PATCH  /jobs/{id}/           # Partially update a job
         DELETE /jobs/{id}/           # Delete a job
     """
@@ -141,7 +145,7 @@ class JobResource(ModelResource):
         # Remove from query deleted jobs
         queryset = Job.objects.filter(~Q(status = 'D'))
         list_allowed_methods = ['get', 'post', ]
-        detail_allowed_methods = ['get', 'put', 'patch', 'delete', ]
+        detail_allowed_methods = ['get', 'patch', 'delete', ]
         list_exclude = ['return_code', 'hosts', 'eta', 'input_obj_id',
                         'output_obj_id', 'memory_in_use', 'memory_requirement',
                         'start_time', 'restart', 'ttl', 'pph',

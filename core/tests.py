@@ -83,3 +83,68 @@ class AuthResourceTest(ResourceTestCase):
                                                      self.format,
                                                      data=post_data,
                                                      authentication=credentials))
+
+
+class CheckTokenTest(ResourceTestCase):
+    def setUp(self):
+        super(CheckTokenTest, self).setUp()
+
+        self.client = TestApiClient()
+
+        self.endpoint = '/api/v1/check_token/'
+        self.format = 'json'
+
+        # Create one user
+        self.user = User(username="testuser")
+        self.user.save()
+
+        # Create on token
+        self.token = UserToken(user=self.user)
+        self.token.save()
+
+    # check for the token ttl
+    def test_check_token(self):
+        url = "%s?token=%s" % (self.endpoint, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+    # check for the WRONG token ttl
+    def test_check_token(self):
+        url = "%s?token=%s" % (self.endpoint, "not-a-valid-token")
+        self.assertHttpUnauthorized(self.client.get(url, self.format))
+
+class ApplicationTest(ResourceTestCase):
+    def setUp(self):
+        super(ApplicationTest, self).setUp()
+
+        self.client = TestApiClient()
+
+        self.endpoint = '/api/v1/apps/'
+        self.format = 'json'
+
+        # Create one user
+        self.user = User(username="testuser")
+        self.user.save()
+
+        # Create on token
+        self.token = UserToken(user=self.user)
+        self.token.save()
+
+    # list apps
+    def test_get_apps(self):
+        url = "%s?token=%s" % (self.endpoint, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+    # list apps details
+    def test_get_apps_details(self):
+        app_id = Version.objects.all()[0].id
+        url = "%s%d/?token=%s" % (self.endpoint, app_id, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+#GET jobs
+#GET jobs/{id}
+#POST jobs
+#PATCH jobs/{id}
+#DELETE jobs/{id}
