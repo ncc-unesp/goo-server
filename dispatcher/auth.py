@@ -4,9 +4,10 @@ from tastypie.authentication import Authentication
 class PilotTokenAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
         # check if token exists inside the request
-        if not request.REQUEST['token']:
+        try:
+            token = request.REQUEST['token']
+        except KeyError:
             return False
-        token = request.REQUEST['token']
 
         try:
             # query DB for token and return pilot
@@ -19,4 +20,4 @@ class PilotTokenAuthentication(Authentication):
             request.pilot = pilot
             return True
 
-        return False
+        return False # pragma: no cover

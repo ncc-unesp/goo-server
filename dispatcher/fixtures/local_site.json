@@ -1,0 +1,13 @@
+[
+    {
+        "pk": 1,
+        "model": "dispatcher.site",
+        "fields": {
+            "name": "Local",
+            "url": "local://",
+            "max_hosts": 1,
+            "max_cores": 4,
+            "max_time": 3600
+        }
+    }
+]

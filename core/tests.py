@@ -1,6 +1,5 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-import datetime
 from django.contrib.auth.models import User
 from tastypie.test import ResourceTestCase, TestApiClient
 from core.models import *
