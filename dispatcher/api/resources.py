@@ -8,6 +8,8 @@ from core.models import Job
 from core.api.resources import ApplicationResource
 from storage.api.resources import ObjectResource
 
+from django.template.defaultfilters import slugify
+
 class PilotJobResource(ModelResource):
     """This resource handler jobs requests.
 
