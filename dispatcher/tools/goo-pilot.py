@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 
-import sys, urllib2, json, time, os, tempfile, threading, shlex
+import sys, urllib2, json, time, os, tempfile, threading, shlex, uuid, shutil
 from subprocess import Popen, PIPE
+
+from zipfile import ZipFile
+from glob import glob
 
 STDOUT_SUFFIX = ".stdout"
 STDERR_SUFFIX = ".stderr"
+
+# TODO: get this from OSG ENV
+STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/winckler/"
 
 PROGRESS_FREQ = 10 # seconds
 CHECKPOINT_FREQ = 20 # seconds
@@ -14,7 +20,7 @@ class GooServer:
         self.base_url = base_url
         self.token = token
 
-    def do(self, path="", method="GET", data={}):
+    def do(self, path="dispatcher/", method="GET", data={}):
         url = "%s%s?token=%s" % (self.base_url, path, self.token)
         request = self.RequestWithMethod(method, url=url)
         request.add_header("Content-Type", "application/json")
@@ -35,20 +41,57 @@ class Job(dict):
         super(Job,self).__init__(*args, **kw)
 
         self.server = server
-        data = server.do(path="",
-                         method="POST",
-                         data={"time_left": time_left})
+        data = server.do("dispatcher/",
+                         "POST", {"time_left": time_left})
         super(Job,self).update(data)
 
     def __setitem__(self, key, value):
-        self.server.do(path="%d/" % self["id"],
-                       method="PATCH",
-                       data={key: value})
+        self.server.do(path="dispatcher/%d/" % self["id"],
+                       "PATCH", {key: value})
 
         super(Job,self).__setitem__(key, value)
 
+def send_files(job, tmp_dir):
+    # cd into the directory
+    orig_pwd = os.getcwd()
+    os.chdir(tmp_dir)
+
+    slug = job['slug']
+    output_pack_name = '%s.zip' % slug
+    output_pack = ZipFile(output_pack_name, 'w', allowZip64=True)
+    output_pack.write(slug + STDOUT_SUFFIX)
+    output_pack.write(slug + STDERR_SUFFIX)
+
+    #pack requested files
+    for p in job['outputs'].split(","):
+        for f in glob(p):
+            output_pack.write(f)
+
+    output_pack.close()
+    output_pack_size = os.path.getsize(output_pack_name)
+
+    #gridftp copy
+    local_url = 'file://' + os.path.abspath(output_pack_name)
+    remote_url = STORAGE_SERVER + str(uuid.uuid4) + '.zip'
+    devnull = open(os.devnull, 'w')
+    ret_code = call(["/usr/bin/globus-url-copy", local_url, remote_url],
+                    close_fds=True, stdout=devnull, stderr=devnull)
+
+    if (ret_code != 0):
+        raise IOError
+
+    data = {"name": slug + '_output.zip'}
+    data["size"] = output_pack_size / 1024**2
+    data["url"] = remote_url
+
+    resp = job.server.do("objects/", "POST", data)
+    job["output_objs"] = [ resp[resource_uri] ]
+
+    os.chdir(orig_pwd)
+
 def job_loop():
     # get a job
+    #TODO: control the time left
     job = Job(server, 400000)
 
     # create a temporary directory
@@ -64,8 +107,11 @@ def job_loop():
 
     # execute job
     # missing case name
-    stdout = open(os.path.join(tmp_dir, STDOUT_SUFFIX), 'w')
-    stderr = open(os.path.join(tmp_dir, STDERR_SUFFIX), 'w')
+    stdout_fname = job["slug"] + STDOUT_SUFFIX
+    stdout = open(os.path.join(tmp_dir, stdout_fname), 'w')
+
+    stderr_fname = job["slug"] + STDERR_SUFFIX
+    stderr = open(os.path.join(tmp_dir, stderr_fname), 'w')
 
     def execution_thread(job, stdout, stderr):
         args = [ job["executable"], ]
@@ -99,10 +145,18 @@ def job_loop():
         execution.join(60)
 
     # send output files
-    # TODO
+    stdout.close()
+    stderr.close()
 
-    #remove temporary directory
-    # TODO
+    try:
+        send_files(job, tmp_dir)
+    except:
+        job["status"] = "E"
+        # should erase files first?
+        return
+
+    # remove temporary directory
+    #shutil.rmtree(tmp_dir)
     
     # update info
     job["status"] = "C"
