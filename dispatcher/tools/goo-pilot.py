@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys, urllib2, json, time, os, tempfile, threading, shlex, uuid, shutil
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 
 from zipfile import ZipFile
 from glob import glob

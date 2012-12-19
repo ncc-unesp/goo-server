@@ -46,6 +46,7 @@ class PilotJobResource(ModelResource):
 
     def dehydrate(self, bundle):
         bundle.data['slug'] = slugify(bundle.obj.name)
+        return bundle
 
     def obj_create(self, bundle, **kwargs):
         try:
