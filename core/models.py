@@ -10,6 +10,11 @@ import uuid
 from dispatcher.models import Pilot
 from storage.models import Object
 
+from dispatcher import scheduler
+
+import logging
+logger = logging.getLogger(__name__)
+
 class UserFunctions:
     def get_jobs(self):
         return Job.objects.filter(user=self)
@@ -42,7 +47,7 @@ class Application(models.Model):
 
     name = models.CharField(max_length=255)
 
-    def __repr__ (self):
+    def __repr__ (self): # pragma: no cover
         return '<Application %s>' % self
 
     def __str__ (self):
@@ -52,7 +57,7 @@ class Version(models.Model):
     version = models.CharField(max_length=20)
     application = models.ForeignKey(Application)
 
-    def __repr__ (self):
+    def __repr__ (self): # pragma: no cover
         return '<Version %s>' % self
 
     def __str__ (self):
@@ -76,7 +81,7 @@ class Type(models.Model):
     shared_fs = models.BooleanField(default='False')
 
 
-    def __repr__ (self):
+    def __repr__ (self): # pragma: no cover
         return '<Type %s>' % self
 
     def __str__ (self):
@@ -143,3 +148,39 @@ class Job(models.Model):
     end_time = models.DateTimeField(null=True, default=None)
 
     pilot = models.ForeignKey(Pilot, default=None, null=True)
+
+    def save(self, *args, **kwargs):
+        # get the last state to get some action
+        if not self.id:
+            # new object
+            last_status = None
+        else:
+            old_self = Job.objects.get(pk=self.id)
+            last_status = old_self.status
+
+        super(Job, self).save(*args, **kwargs)
+
+        if (self.status == 'P') and (last_status != 'P'):
+            # welcome! let find a nice place for you
+            try:
+                scheduler.allocate(self)
+            except scheduler.NoMatchError:
+                # no sites match job requirement
+                self.status = 'E'
+                self.save()
+                return
+
+
+        if (self.status == 'D') and (last_status == 'R'):
+            # before delete, cancel
+            self.pilot.cancel()
+
+        # TODO: notify user, if requested
+        # and log
+        if (self.status != last_status):
+            logger.info('Job %d changed status from %s to %s'
+                             % (self.id, last_status, self.status))
+
+    def delete(self, *args, **kwargs):
+        self.status = 'D'
+        self.save()

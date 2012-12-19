@@ -1,6 +1,9 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 from django.db.models import Q
 
+class NoMatchError(Exception):
+    pass
+
 def allocate(job):
     """
     Generate pilots
@@ -13,6 +16,10 @@ def allocate(job):
 
     #TODO: select just the better sites
     #for now, selecting all
+
+    if not candidates:
+        raise NoMatchError
+
     for site in candidates:
         site.submit_pilot_based_on_job(job)
 

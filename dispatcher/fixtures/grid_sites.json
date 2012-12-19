@@ -9,16 +9,5 @@
             "max_cores": 8,
             "max_time": 2592000
         }
-    },
-    {
-        "pk": 2,
-        "model": "dispatcher.site",
-        "fields": {
-            "name": "Local",
-            "url": "local://",
-            "max_hosts": 1,
-            "max_cores": 4,
-            "max_time": 3600
-        }
     }
 ]

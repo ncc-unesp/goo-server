@@ -1,6 +1,5 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-import datetime
 from django.contrib.auth.models import User
 from tastypie.test import ResourceTestCase, TestApiClient
 from core.models import *
@@ -32,9 +31,6 @@ class AuthResourceTest(ResourceTestCase):
     def get_credentials(self):
         return self.create_basic(username=self.user.username,
                                  password=self.password)
-
-    def get_token(self):
-        return self.token.token
 
     # Try to get tokens without credentials
     def test_get_keys_unauthorzied(self):
@@ -83,3 +79,116 @@ class AuthResourceTest(ResourceTestCase):
                                                      self.format,
                                                      data=post_data,
                                                      authentication=credentials))
+
+
+class CheckTokenTest(ResourceTestCase):
+    def setUp(self):
+        super(CheckTokenTest, self).setUp()
+
+        self.client = TestApiClient()
+
+        self.endpoint = '/api/v1/check_token/'
+        self.format = 'json'
+
+        # Create one user
+        self.user = User(username="testuser")
+        self.user.save()
+
+        # Create on token
+        self.token = UserToken(user=self.user)
+        self.token.save()
+
+    # check for the token ttl
+    def test_check_token(self):
+        url = "%s?token=%s" % (self.endpoint, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+    # check for the WRONG token ttl
+    def test_check_wrong_token(self):
+        url = "%s?token=%s" % (self.endpoint, "not-a-valid-token")
+        self.assertHttpUnauthorized(self.client.get(url, self.format))
+
+    # check for the NO token ttl
+    def test_check_no_token(self):
+        self.assertHttpUnauthorized(self.client.get(self.endpoint, self.format))
+
+class ApplicationTest(ResourceTestCase):
+    def setUp(self):
+        super(ApplicationTest, self).setUp()
+
+        self.client = TestApiClient()
+
+        self.endpoint = '/api/v1/apps/'
+        self.format = 'json'
+
+        # Create one user
+        self.user = User(username="testuser")
+        self.user.save()
+
+        # Create on token
+        self.token = UserToken(user=self.user)
+        self.token.save()
+
+    # list apps
+    def test_get_apps(self):
+        url = "%s?token=%s" % (self.endpoint, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+    # list apps details
+    def test_get_apps_details(self):
+        app_id = Version.objects.all()[0].id
+        url = "%s%d/?token=%s" % (self.endpoint, app_id, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+class JobTest(ResourceTestCase):
+    def setUp(self):
+        super(JobTest, self).setUp()
+
+        self.client = TestApiClient()
+
+        self.endpoint = '/api/v1/jobs/'
+        self.format = 'json'
+
+        # Create one user
+        self.user = User(username="testuser")
+        self.user.save()
+
+        # Create on token
+        self.token = UserToken(user=self.user)
+        self.token.save()
+
+        # create a job
+        self.job = Job(user=self.user, type=Type.objects.all()[0])
+        self.job.save()
+
+    def test_get_job_list(self):
+        url = "%s?token=%s" % (self.endpoint, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+    def test_get_job_detail(self):
+        url = "%s%d/?token=%s" % (self.endpoint, self.job.id, self.token.token)
+        request = self.client.get(url, self.format)
+        self.assertValidJSONResponse(request)
+
+    def test_post_job(self):
+        data = {"app" : "/api/v1/apps/1/"}
+        url = "%s?token=%s" % (self.endpoint, self.token.token)
+        self.assertHttpCreated(self.client.post(url, self.format, data=data))
+
+    def test_patch_job(self):
+        job = Job(user=self.user, type=Type.objects.all()[0])
+        job.save()
+        data = {"progress":"50"}
+        url = "%s%d/?token=%s" % (self.endpoint, job.id, self.token.token)
+        resp = self.client.patch(url, self.format, data=data)
+        self.assertHttpAccepted(resp)
+
+    def test_delete_job(self):
+        job = Job(user=self.user, type=Type.objects.all()[0])
+        job.save()
+        url = "%s%d/?token=%s" % (self.endpoint, job.id, self.token.token)
+        self.assertHttpAccepted(self.client.delete(url, self.format))

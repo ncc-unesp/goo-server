@@ -33,6 +33,8 @@ class Site(models.Model):
 
         p.submit()
 
+        return p
+
 import backend
 import scheduler
 class Pilot(models.Model):
