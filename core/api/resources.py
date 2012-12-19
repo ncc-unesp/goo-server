@@ -18,7 +18,6 @@ class AuthResource(ModelResource):
     """This resource handler auth requests.
 
     Allowed Methods:
-    ----------------
 
         GET    /auth/                # Get all tokens of an user
         GET    /auth/{id}            # Get info about an user token
@@ -52,7 +51,6 @@ class CheckTokenResource(ModelResource):
     """This resource handler auth token requests.
 
     Allowed Methods:
-    ----------------
 
         GET    /check_token/          # Return token ttl
 
@@ -84,7 +82,6 @@ class ApplicationResource(ModelResource):
     """This resource handler app requests.
 
     Allowed Methods:
-    ----------------
 
         GET    /apps/                # Get all apps on grid
         GET    /apps/{id}            # Get info about a app
@@ -120,7 +117,6 @@ class JobResource(ModelResource):
     """This resource handler jobs requests.
 
     Allowed Methods:
-    ----------------
 
         GET    /jobs/                # Get all jobs of an user
         GET    /jobs/{id}            # Get info about an user job
