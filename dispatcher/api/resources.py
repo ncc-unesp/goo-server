@@ -42,6 +42,9 @@ class PilotJobResource(ModelResource):
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(pilot=request.pilot)
 
+    def dehydrate(self, bundle):
+        bundle.data['slug'] = slugify(bundle.obj.name)
+
     def obj_create(self, bundle, **kwargs):
         try:
             time_left = int(bundle.data['time_left'])

@@ -41,13 +41,11 @@ class Job(dict):
         super(Job,self).__init__(*args, **kw)
 
         self.server = server
-        data = server.do("dispatcher/",
-                         "POST", {"time_left": time_left})
+        data = server.do("dispatcher/", "POST", {"time_left": time_left})
         super(Job,self).update(data)
 
     def __setitem__(self, key, value):
-        self.server.do(path="dispatcher/%d/" % self["id"],
-                       "PATCH", {key: value})
+        self.server.do("dispatcher/%d/" % self["id"], "PATCH", {key: value})
 
         super(Job,self).__setitem__(key, value)
 
