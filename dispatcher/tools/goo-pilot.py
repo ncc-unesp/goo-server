@@ -148,7 +148,7 @@ def job_loop():
 
     try:
         send_files(job, tmp_dir)
-    except:
+    except IOError:
         job["status"] = "E"
         # should erase files first?
         return
