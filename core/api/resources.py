@@ -54,11 +54,11 @@ class CheckTokenResource(ModelResource):
 
     Allowed Methods:
 
-        GET    /check_token/          # Return token ttl
+        GET    /token/          # Return token ttl if is valid
 
     """
     class Meta:
-        resource_name = 'check_token'
+        resource_name = 'token'
         authentication = UserTokenAuthentication()
         authorization = ReadOnlyAuthorization()
         list_allowed_methods = []
