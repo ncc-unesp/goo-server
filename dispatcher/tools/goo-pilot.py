@@ -70,10 +70,9 @@ def send_files(job, tmp_dir):
 
     #gridftp copy
     local_url = 'file://' + os.path.abspath(output_pack_name)
-    remote_url = STORAGE_SERVER + str(uuid.uuid4) + '.zip'
-    devnull = open(os.devnull, 'w')
-    ret_code = call(["/usr/bin/globus-url-copy", local_url, remote_url],
-                    close_fds=True, stdout=devnull, stderr=devnull)
+    remote_url = STORAGE_SERVER + str(uuid.uuid4()) + '.zip'
+    
+    ret_code = call(["/usr/bin/globus-url-copy", "-q", local_url, remote_url], close_fds=True)
 
     if (ret_code != 0):
         raise IOError
@@ -113,7 +112,14 @@ def job_loop():
 
     def execution_thread(job, stdout, stderr):
         args = [ job["executable"], ]
-        args.extend(shlex.split(job["args"]))
+
+        job_args = job["args"]
+
+        # http://bugs.python.org/issue6988
+        if sys.version_info < (2,7):
+            job_args = str(job_args)
+
+        args.extend(shlex.split(job_args))
 
         process = Popen(args, close_fds=True, stdout=stdout, stderr=stderr)
         process.wait()

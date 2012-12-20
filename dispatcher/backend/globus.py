@@ -51,7 +51,7 @@ def submit(pilot):
 
     devnull = open(os.devnull, 'w')
     # can raise CalledProcessError
-    job_url = check_output(cmd, close_fds=True, stderr=devnull)
+    job_url = check_output(cmd, close_fds=True, stderr=devnull).strip()
     
     pilot.url = job_url
     pilot.save()
@@ -66,10 +66,10 @@ def cancel(pilot):
 
     devnull = open(os.devnull, 'w')
 
-    call(['/usr/bin/globus-job-cancel', pilot.url],
+    call(['/usr/bin/globus-job-cancel', '-f', pilot.url],
          close_fds=True, stdout=devnull, stderr=devnull)
 
-    call(['/usr/bin/globus-job-clean', pilot.url],
+    call(['/usr/bin/globus-job-clean', '-f', pilot.url],
          close_fds=True, stdout=devnull, stderr=devnull)
     
     logger.info('Cancel job')
