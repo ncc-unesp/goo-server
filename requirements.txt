@@ -8,3 +8,4 @@ pygraphviz>=1.1
 python-dateutil>=1.5
 python-ldap>=2.4.10
 simplejson>=2.6.2
+sphinxcontrib-httpdomain>=1.1.7

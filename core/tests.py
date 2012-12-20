@@ -87,7 +87,7 @@ class CheckTokenTest(ResourceTestCase):
 
         self.client = TestApiClient()
 
-        self.endpoint = '/api/v1/check_token/'
+        self.endpoint = '/api/v1/token/'
         self.format = 'json'
 
         # Create one user
