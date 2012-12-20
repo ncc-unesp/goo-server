@@ -12,6 +12,7 @@ from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization, ReadOnlyAuthorization
 
 from django.utils.timezone import now
+from django.template.defaultfilters import slugify
 
 from django.conf.urls import url
 from tastypie.utils import trailing_slash
@@ -91,7 +92,7 @@ class ApplicationResource(ModelResource):
         GET    /apps/set/{id};{id}/  # Get a list of apps
     """
 
-    app_obj = fields.ForeignKey(ObjectResource, 'app_obj', null=True)
+    app_obj = fields.ToOneField(ObjectResource, 'app_obj', null=True)
 
     class Meta:
         resource_name = 'apps'
@@ -132,7 +133,11 @@ class JobResource(ModelResource):
         DELETE /jobs/{id}/           # Delete a job
     """
 
-    app = fields.ForeignKey(ApplicationResource, 'type', null=True)
+    app = fields.ToOneField(ApplicationResource, 'type', null=True)
+
+    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True)
+    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True)
+    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True)
 
     class Meta:
         resource_name = 'jobs'
@@ -156,9 +161,13 @@ class JobResource(ModelResource):
 
     def dehydrate(self, bundle):
         if self.get_resource_uri(bundle) != bundle.request.path:
+            # list request
             list_exclude = self._meta.list_exclude
             for item in list_exclude:
                 del bundle.data[item]
+        else:
+            # detail request
+            bundle.data['slug'] = slugify(bundle.obj.name)
 
         bundle.data['app_name'] = str(bundle.obj.type)
 

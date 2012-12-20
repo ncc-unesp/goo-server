@@ -2,8 +2,13 @@ from tastypie.resources import ModelResource
 from dispatcher.auth import PilotTokenAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
+from tastypie import fields
 
 from core.models import Job
+from core.api.resources import ApplicationResource
+from storage.api.resources import ObjectResource
+
+from django.template.defaultfilters import slugify
 
 class PilotJobResource(ModelResource):
     """This resource handler jobs requests.
@@ -17,6 +22,12 @@ class PilotJobResource(ModelResource):
         POST   /dispatcher/                # Get a new job
         PATCH  /dispatcher/{id}/           # Partially update a job
     """
+
+    app = fields.ToOneField(ApplicationResource, 'type', null=True)
+
+    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True)
+    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True)
+    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True)
 
     class Meta:
         resource_name = 'dispatcher'
@@ -32,6 +43,10 @@ class PilotJobResource(ModelResource):
 
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(pilot=request.pilot)
+
+    def dehydrate(self, bundle):
+        bundle.data['slug'] = slugify(bundle.obj.name)
+        return bundle
 
     def obj_create(self, bundle, **kwargs):
         try:
