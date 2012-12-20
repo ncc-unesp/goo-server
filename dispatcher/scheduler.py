@@ -1,5 +1,4 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
-from django.db.models import Q
 
 class NoMatchError(Exception):
     pass
@@ -32,7 +31,7 @@ def match(pilot, time_left):
     """
     # delay import to avoid ciclic reference
     from core.models import Job
-    candidates = Job.objects.filter(Q(status = 'P'))
+    candidates = Job.objects.filter(status = 'P')
 
     _f = lambda job: pilot.is_job_acceptable(job, time_left)
     candidates = filter(_f, candidates)

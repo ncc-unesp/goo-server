@@ -69,6 +69,10 @@ class Pilot(models.Model):
             raise NotImplementedError
 
     def get_new_job(self, time_left):
+        # check if is already executing a job
+        if self.get_current_job():
+            return None
+
         job = scheduler.match(self, time_left)
 
         if not job:
@@ -87,3 +91,12 @@ class Pilot(models.Model):
             return True
         else:
             return False
+
+    def get_current_job(self):
+        # can raise self.MultipleObjectsReturned
+        # this means DB inconsistency
+
+        try:
+            return self.job_set.filter(status='R').get()
+        except self.job_set.model.DoesNotExist:
+            return None

@@ -15,6 +15,12 @@ STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/winckler/"
 PROGRESS_FREQ = 10 # seconds
 CHECKPOINT_FREQ = 20 # seconds
 
+class NoJobError(Exception):
+    pass
+
+class ObjectUploadError(Exception):
+    pass
+
 class GooServer:
     def __init__(self, base_url, token):
         self.base_url = base_url
@@ -41,7 +47,13 @@ class Job(dict):
         super(Job,self).__init__(*args, **kw)
 
         self.server = server
-        data = server.do("dispatcher/", "POST", {"time_left": time_left})
+
+        # try to get a job
+        try:
+            data = server.do("dispatcher/", "POST", {"time_left": time_left})
+        except urllib2.HTTPError:
+            raise NoJobError
+            
         super(Job,self).update(data)
 
     def __setitem__(self, key, value):
@@ -75,14 +87,14 @@ def send_files(job, tmp_dir):
     ret_code = call(["/usr/bin/globus-url-copy", "-q", local_url, remote_url], close_fds=True)
 
     if (ret_code != 0):
-        raise IOError
+        raise ObjectUploadError
 
     data = {"name": slug + '_output.zip'}
     data["size"] = output_pack_size / 1024**2
     data["url"] = remote_url
 
     resp = job.server.do("objects/", "POST", data)
-    job["output_objs"] = [ resp[resource_uri] ]
+    job["output_objs"] = [ resp["resource_uri"] ]
 
     os.chdir(orig_pwd)
 
@@ -154,7 +166,7 @@ def job_loop():
 
     try:
         send_files(job, tmp_dir)
-    except IOError:
+    except ObjectUploadError:
         job["status"] = "E"
         # should erase files first?
         return
@@ -172,7 +184,6 @@ if __name__ == "__main__":
     while True:
         try:
             job_loop()
-        except urllib2.HTTPError:
-            # no more jobs for memory
+        except NoJobError:
             print "No more jobs."
             exit(0)

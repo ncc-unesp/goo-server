@@ -3,7 +3,7 @@
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.authentication import BasicAuthentication
-from core.auth import UserTokenAuthentication
+from storage.auth import AnyTokenAuthentication
 from tastypie.authorization import Authorization, ReadOnlyAuthorization
 from django.db.models import Q
 from storage.models import *
@@ -20,7 +20,7 @@ class DataProxyServerResource(ModelResource):
 
     class Meta:
         resource_name = 'dataproxyserver'
-        authentication = UserTokenAuthentication()
+        authentication = AnyTokenAuthentication()
         authorization = Authorization()
         # Remove from query disabled data proxy servers
         queryset = DataProxyServer.objects.filter(~Q(enabled = False))
@@ -40,7 +40,7 @@ class ObjectResource(ModelResource):
     """
     class Meta:
         resource_name = 'objects'
-        authentication = UserTokenAuthentication()
+        authentication = AnyTokenAuthentication()
         authorization = Authorization()
         queryset = Object.objects.all()
         list_allowed_methods = ['get', 'post', ]

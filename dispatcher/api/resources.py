@@ -35,8 +35,7 @@ class PilotJobResource(ModelResource):
         authorization = Authorization()
         # Remove from query deleted jobs
         queryset = Job.objects.all()
-        #list_allowed_methods = ['post']
-        list_allowed_methods = ['post', 'get']
+        list_allowed_methods = ['post']
         detail_allowed_methods = ['get', 'patch']
         # Return data on the POST query
         always_return_data = True

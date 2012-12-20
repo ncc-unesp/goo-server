@@ -18,6 +18,13 @@ class PilotTokenAuthentication(Authentication):
 
         if pilot:
             request.pilot = pilot
+
+            # try to save user of the current job, when available
+            # this allow the pilot to PATCH with the objs (m2m) info.
+            job = pilot.get_current_job()
+            if job:
+                request.user = job.user
+
             return True
 
         return False # pragma: no cover
