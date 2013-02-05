@@ -11,5 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   introduction.rst
+   components.rst
    app-packing.rst
-
+   license.rst
