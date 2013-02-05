@@ -2,9 +2,11 @@
 *.pyc
 *.pyo
 *.py~
-gooserver/static/
 build/
 dist/
 src/
 gooserver/src/
 docs/coverage/
+static/
+portal/static/
+docs/build/

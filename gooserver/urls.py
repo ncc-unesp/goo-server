@@ -1,6 +1,7 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
-
+from django.views.generic.simple import redirect_to
 from django.conf.urls import patterns, include, url
+from django.views.generic.simple import direct_to_template
 from tastypie.api import Api
 from core.api.resources import *
 from dispatcher.api.resources import *
