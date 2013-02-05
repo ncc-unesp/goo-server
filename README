@@ -15,4 +15,4 @@ python-coverage html -d docs/coverage --omit='*/migrations/*,*/__init__.py,manag
 DOCUMENTATION
 =============
 
-cd docs ;  make clean ; make html ; firefox build/html/index.html ; cd -
+cd docs ;  make clean ; make html ; firefox ../portal/static/index.html ; cd -
