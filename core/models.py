@@ -159,11 +159,12 @@ class Job(models.Model):
             last_status = old_self.status
 
         super(Job, self).save(*args, **kwargs)
+        new_self = Job.objects.get(pk=self.id)
 
         if (self.status == 'P') and (last_status != 'P'):
             # welcome! let find a nice place for you
             try:
-                scheduler.allocate(self)
+                scheduler.allocate(new_self)
             except scheduler.NoMatchError:
                 # no sites match job requirement
                 self.status = 'E'
