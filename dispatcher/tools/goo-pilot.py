@@ -70,8 +70,8 @@ def get_files(job, tmp_dir):
     for i in job['input_objs']:
         meta = job.server.do(i)
 
-        final_file = os.path.join(os.path.abspath(tmp_dir), meta['name']
-        local_url = 'file://' + final_file)
+        final_file = os.path.join(os.path.abspath(tmp_dir), meta['name'])
+        local_url = 'file://' + final_file
         # meta['url'] has the remote_url
         ret_code = call([GRIDFTP, "-q", meta['url'], local_url], close_fds=True)
 
