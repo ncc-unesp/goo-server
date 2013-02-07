@@ -133,7 +133,7 @@ def job_loop():
     # TODO
 
     # get the input files.
-    # TODO
+    get_files(job, tmp_dir)
 
     # execute job
     # missing case name
