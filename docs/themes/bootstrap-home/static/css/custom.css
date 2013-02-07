@@ -1,0 +1,75 @@
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+}
+
+.table th {
+    width: 150px;
+}
+
+footer{
+    margin-top:17px;
+    padding-top:17px;
+    border-top:1px solid #eee;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.label-success {
+    width: 50px;
+    text-align: center;
+}
+
+.label-inverse {
+    width: 50px;
+    text-align: center;
+}
+
+.label-important {
+    width: 50px;
+    text-align: center;
+}
+
+section {
+    padding: 60px 0px;
+}
+
+.row {
+    margin-left: -20px;
+}
+
+section .features .span6 {
+    width: 240px;
+    text-align: center;
+}
+
+
+section.features .span6 i.user, section .features .span6 i.user {
+    background: url("../img/user-banner.png") no-repeat scroll 0% 0% transparent;
+    margin: 50px 0px 0px 0px;
+}
+
+section.features .span6 i.developer, section .features .span6 i.developer {
+    background: url("../img/developer-banner.png") no-repeat scroll 0% 0% transparent;
+    margin: 50px 0px 0px 0px;
+}
+
+section.features .span6 i.api, section .features .span6 i.api {
+    background: url("../img/api-banner.png") no-repeat scroll 0% 0% transparent;
+    margin: 50px 0px 0px 0px;
+}
+
+section.features .span6 i.architecture, section .features .span6 i.architecture {
+    background: url("../img/architecture-banner.png") no-repeat scroll 0% 0% transparent;
+    margin: 50px 0px 0px 0px;
+}
+
+
+section.features .span6 i, section .features .span6 i {
+    height: 110px;
+    width: 240px;
+    display: block;
+}
