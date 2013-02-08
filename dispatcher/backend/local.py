@@ -13,7 +13,7 @@ def submit(pilot):
     submit a pilot job using local protocol
     """
     exec_path = os.path.join(PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
-    url = BASE_URL + '/api/v1/'
+    url = BASE_URL
     pid = Popen([exec_path, url, pilot.token],
                 close_fds=True, stdout=PIPE, stderr=PIPE).pid
     pilot.url = 'local://%d' % pid

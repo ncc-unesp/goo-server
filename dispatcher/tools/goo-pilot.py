@@ -31,7 +31,7 @@ class GooServer:
         self.base_url = base_url
         self.token = token
 
-    def do(self, path="api/v1/dispatcher/", method="GET", data={}):
+    def do(self, path="/api/v1/dispatcher/", method="GET", data={}):
         url = "%s%s?token=%s" % (self.base_url, path, self.token)
         request = self.RequestWithMethod(method, url=url)
         request.add_header("Content-Type", "application/json")
@@ -55,14 +55,14 @@ class Job(dict):
 
         # try to get a job
         try:
-            data = server.do("api/v1/dispatcher/", "POST", {"time_left": time_left})
+            data = server.do("/api/v1/dispatcher/", "POST", {"time_left": time_left})
         except urllib2.HTTPError:
             raise NoJobError
             
         super(Job,self).update(data)
 
     def __setitem__(self, key, value):
-        self.server.do("api/v1/dispatcher/%d/" % self["id"], "PATCH", {key: value})
+        self.server.do("/api/v1/dispatcher/%d/" % self["id"], "PATCH", {key: value})
 
         super(Job,self).__setitem__(key, value)
 
@@ -114,7 +114,7 @@ def send_files(job, tmp_dir):
     data["size"] = output_pack_size / 1024**2
     data["url"] = remote_url
 
-    resp = job.server.do("api/v1/objects/", "POST", data)
+    resp = job.server.do("/api/v1/objects/", "POST", data)
     job["output_objs"] = [ resp["resource_uri"] ]
 
     os.chdir(orig_pwd)
