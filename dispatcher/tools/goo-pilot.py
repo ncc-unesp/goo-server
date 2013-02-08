@@ -78,7 +78,7 @@ def get_files(job, tmp_dir):
         if (ret_code != 0):
             raise ObjectDownloadError
 
-        if os.path.splitext(final_file).lower() == ".zip":
+        if os.path.splitext(final_file)[1].lower() == ".zip":
             ZipFile(final_file, 'r').extractall(tmp_dir)
             os.remove(final_file)
 
