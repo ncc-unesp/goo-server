@@ -71,12 +71,12 @@ class Pilot(models.Model):
     def get_new_job(self, time_left):
         # check if is already executing a job
         if self.get_current_job():
-            return None
+            raise StopIteration
 
         job = scheduler.match(self, time_left)
 
         if not job:
-            return None
+            raise StopIteration
 
         job.pilot = self
         job.status = 'R'
