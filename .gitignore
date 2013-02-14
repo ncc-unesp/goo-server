@@ -7,6 +7,6 @@ dist/
 src/
 gooserver/src/
 docs/coverage/
-static/
+./static/
 portal/static/
 docs/build/
