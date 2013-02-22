@@ -12,6 +12,8 @@ STDERR_SUFFIX = ".stderr"
 # TODO: get this from OSG ENV
 STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/winckler/"
 
+GRIDFTP = "/usr/bin/globus-url-copy"
+
 PROGRESS_FREQ = 10 # seconds
 CHECKPOINT_FREQ = 20 # seconds
 
@@ -21,12 +23,15 @@ class NoJobError(Exception):
 class ObjectUploadError(Exception):
     pass
 
+class ObjectDownloadError(Exception):
+    pass
+
 class GooServer:
     def __init__(self, base_url, token):
         self.base_url = base_url
         self.token = token
 
-    def do(self, path="dispatcher/", method="GET", data={}):
+    def do(self, path="/api/v1/dispatcher/", method="GET", data={}):
         url = "%s%s?token=%s" % (self.base_url, path, self.token)
         request = self.RequestWithMethod(method, url=url)
         request.add_header("Content-Type", "application/json")
@@ -50,16 +55,32 @@ class Job(dict):
 
         # try to get a job
         try:
-            data = server.do("dispatcher/", "POST", {"time_left": time_left})
+            data = server.do("/api/v1/dispatcher/", "POST", {"time_left": time_left})
         except urllib2.HTTPError:
             raise NoJobError
             
         super(Job,self).update(data)
 
     def __setitem__(self, key, value):
-        self.server.do("dispatcher/%d/" % self["id"], "PATCH", {key: value})
+        self.server.do("/api/v1/dispatcher/%d/" % self["id"], "PATCH", {key: value})
 
         super(Job,self).__setitem__(key, value)
+
+def get_files(job, tmp_dir):
+    for i in job['input_objs']:
+        meta = job.server.do(i)
+
+        final_file = os.path.join(os.path.abspath(tmp_dir), meta['name'])
+        local_url = 'file://' + final_file
+        # meta['url'] has the remote_url
+        ret_code = call([GRIDFTP, "-q", meta['url'], local_url], close_fds=True)
+
+        if (ret_code != 0):
+            raise ObjectDownloadError
+
+        if os.path.splitext(final_file)[1].lower() == ".zip":
+            ZipFile(final_file, 'r').extractall(tmp_dir)
+            os.remove(final_file)
 
 def send_files(job, tmp_dir):
     # cd into the directory
@@ -84,7 +105,7 @@ def send_files(job, tmp_dir):
     local_url = 'file://' + os.path.abspath(output_pack_name)
     remote_url = STORAGE_SERVER + str(uuid.uuid4()) + '.zip'
     
-    ret_code = call(["/usr/bin/globus-url-copy", "-q", local_url, remote_url], close_fds=True)
+    ret_code = call([GRIDFTP, "-q", local_url, remote_url], close_fds=True)
 
     if (ret_code != 0):
         raise ObjectUploadError
@@ -93,7 +114,7 @@ def send_files(job, tmp_dir):
     data["size"] = output_pack_size
     data["url"] = remote_url
 
-    resp = job.server.do("objects/", "POST", data)
+    resp = job.server.do("/api/v1/objects/", "POST", data)
     job["output_objs"] = [ resp["resource_uri"] ]
 
     os.chdir(orig_pwd)
@@ -112,7 +133,7 @@ def job_loop():
     # TODO
 
     # get the input files.
-    # TODO
+    get_files(job, tmp_dir)
 
     # execute job
     # missing case name

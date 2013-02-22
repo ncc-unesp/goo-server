@@ -41,7 +41,7 @@ def submit(pilot):
     site_addr = urlparse.urlparse(pilot.site.url)
 
     exec_path = os.path.join(PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
-    url = BASE_URL + '/api/v1/'
+    url = BASE_URL
 
     # globus-job-submit ce.grid.unesp.br/jobmanager-pbs -x (queue=long) -s /usr/bin/id args
     cmd = ['/usr/bin/globus-job-submit',
