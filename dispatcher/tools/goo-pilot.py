@@ -90,7 +90,7 @@ def send_files(job, tmp_dir):
         raise ObjectUploadError
 
     data = {"name": slug + '_output.zip'}
-    data["size"] = output_pack_size / 1024**2
+    data["size"] = output_pack_size
     data["url"] = remote_url
 
     resp = job.server.do("objects/", "POST", data)
