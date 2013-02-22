@@ -54,5 +54,35 @@
         },
         "model": "core.usertoken",
         "pk": 2
-    }
+    },
+  {
+      "fields": {
+          "checkpoint_objs": [],
+          "create_time": "2012-12-06T13:38:36.302Z",
+          "disk_in_use": 0,
+          "disk_requirement": 2048,
+          "end_time": null,
+          "eta": null,
+          "hosts": 1,
+          "input_objs": [],
+          "memory_in_use": 0,
+          "memory_requirement": 2048,
+          "modification_time": "2012-12-06T13:38:36.302Z",
+          "name": "Job Test",
+          "output_objs": [],
+          "pilot": null,
+          "pph": 1,
+          "priority": 0,
+          "progress": 0,
+          "restart": true,
+          "return_code": null,
+          "start_time": null,
+          "status": "P",
+          "ttl": 43200,
+          "type": 1,
+          "user": 1
+      },
+      "model": "core.job",
+      "pk": 1
+  }
 ]
