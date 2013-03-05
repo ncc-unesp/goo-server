@@ -48,141 +48,7 @@
       </div>
     </div>
 
-    <div class="container">
-
-      <h1>My Current Jobs</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-
-
-        <table class="table table-bordered table-condensed">
-        <thead>
-            <tr>
-                <th width="5%">ID</th>
-                <th width="20%">Job Name</th>
-                <th width="10%">Status</th>
-                <th width="30%">Progress</th>
-                <th width="15%">Create Time</th>
-                <th width="15%">Modification Time</th>
-                <th width="5%">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>2</td>
-                <td>Job01</td>
-                <td><span class="label label-success">Completed</span></td>
-                <td>
-                    <div class="progress">
-                        <div class="bar" style="width: 100%;"></div>
-                    </div>
-                </td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-mini btn-info">Cancel</button>
-                        <button class="btn btn-mini btn-danger">Remove</button>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>bar</td>
-                <td><span class="label label-success">Completed</span></td>
-                <td>
-                    <div class="progress">
-                        <div class="bar" style="width: 100%;"></div>
-                    </div>
-                </td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-mini btn-info">Cancel</button>
-                        <button class="btn btn-mini btn-danger">Remove</button>
-                        </ul>
-                    </div>
-                </td>
-
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>foo</td>
-                <td><span class="label label-important">Error</span></td>
-                <td>
-                    <div class="progress">
-                        <div class="bar" style="width: 10%;"></div>
-                    </div>
-                </td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-mini btn-info">Cancel</button>
-                        <button class="btn btn-mini btn-danger">Remove</button>
-                        </ul>
-                    </div>
-                </td>
-
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>blabla</td>
-                <td><span class="label label-info">Pending</span></td>
-                <td>
-                    <div class="progress">
-                        <div class="bar" style="width: 0%;"></div>
-                    </div>
-                </td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-mini btn-info">Cancel</button>
-                        <button class="btn btn-mini btn-danger">Remove</button>
-                        </ul>
-                    </div>
-                </td>
-
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>gauss</td>
-                <td><span class="label label-success">Completed</span></td>
-                <td>
-                    <div class="progress">
-                        <div class="bar" style="width: 100%;"></div>
-                    </div>
-                </td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>2013-02-25T10:33:54.582419</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-mini btn-info">Cancel</button>
-                        <button class="btn btn-mini btn-danger">Remove</button>
-                        </ul>
-                    </div>
-                </td>
-
-            </tr>
-
-
-
-        </tbody>
-        </table>
-
-    <div class="pagination">
-    <ul>
-    <li><a href="#">Prev</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">Next</a></li>
-    </ul>
-    </div>
+    <div class="container" id="container">
 
     </div> <!-- /container -->
 
@@ -190,6 +56,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/jquery.mustache.js"></script>
+    <script src="../static/js/mustache.js"></script>
     <script src="../static/js/bootstrap-transition.js"></script>
     <script src="../static/js/bootstrap-alert.js"></script>
     <script src="../static/js/bootstrap-modal.js"></script>
@@ -202,6 +70,18 @@
     <script src="../static/js/bootstrap-collapse.js"></script>
     <script src="../static/js/bootstrap-carousel.js"></script>
     <script src="../static/js/bootstrap-typeahead.js"></script>
+
+    <!-- goo scripts -->
+    <script src="../static/js/goo.js"></script>
+
+<script type="text/javascript">
+
+get_jobs_list("9acbc578-2b80-4ce7-95d2-e1e3474437fb",
+              function(data){
+                  $.Mustache.load('jobs_list.html').done(
+                      function () {$('#container').mustache('jobs_list', data)});
+              });
+</script>
 
   </body>
 </html>
