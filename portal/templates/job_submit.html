@@ -1,7 +1,10 @@
 <script id="job_submit" type="text/html">
-      <h1>Submit a new job</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+    <h1>Submit a new job</h1>
 
+    <hr>
+
+    <div class="row">
+      <div class="span6">
       <form action="javascript:post_job(this.form);" class="form-horizontal">
 
          <div class="control-group">
@@ -34,4 +37,12 @@
             <button type="button" class="btn" onclick="view_jobs_list();">Cancel</button>
         </div>
         </form>
+        </div>
+
+        <div class="span4">
+        <h3>About job submition</h3>
+        <p>Plese read the <a href="#">User Guide</a>, before submit a job.</p>
+        <p>If you are having problems to submit a job, <a href="#">contact us</a>, or read <a href="#">our FAQ</a></p>
+        </div>
+        </div>
 </script>
