@@ -26,7 +26,7 @@
     <link rel="shortcut icon" href="../static/ico/favicon.png">
   </head>
 
-  <body>
+  <body onload="view_stats();">
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -39,7 +39,8 @@
           <a class="brand" href="#">Goo Web Portal</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li class="active"><a href="#home" onclick="view_stats();">Home</a></li>
+              <li><a href="#jobs" onclick="view_jobs_list();">Jobs</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
@@ -74,11 +75,9 @@
     <!-- goo scripts -->
     <script src="../static/js/goo.js"></script>
 
-<script type="text/javascript">
-token = "9acbc578-2b80-4ce7-95d2-e1e3474437fb";
-
-view_graphs();
-</script>
+    <script type="text/javascript">
+    token = "9acbc578-2b80-4ce7-95d2-e1e3474437fb";
+    </script>
 
   </body>
 </html>
