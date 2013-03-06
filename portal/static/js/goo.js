@@ -1,7 +1,7 @@
 function view_jobs_list() {
     $.ajax({
         dataType: "json",
-        url: "http://submit.grid.unesp.br:8000/api/v1/jobs/?token=" + get_token(),
+        url: "/api/v1/jobs/?token=" + get_token(),
         success: function(data) {
             var resp = {};
             resp["jobs"] = data["objects"];
@@ -18,7 +18,7 @@ function view_jobs_list() {
 function view_job_detail(id) {
     $.ajax({
         dataType: "json",
-        url: "http://submit.grid.unesp.br:8000/api/v1/jobs/"+ id +"/?token=" + get_token(),
+        url: "/api/v1/jobs/"+ id +"/?token=" + get_token(),
         success: function(data) {
             var resp = data;
             resp.status_name = function() {
@@ -47,7 +47,7 @@ function post_job(form) {
     $.ajax({
         dataType: "json",
         type: "POST",
-        url: "http://submit.grid.unesp.br:8000/api/v1/jobs/?token=" + get_token(),
+        url: "/api/v1/jobs/?token=" + get_token(),
         data: '{"app":"/api/v1/apps/33/", "args": "10", "executable": "/bin/sleep", "name":"job2" }',
         //data: $(form).serializeArray(),
         contentType: "application/json",
@@ -77,7 +77,7 @@ function do_login() {
         password: password,
         contentType: "application/json", //mandatory
         data: "{}", //mandatory
-        url: "http://submit.grid.unesp.br:8000/api/v1/auth/",
+        url: "/api/v1/auth/",
         error: function(data) {
                 alert("Wrong login/password");
             },

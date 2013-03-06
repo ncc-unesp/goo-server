@@ -16,3 +16,19 @@ DOCUMENTATION
 =============
 
 cd docs ;  make clean ; make html ; firefox ../portal/static/index.html ; cd -
+
+For local deployment (using apache as proxy)
+--------------------------------------------
+
+# a2enmod proxy proxy_http
+
+# (config file)
+ProxyPass /api http://submit.grid.unesp.br:8000/api
+
+<Directory /home/winckler/Projects/goo-server/portal/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+</Directory>
+Alias /portal /<path>/goo-server/portal
