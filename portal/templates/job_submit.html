@@ -1,0 +1,48 @@
+<script id="job_submit" type="text/html">
+    <h1>Submit a new job</h1>
+
+    <hr>
+
+    <div class="row">
+      <div class="span6">
+      <form action="javascript:post_job(this.form);" class="form-horizontal">
+
+         <div class="control-group">
+            <label class="control-label" for="inputName">Name</label>
+            <div class="controls">
+                <input type="text" id="name" name="name" placeholder="Name">
+            </div>
+         </div>
+         <div class="control-group">
+            <label class="control-label" for="inputApp">Application</label>
+            <div class="controls">
+                <input type="text" id="app" name="app" placeholder="Application">
+            </div>
+         </div>
+         <div class="control-group">
+            <label class="control-label" for="inputExecutable">Executable</label>
+            <div class="controls">
+                <input type="text" id="executable" name="executable" placeholder="Executable">
+            </div>
+         </div>
+         <div class="control-group">
+            <label class="control-label" for="inputArgs">Arguments</label>
+            <div class="controls">
+                <input type="text" id="args" placeholder="Arguments">
+            </div>
+         </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit Job</button>
+            <button type="button" class="btn" onclick="view_jobs_list();">Cancel</button>
+        </div>
+        </form>
+        </div>
+
+        <div class="span4">
+        <h3>About job submition</h3>
+        <p>Plese read the <a href="#">User Guide</a>, before submit a job.</p>
+        <p>If you are having problems to submit a job, <a href="#">contact us</a>, or read <a href="#">our FAQ</a></p>
+        </div>
+        </div>
+</script>
