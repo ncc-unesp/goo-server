@@ -1,3 +1,34 @@
+function goo_first_load() {
+    $.Mustache.addFromDom();
+    render_login();
+    $(window).bind('hashchange', view_change);
+    view_change();
+};
+
+function view_change() {
+    hash = location.hash;
+
+    if (hash == "#stats")
+        return view_stats();
+
+    if (hash.match("^#jobs$"))
+        return view_jobs_list();
+
+    jobs_id = hash.match("^#job-([0-9]+)$")
+    if (jobs_id)
+        return view_job_detail(jobs_id[1]);
+
+    if (hash.match("^#submit$"))
+        return view_job_submit();
+
+    //default
+    return view_stats();
+};
+
+function href(anchor){
+    location.hash = anchor;
+}
+
 function view_jobs_list() {
     $.ajax({
         dataType: "json",
