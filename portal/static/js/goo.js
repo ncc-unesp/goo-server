@@ -66,7 +66,7 @@ function do_login() {
     password = $("#login_box>input[name=password]")[0].value;
 
     if (username == "") {
-        alert("Missing username");
+        do_alert("Missing username");
         return;
         }
 
@@ -79,7 +79,7 @@ function do_login() {
         data: "{}", //mandatory
         url: "/api/v1/auth/",
         error: function(data) {
-                alert("Wrong login/password");
+                do_alert("Wrong login/password");
             },
         success: function(data) {
                 $.cookie("user", username);
@@ -89,6 +89,11 @@ function do_login() {
             }
         });
     };
+
+function do_alert(msg) {
+    $(".alert > #msg").html(msg);
+    $(".alert").show();
+}
 
 function do_logout() {
     $.removeCookie("user");
