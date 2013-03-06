@@ -75,12 +75,9 @@
     <script src="../static/js/goo.js"></script>
 
 <script type="text/javascript">
+token = "9acbc578-2b80-4ce7-95d2-e1e3474437fb";
 
-get_jobs_list("9acbc578-2b80-4ce7-95d2-e1e3474437fb",
-              function(data){
-                  $.Mustache.load('jobs_list.html').done(
-                      function () {$('#container').mustache('jobs_list', data)});
-              });
+view_graphs();
 </script>
 
   </body>

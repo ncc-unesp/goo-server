@@ -1,0 +1,14 @@
+<script id="job_submit" type="text/html">
+      <h1>Create a new job</h1>
+      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+
+        <form action="javascript:post_job(this.form);">
+            name: <input type="text" name="name"><br>
+            app: <input type="text" name="app"><br>
+            executable: <input type="text" name="executable"><br>
+            args: <input type="text" name="args"><br>
+            <input type="submit" class="btn btn-mini btn-info" name="Send">
+        </form>
+
+      <button onclick="view_jobs_list();" class="btn btn-mini btn-info">Back</button>
+</script>

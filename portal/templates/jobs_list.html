@@ -2,6 +2,8 @@
       <h1>My Current Jobs</h1>
       <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
 
+<button onclick="view_graphs();" class="btn btn-mini btn-info">Graphs</button>
+<button onclick="view_job_submit();" class="btn btn-mini btn-info">Submit a new job</button>
 
         <table class="table table-bordered table-condensed">
         <thead>
@@ -18,12 +20,13 @@
         <tbody>
             {{#jobs}}
             <tr>
-                <td>{{id}}</td>
-                <td>{{name}}</td>
+                <td><a href="javascript:void(0)" onclick="view_job_detail({{id}});">{{id}}</a></td>
+                <td><a href="javascript:void(0)" onclick="view_job_detail({{id}});">{{name}}</a></td>
+
                 <td><span class="label label-success">{{status_name}}</span></td>
                 <td>
                     <div class="progress">
-                        <div class="bar" style="width: {{progress}}%;"></div>
+                    <div class="bar" style="width: {{progress}}%;"></div>
                     </div>
                 </td>
                 <td>{{create_time}}</td>
@@ -32,7 +35,6 @@
                     <div class="btn-group">
                         <button class="btn btn-mini btn-info">Cancel</button>
                         <button class="btn btn-mini btn-danger">Remove</button>
-                        </ul>
                     </div>
                 </td>
             </tr>

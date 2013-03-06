@@ -1,0 +1,18 @@
+<script id="job_detail" type="text/html">
+      <h1>Jobs {{id}} info</h1>
+      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+
+      <dl>
+        <dt>Name:</dt><dd>{{name}}</dd>
+        <dt>Progress:</dt><dd>{{progress}}%</dd>
+        <dt>Status:</dt><dd>{{status_name}}</dd>
+        <dt>Created:</dt><dd>{{create_time}}</dd>
+        <dt>Modified:</dt><dd>{{modification_time}}</dd>
+      </dl>
+      <div class="btn-group">
+        <button class="btn btn-mini btn-info">Cancel</button>
+        <button class="btn btn-mini btn-danger">Remove</button>
+      </div>
+
+      <button onclick="view_jobs_list();" class="btn btn-mini btn-info">Back</button>
+</script>
