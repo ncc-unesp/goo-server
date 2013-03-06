@@ -62,13 +62,21 @@
               <button onclick="do_logout();" class="btn btn-mini btn-info">logout</button>
             {{/user}}
             {{^user}} {{! if user is NOT logged}}
-              login: <input type="text" name="login">
-              password: <input type="password" name="password">
-              <button onclick="do_login();" class="btn btn-mini btn-info">go</button>
+            <form class="navbar-form pull-right" method="POST" id="login_box">
+                <input type="text" class="span2" name="login" placeholder="username">
+                <input type="password" class="span2" name="password" placeholder="password">
+                <button type="submit" class="btn btn-primary" onclick="do_login();">Sign in</button>
+            </form>
             {{/user}}
           </script>
         </div>
       </div>
+    </div>
+
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Error!</strong>
+        <p id="msg"></p>
     </div>
 
     <div class="container" id="container">
