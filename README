@@ -17,6 +17,9 @@ DOCUMENTATION
 
 cd docs ;  make clean ; make html ; firefox ../portal/static/index.html ; cd -
 
+DEPLOYMENT
+==========
+
 For local deployment (using apache as proxy)
 --------------------------------------------
 
@@ -25,7 +28,7 @@ For local deployment (using apache as proxy)
 # (config file)
 ProxyPass /api http://submit.grid.unesp.br:8000/api
 
-<Directory /home/winckler/Projects/goo-server/portal/>
+<Directory /<path>/goo-server/portal/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Order allow,deny
