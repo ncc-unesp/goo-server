@@ -158,6 +158,10 @@ def job_loop():
         process.wait()
         job["return_code"] = process.returncode
 
+        #set progress to 100% if ret_code = 0
+        if process.returncode == 0:
+            job["progress"] = 100
+
     execution = threading.Thread(target=execution_thread,
                                  args=(job, stdout, stderr))
 
