@@ -62,11 +62,11 @@
               <button onclick="do_logout();" class="btn btn-mini btn-info">logout</button>
             {{/user}}
             {{^user}} {{! if user is NOT logged}}
-            <form class="navbar-form pull-right" method="POST" id="login_box">
+            <div class="navbar-form pull-right" id="login_box">
                 <input type="text" class="span2" name="login" placeholder="username">
                 <input type="password" class="span2" name="password" placeholder="password">
                 <button type="submit" class="btn btn-primary" onclick="do_login();">Sign in</button>
-            </form>
+            </div>
             {{/user}}
           </script>
         </div>
@@ -90,11 +90,11 @@
     <script src="../static/js/jquery.mustache.js"></script>
     <script src="../static/js/mustache.js"></script>
     <script src="../static/js/jquery.cookie.js"></script>
+    <script src="../static/js/bootstrap-dropdown.js"></script>
     <!--
     <script src="../static/js/bootstrap-transition.js"></script>
     <script src="../static/js/bootstrap-alert.js"></script>
     <script src="../static/js/bootstrap-modal.js"></script>
-    <script src="../static/js/bootstrap-dropdown.js"></script>
     <script src="../static/js/bootstrap-scrollspy.js"></script>
     <script src="../static/js/bootstrap-tab.js"></script>
     <script src="../static/js/bootstrap-tooltip.js"></script>

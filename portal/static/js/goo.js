@@ -88,6 +88,7 @@ function do_login() {
                 view_jobs_list();
             }
         });
+    return false;
     };
 
 function do_alert(msg) {
