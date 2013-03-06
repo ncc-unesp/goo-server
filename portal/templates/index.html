@@ -26,7 +26,7 @@
     <link rel="shortcut icon" href="../static/ico/favicon.png">
   </head>
 
-  <body onload="view_stats();">
+  <body onload="$.Mustache.addFromDom();render_login();view_stats();">
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -53,6 +53,20 @@
               <li><a href="#contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
+          <div id="login_box"><!-- login box -->
+          </div>
+          <!-- keep script outside -->
+          <script id="login_template" type="text/html">
+            {{#user}} {{! if user is already logged}}
+              Hello, {{user}}.
+              <button onclick="do_logout();" class="btn btn-mini btn-info">logout</button>
+            {{/user}}
+            {{^user}} {{! if user is NOT logged}}
+              login: <input type="text" name="login">
+              password: <input type="password" name="password">
+              <button onclick="do_login();" class="btn btn-mini btn-info">go</button>
+            {{/user}}
+          </script>
         </div>
       </div>
     </div>
@@ -67,6 +81,7 @@
     <script src="../static/js/jquery.js"></script>
     <script src="../static/js/jquery.mustache.js"></script>
     <script src="../static/js/mustache.js"></script>
+    <script src="../static/js/jquery.cookie.js"></script>
     <script src="../static/js/bootstrap-transition.js"></script>
     <script src="../static/js/bootstrap-alert.js"></script>
     <script src="../static/js/bootstrap-modal.js"></script>
@@ -82,10 +97,6 @@
 
     <!-- goo scripts -->
     <script src="../static/js/goo.js"></script>
-
-    <script type="text/javascript">
-    token = "9acbc578-2b80-4ce7-95d2-e1e3474437fb";
-    </script>
 
   </body>
 </html>
