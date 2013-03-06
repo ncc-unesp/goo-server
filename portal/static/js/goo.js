@@ -35,8 +35,8 @@ function view_job_submit() {
             $.Mustache.load('job_submit.html').done(function () {$('#container').mustache('job_submit', {}, { method: 'html' })});
         };
 
-function view_graphs() {
-            $.Mustache.load('graphs.html').done(function () {$('#container').mustache('graphs', {}, { method: 'html' })});
+function view_stats() {
+            $.Mustache.load('stats.html').done(function () {$('#container').mustache('stats', {}, { method: 'html' })});
         };
 
 function render_login() {
@@ -85,6 +85,7 @@ function do_login() {
                 $.cookie("user", username);
                 $.cookie("token", data["token"]);
                 render_login();
+                view_jobs_list();
             }
         });
     };
@@ -93,6 +94,7 @@ function do_logout() {
     $.removeCookie("user");
     $.removeCookie("token");
     render_login();
+    view_stats();
 }
 
 function get_user() {

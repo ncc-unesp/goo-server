@@ -26,7 +26,7 @@
     <link rel="shortcut icon" href="../static/ico/favicon.png">
   </head>
 
-  <body>
+  <body onload="$.Mustache.addFromDom();render_login();view_stats();">
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -36,10 +36,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Goo Web Portal</a>
+          <a class="brand" href="#home" onclick="view_stats();">Goo Web Portal</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li class="active"><a href="#home" onclick="view_stats();">Home</a></li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Jobs <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#jobs" onclick="view_jobs_list();">List my jobs</a></li>
+                    <li><a href="#submmit" onclick="view_job_submit();">Submit a job</a></li>
+                  </ul>
+                </li>
+
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
@@ -88,13 +97,6 @@
 
     <!-- goo scripts -->
     <script src="../static/js/goo.js"></script>
-
-<script type="text/javascript">
-token = "9acbc578-2b80-4ce7-95d2-e1e3474437fb";
-$.Mustache.addFromDom();
-render_login();
-view_graphs();
-</script>
 
   </body>
 </html>
