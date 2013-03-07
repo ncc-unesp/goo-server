@@ -58,8 +58,16 @@
           <!-- keep script outside -->
           <script id="login_template" type="text/html">
             {{#user}} {{! if user is already logged}}
-              Hello, {{user}}.
-              <button onclick="do_logout();" class="btn btn-mini btn-info">logout</button>
+          <div class="nav-collapse collapse pull-right">
+            <ul class="nav">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> Welcome {{user}}<b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#signout" onclick="do_logout();">Sign out</a></li>
+                  </ul>
+                </li>
+            </ul>
+          </div><!--/.nav-collapse -->
             {{/user}}
             {{^user}} {{! if user is NOT logged}}
             <div class="navbar-form pull-right" id="login_box">
@@ -73,10 +81,12 @@
       </div>
     </div>
 
+    <div class="container">
     <div class="alert alert-error">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>Error!</strong>
         <p id="msg"></p>
+    </div>
     </div>
 
     <div class="container" id="container">
@@ -91,9 +101,9 @@
     <script src="../static/js/mustache.js"></script>
     <script src="../static/js/jquery.cookie.js"></script>
     <script src="../static/js/bootstrap-dropdown.js"></script>
+    <script src="../static/js/bootstrap-alert.js"></script>
     <!--
     <script src="../static/js/bootstrap-transition.js"></script>
-    <script src="../static/js/bootstrap-alert.js"></script>
     <script src="../static/js/bootstrap-modal.js"></script>
     <script src="../static/js/bootstrap-scrollspy.js"></script>
     <script src="../static/js/bootstrap-tab.js"></script>

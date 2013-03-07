@@ -124,7 +124,7 @@ function do_login() {
 
 function do_alert(msg) {
     $(".alert > #msg").html(msg);
-    $(".alert").show();
+    $(".alert").alert();
 }
 
 function do_logout() {
