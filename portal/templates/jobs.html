@@ -9,15 +9,14 @@
         <hr>
 
         <div class="content">
-        <table class="table table-bordered table-condensed">
+        <table class="table table-condensed">
         <thead>
             <tr>
                 <th width="5%">ID</th>
                 <th width="20%">Job Name</th>
+                <th width="25%">App Name</th>
+                <th width="25%">Progress</th>
                 <th width="10%">Status</th>
-                <th width="30%">Progress</th>
-                <th width="15%">Create Time</th>
-                <th width="15%">Modification Time</th>
                 <th width="5%">Action</th>
             </tr>
         </thead>
@@ -26,15 +25,13 @@
             <tr>
                 <td><a href="#job-{{id}}">{{id}}</a></td>
                 <td><a href="#job-{{id}}">{{name}}</a></td>
-
-                <td><span class="label label-success">{{status_name}}</span></td>
+                <td>{{app_name}}</td>
                 <td>
                     <div class="progress">
                     <div class="bar" style="width: {{progress}}%;"></div>
                     </div>
                 </td>
-                <td>{{create_time}}</td>
-                <td>{{modification_time}}</td>
+                <td><span class="label label-success">{{status_name}}</span></td>
                 <td>
                     <div class="btn-group">
                         <button class="btn btn-mini btn-info"><i class="icon-minus-sign icon-white"></i> Cancel</button>
