@@ -6,6 +6,10 @@
     display: none;
 }
 
+h4 {
+    color: #808080;
+}
+
 pre {
     display: block;
     padding: 9.5px;
@@ -19,5 +23,54 @@ pre {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 4px 4px 4px 4px;
     color: white;
+}
+
+.overviews .inner-well {
+    display: inline-block;
+    margin: 10px; 
+}
+
+.overviews .overview-text {
+    float: left;
+}
+    
+.overviews .inner-well .overview-graph {
+      float: left;
+      height: 44px;
+}
+    
+.overviews .inner-well .overview-title {
+      margin-left: 60px;
+      line-height: 20px;
+      font-size: 14px;
+}
+    
+.overviews .inner-well .overview-content {
+      margin-left: 60px;
+      font-size: 20px;
+      line-height: 27px;
+      font-weight: 600;
+}
+
+      
+.overviews .inner-well .overview-content span {
+        float: right;
+}
+    
+.overviews .inner-well .red {
+      color: #D95A41;
+      font-size: 32px;
+}
+    
+.overviews .inner-well .green {
+      color: #81AF30;
+      font-size: 32px;
+}
+
+.inner-well {
+    text-align: left;
+    color: rgb(128, 135, 140);
+    background: none repeat scroll 0% 0% rgb(254, 254, 254);
+    padding: 10px;
 }
 
