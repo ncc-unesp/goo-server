@@ -109,7 +109,7 @@ function do_login() {
                 $.cookie("user", username);
                 $.cookie("token", data["token"]);
                 render_login();
-                view_jobs_list();
+                href("#jobs");
             }
         });
     return false;
@@ -125,7 +125,7 @@ function do_logout() {
     $.removeCookie("user");
     $.removeCookie("token");
     render_login();
-    view_stats();
+    href("#stats");
 }
 
 function get_user() {
