@@ -6,23 +6,24 @@ function goo_first_load() {
 };
 
 function view_change() {
-    hash = location.hash;
+    re_hash = location.hash.match("^#([A-Za-z0-9_\-]+)$")
+    // no hash
+    if (re_hash)
+        hash = re_hash[1];
+    else
+        // default view
+        hash = "stats";
 
-    if (hash == "#stats")
-        return view_stats();
-
-    if (hash.match("^#jobs$"))
+    if (hash == "jobs")
         return view_jobs_list();
 
-    jobs_id = hash.match("^#job-([0-9]+)$")
-    if (jobs_id)
-        return view_job_detail(jobs_id[1]);
+    re_job_id = hash.match("^job-([0-9]+)$")
+    if (re_job_id)
+        return view_job_detail(re_job_id[1]);
 
-    if (hash.match("^#submit$"))
-        return view_job_submit();
-
-    //default
-    return view_stats();
+    // default: try to load hash as template
+    render = function () { $('#container').mustache(hash, {}, { method: 'html' })}
+    $.Mustache.load(hash + '.html').done(render);
 };
 
 function href(anchor){
@@ -43,7 +44,7 @@ function view_jobs_list() {
                 return this["status"];
             };
 
-            $.Mustache.load('jobs_list.html').done(function () {$('#container').mustache('jobs_list', resp, { method: 'html' })});
+            $.Mustache.load('jobs.html').done(function () {$('#container').mustache('jobs', resp, { method: 'html' })});
         }})};
 
 function view_job_detail(id) {
@@ -59,16 +60,8 @@ function view_job_detail(id) {
                 return this["status"];
             };
 
-            $.Mustache.load('job_detail.html').done(function () {$('#container').mustache('job_detail', resp, { method: 'html' })});
+            $.Mustache.load('job.html').done(function () {$('#container').mustache('job', resp, { method: 'html' })});
         }})};
-
-function view_job_submit() {
-            $.Mustache.load('job_submit.html').done(function () {$('#container').mustache('job_submit', {}, { method: 'html' })});
-        };
-
-function view_stats() {
-            $.Mustache.load('stats.html').done(function () {$('#container').mustache('stats', {}, { method: 'html' })});
-        };
 
 function render_login() {
             $('#login_box').mustache('login_template', {user: get_user()}, { method: 'html' });
