@@ -22,8 +22,14 @@ function view_change() {
         return view_job_detail(re_job_id[1]);
 
     // default: try to load hash as template
-    render = function () { $('#container').mustache(hash, {}, { method: 'html' })}
-    $.Mustache.load(hash + '.html').done(render);
+    container_render(hash);
+};
+
+function container_render(template, data) {
+    // set data default value
+    data = data || {};
+    render = function () { $('#container').mustache(template, data, { method: 'html' })};
+    $.Mustache.load(template + '.html').done(render);
 };
 
 function href(anchor){
@@ -43,8 +49,7 @@ function view_jobs_list() {
                 if (this["status"] == "E") return "Error";
                 return this["status"];
             };
-
-            $.Mustache.load('jobs.html').done(function () {$('#container').mustache('jobs', resp, { method: 'html' })});
+            container_render('jobs', resp);
         }})};
 
 function view_job_detail(id) {
@@ -59,8 +64,7 @@ function view_job_detail(id) {
                 if (this["status"] == "E") return "Error";
                 return this["status"];
             };
-
-            $.Mustache.load('job.html').done(function () {$('#container').mustache('job', resp, { method: 'html' })});
+            container_render('job', resp);
         }})};
 
 function render_login() {
