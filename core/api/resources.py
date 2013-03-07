@@ -135,9 +135,9 @@ class JobResource(ModelResource):
 
     app = fields.ToOneField(ApplicationResource, 'type', null=True)
 
-    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True)
-    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True)
-    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True)
+    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True, full=True)
+    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True, full=True)
+    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True, full=True)
 
     class Meta:
         resource_name = 'jobs'
@@ -150,7 +150,8 @@ class JobResource(ModelResource):
         list_exclude = ['return_code', 'hosts', 'eta', 'memory_in_use',
                         'memory_requirement', 'start_time', 'restart',
                         'ttl', 'pph', 'disk_requirement', 'disk_in_use',
-                        'create_time', 'end_time', 'modification_time', ]
+                        'create_time', 'end_time', 'modification_time',
+                        'input_objs', 'output_objs', 'checkpoint_objs']
 
         # Return data on the POST query
         always_return_data = True
