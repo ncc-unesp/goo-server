@@ -1,18 +1,43 @@
 <script id="job" type="text/html">
-      <h1>Jobs {{id}} info</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-
-      <dl>
-        <dt>Name:</dt><dd>{{name}}</dd>
-        <dt>Progress:</dt><dd>{{progress}}%</dd>
-        <dt>Status:</dt><dd>{{status_name}}</dd>
-        <dt>Created:</dt><dd>{{create_time}}</dd>
-        <dt>Modified:</dt><dd>{{modification_time}}</dd>
-      </dl>
-      <div class="btn-group">
-        <button class="btn btn-mini btn-info">Cancel</button>
-        <button class="btn btn-mini btn-danger">Remove</button>
+      <h1>Job Detail</h1>
+      <hr>
+      <div class="span8 form-horizontal">
+        <h4>Job ID: <small>{{id}}</small></h4>
+        <h4>Name: <small>{{name}}</small></h4>
+        <h4>Progress: <small>{{progress}}%</small></h4>
+        <h4>Status: <small>{{status_name}}</small></h4>
+        <h4>Created at: <small>{{create_time}}</small></h4>
+        <h4>Modified at: <small>{{modification_time}}</small></h4>
+        <h4>Last output:</h4>
+<div>
+<pre>
+Mar  7 12:27:33 anita postfix/qmgr[2461]: 13CFF5C188D: removed
+Mar  7 13:17:01 anita /USR/SBIN/CRON[28259]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Mar  7 14:17:01 anita /USR/SBIN/CRON[1895]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Mar  7 14:49:07 anita postfix/smtpd[5446]: connect from unknown[67.23.164.57]
+Mar  7 14:49:07 anita postfix/smtpd[5446]: NOQUEUE: reject: RCPT from unknown[67.23.164.57]: 554 5.7.1 <unknown[67.23.164.57]>: Client host rejected: Access denied; from=<server@checking.net> to=<csclus.smtp@gmail.com> proto=ESMTP helo=<127.0.0.1>
+Mar  7 14:49:08 anita postfix/smtpd[5446]: disconnect from unknown[67.23.164.57]
+Mar  7 14:52:28 anita postfix/anvil[5448]: statistics: max connection rate 1/60s for (smtp:67.23.164.57) at Mar  7 14:49:07
+Mar  7 14:52:28 anita postfix/anvil[5448]: statistics: max connection count 1 for (smtp:67.23.164.57) at Mar  7 14:49:07
+Mar  7 14:52:28 anita postfix/anvil[5448]: statistics: max cache size 1 at Mar 7 14:49:07
+Mar  7 15:17:01 anita /USR/SBIN/CRON[8353]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+</pre>
+</div>
       </div>
-
-      <a href="#jobs" class="btn btn-mini btn-info">Back</a>
+      <div class="span3">
+            <a href="#" class="btn btn-info btn-large  btn-block">
+                <strong style="display: block;"><i class="icon-minus-sign icon-white"></i> Cancel</strong>
+                <small>abort the execution of this job!</small>
+            </a>
+            <a href="#" class="btn btn-danger btn-large  btn-block">
+                <strong style="display: block;"><i class="icon-remove icon-white"></i> Remove</strong>
+                <small>remove permanently this job!</small>
+            </a>
+            <div class="text-center">
+            - or -
+            </div>
+            <a href="#jobs" class="btn btn-large  btn-block">
+                <strong style="display: block;"><i class="icon-chevron-left"></i> Return to jobs list</strong>
+            </a>
+      </div>
 </script>

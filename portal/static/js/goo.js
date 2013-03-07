@@ -117,7 +117,8 @@ function do_login() {
 
 function do_alert(msg) {
     $(".alert > #msg").html(msg);
-    $(".alert").alert();
+    $('.alert').fadeIn(1000);
+    $('.alert').delay(5000).fadeOut(1000);
 }
 
 function do_logout() {
