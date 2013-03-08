@@ -12,7 +12,7 @@ function view_change() {
         hash = re_hash[1];
     else
         // default view
-        hash = "stats";
+        hash = "home";
 
     if (hash == "jobs")
         return view_jobs_list();
@@ -114,7 +114,7 @@ function do_logout() {
     $.removeCookie("user");
     $.removeCookie("token");
     render_login();
-    href("#stats");
+    href("#home");
 }
 
 function get_user() {

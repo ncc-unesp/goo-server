@@ -44,17 +44,31 @@ pre {
       line-height: 20px;
       font-size: 14px;
 }
-    
-.overviews .inner-well .overview-content {
+
+.overviews .inner-well .overview-title2 {
       margin-left: 60px;
       font-size: 20px;
       line-height: 27px;
       font-weight: 600;
 }
+   
+.overviews .inner-well .overview-content {
+      font-size: 20px;
+      line-height: 27px;
+      font-weight: 600;
+      float: left;
+}
 
       
-.overviews .inner-well .overview-content span {
-        float: right;
+.overviews .inner-well .overview-number {
+      float: right;
+      margin-left: 15px;
+      line-height: 52px;
+      font-weight: 600;
+      color: #81AF30;
+      font-size: 52px;
+
+
 }
     
 .overviews .inner-well .red {

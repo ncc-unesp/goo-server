@@ -59,44 +59,48 @@
       <div class="overviews span11">
         <h4>Job Requirements</h4><hr>
             <div class="inner-well">
-              <div class="overview-graph peity_line green">
-                <img src="../static/img/hosts.png">
+              <div class="overview-content">
+                <div class="overview-graph">
+                    <img src="../static/img/hosts.png">
+                  </div>
+                <div class="overview-title">Number of</div>
+                <div class="overview-title2">Hosts</div>
               </div>
-              <div class="overview-title">Number of</div>
-              <div class="overview-content">Hosts
-                <span class="green">{{hosts}}</span>
-            </div>
+              <div class="overview-number">{{hosts}}</div>
           </div>
 
             <div class="inner-well">
-              <div class="overview-graph peity_line green">
-                <img src="../static/img/cores.png">
+              <div class="overview-content">
+                <div class="overview-graph">
+                    <img src="../static/img/cores.png">
+                  </div>
+                <div class="overview-title">Cores</div>
+                <div class="overview-title2">per Host</div>
               </div>
-              <div class="overview-title">Cores</div>
-              <div class="overview-content">per Host
-                <span class="green">{{pph}}</span>
-              </div>
-            </div>
+              <div class="overview-number">{{pph}}</div>
+          </div>
 
-            <div class="inner-well">
-              <div class="overview-graph peity_line green">
-                <img src="../static/img/ram.png">
+           <div class="inner-well">
+              <div class="overview-content">
+                <div class="overview-graph">
+                    <img src="../static/img/ram.png">
+                  </div>
+                <div class="overview-title">Required</div>
+                <div class="overview-title2">Memory</div>
               </div>
-              <div class="overview-title">Required</div>
-              <div class="overview-content">Memory
-                <span class="green">{{memory_requirement}}</span>
-              </div>
-            </div>
+              <div class="overview-number">{{memory_requirement}}</div>
+           </div>
 
-            <div class="inner-well">
-              <div class="overview-graph peity_line green">
-                <img src="../static/img/disk.png">
+           <div class="inner-well">
+              <div class="overview-content">
+                <div class="overview-graph">
+                    <img src="../static/img/disk.png">
+                  </div>
+                <div class="overview-title">Space in</div>
+                <div class="overview-title2">Disk</div>
               </div>
-              <div class="overview-title">Space in</div>
-              <div class="overview-content">Disk
-                <span class="green">{{disk_requirement}}</span>
-              </div>
-            </div>
+              <div class="overview-number">{{disk_requirement}}</div>
+           </div>
       </div>
 
 <div class="span11">
