@@ -74,3 +74,29 @@ pre {
     padding: 10px;
 }
 
+.footer {
+    margin-top: 400px;
+    border-top: 1px solid rgb(229, 229, 229);
+    background: url("../static/img/bg_footer.png") repeat scroll 0% 0% rgb(34, 34, 34);
+    padding: 30px 0px 0px;
+    color: rgb(145, 145, 145);
+}
+
+.footer .copyright {
+    border-bottom: 0px none;
+    font-size: 0.8em;
+    margin-bottom: 40px;
+}
+
+.footer ul {
+    list-style: none outside none;
+    margin: 0px;
+    padding: 0px;
+}
+
+hr.half1 {
+    height: 1px;
+    margin: 40px 0px;
+    background-image: -moz-linear-gradient(left center , rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    border: 0px none;
+}
