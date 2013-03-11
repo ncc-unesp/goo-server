@@ -1,45 +1,42 @@
 <script id="home" type="text/html">
-      <h1>Stats!</h1>
-       <div class="overviews">
-            <div class="inner-well">
-              <div class="overview-graph peity_line green"><span style="display: none;">
-                5,3,9,6,5,9,7,3,5,8
-                </span>
-              </div>
-              <div class="overview-title">Collective</div>
-              <div class="overview-content">Income
-                <span class="green">$1865</span>
-              </div>
-            </div>
+<div id="myCarousel" class="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="item active">
+            <img src="../static/img/3.jpg" alt="">
 
-            <div class="inner-well">
-              <div class="overview-graph peity_line blue"><span style="display: none;">
-                5,3,9,7,9,6,5,3,5,6
-              </span></div>
-              <div class="overview-title">New</div>
-              <div class="overview-content">Members
-                <span class="green">22</span>
-              </div>
-            </div>
-
-            <div class="inner-well">
-              <div class="overview-graph peity_line green"><span style="display: none;">
-                6,5,6,7,5,6,7
-              </span></canvas></div>
-              <div class="overview-title">Support</div>
-              <div class="overview-content">Requests
-                <span class="green">12</span>
-              </div>
-            </div>
-
-            <div class="inner-well">
-              <div class="overview-graph peity_line red"><span style="display: none;">
-                6,5,6,7,5,4,2
-              </span></canvas></div>
-              <div class="overview-title">Refund</div>
-              <div class="overview-content">Requests
-                <span class="red">1</span>
-              </div>
+            <div class="carousel-caption">
+                <h1 class="inverse"><strong>203</strong> usuários, <strong>42</strong> projetos em <strong>9</strong> linhas de pesquisa.</h1>
+                 <p class="lead">Conheça a relação dos projetos que utilizam o <strong>GridUNESP</strong>.</p>
             </div>
         </div>
+
+        <div class="item">
+            <img src="../static/img/2.jpg" alt="">
+            <div class="carousel-caption">
+                <h1><strong>368</strong> hosts, <strong>2944</strong> cores and <strong>33 TeraFlops</strong></h1>
+                 <p class="lead">utilize o poder computacional do <strong>GridUNESP</strong> para executar o seu expermimento.</p>
+            </div>
+
+        </div>
+        <div class="item">
+            <img src="../static/img/1.jpg" alt="">
+        </div>
+    </div>
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+</div>
+
+<div class="container">
+    <div id="graph" class="simple-chart"></div>
+</div>
+
+<script language="javascript">
+draw();
+</script>
+
 </script>
