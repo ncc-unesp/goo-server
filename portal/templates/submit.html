@@ -5,7 +5,7 @@
 
     <div class="row">
       <div class="span6">
-      <form action="javascript:create_job(this.form);" class="form-horizontal">
+      <form id="submit_form" action="javascript:create_job();" class="form-horizontal">
 
          <div class="control-group">
             <label class="control-label" for="inputName">Name</label>
@@ -28,7 +28,13 @@
          <div class="control-group">
             <label class="control-label" for="inputArgs">Arguments</label>
             <div class="controls">
-                <input type="text" id="args" placeholder="Arguments">
+                <input type="text" id="args" name="args" placeholder="Arguments">
+            </div>
+         </div>
+         <div class="control-group">
+            <label class="control-label" for="inputFiles">Input files</label>
+            <div class="controls">
+                    <input name="files[]" id="inputFiles" type="file" multiple>
             </div>
          </div>
 
