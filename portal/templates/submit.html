@@ -16,7 +16,8 @@
          <div class="control-group">
             <label class="control-label" for="inputApp">Application</label>
             <div class="controls">
-                <input type="text" id="app" name="app" placeholder="Application">
+                <select id="apps_select" name="app">
+                </select>
             </div>
          </div>
          <div class="control-group">
@@ -29,6 +30,11 @@
             <label class="control-label" for="inputArgs">Arguments</label>
             <div class="controls">
                 <input type="text" id="args" name="args" placeholder="Arguments">
+            </div>
+         <div class="control-group">
+            <label class="control-label" for="inputTtl">Arguments</label>
+            <div class="controls">
+                <input type="text" id="ttl" name="ttl" placeholder="Execution time">
             </div>
          </div>
          <div class="control-group">
@@ -51,4 +57,9 @@
         <p>If you are having problems to submit a job, <a href="#">contact us</a>, or read <a href="#">our FAQ</a></p>
         </div>
         </div>
+
+<script language='javascript'>
+    load_applications();
+</script>
+
 </script>
