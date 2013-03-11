@@ -116,7 +116,7 @@ hr.half1 {
 }
 
 .center {
-     float: none;
+     float: left;
      margin-left: auto;
      margin-right: auto; 
 }
@@ -170,10 +170,59 @@ hr.half1 {
     background: none repeat scroll 0% 0% rgba(0,0,0,0.8);
 }
 
-.simple-chart {
-    width: 400px;
-    height: 200px;
+
+.fbox {
+    margin: 40px;
+    position: relative;
+    text-align: center;
+    width: 300px;
 }
+
+.fbox .fchart {
+    width: 100%;
+    height: 100px;
+    background-color: #ffffff;
+    border: 2px solid #0085c8;
+     overflow: auto;
+     padding: 20px 0 20px 20px;
+     -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+     border-radius: 5px;
+    float: none;
+}
+
+.fbox .ftext {
+    width: 100%;
+    margin: 10px;
+}
+
+.fbox .ftext-number {
+      float: left;
+      margin-left: 15px;
+      line-height: 62px;
+      font-weight: 600;
+      color: #81AF30;
+      font-size: 52px;
+}
+
+
+.fbox .ftext-title {
+      float: none;
+      margin-left: 5px;
+      line-height: 18px;
+      font-size: 14px;
+}
+
+.fbox .ftext-title2 {
+      float: none;
+      margin-left: 5px;
+      line-height: 44px;
+      font-size: 36px;
+      font-weight: 800;
+    text-transform: uppercase;
+}
+
+
 
 /* tell the SVG path to be a thin blue line without any area fill */
 path {
@@ -201,4 +250,20 @@ path {
 .y.axis line, .y.axis path {
     fill: none;
     stroke: #000;
+}
+
+section.stats {
+    text-align: center;
+}
+section.stats h3 {
+    font-weight: 300;
+    font-size: 50px;
+    line-height: 55px;
+}
+
+section.stats h4 {
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 30px;
+    margin: 0px 0px 20px;
 }
