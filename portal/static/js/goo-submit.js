@@ -14,11 +14,11 @@ function create_job() {
 
 function upload_files(addr){
     //create a multipart-form, upload and call post_job
-    url = addr + "api/v1/dataproxy/objects/?compress&token=" + get_token();
+    url = addr + "api/v1/dataproxy/objects/?compress&format=json&token=" + get_token();
 
     $("#submit_upload_bar").show();
 
-    var filesForm = new FormData();
+    var filesForm = new FormData($("#fake_file_form")[0]);
 
     n_files = 0;
     $("#files_div>:file").each(function () {
@@ -30,14 +30,13 @@ function upload_files(addr){
     filesForm.append("name", slugify($("#name")[0].value) + "-input.zip");
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
 
     xhr.onerror = function (data) {
             return do_alert("File upload error.");
         };
 
     xhr.onload = function(e) {
-        data = $.parseJSON(e.target.response);
+        data = $.parseJSON(this.response);
         input_obj = data["resource_uri"];
         if(typeof input_obj == 'undefined')
             return do_alert("Error on upload. (No object id found)");
@@ -52,6 +51,7 @@ function upload_files(addr){
         }
     };
 
+    xhr.open('POST', url, true);
     xhr.send(filesForm);
 }
 

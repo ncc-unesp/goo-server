@@ -5,7 +5,7 @@
 
     <div class="row">
       <div class="span6">
-      <form id="submit_form" action="javascript:create_job();" class="form-horizontal">
+      <form id="submit_form" onsubmit="return create_job();" class="form-horizontal">
 
          <div class="control-group">
             <label class="control-label" for="inputName">Name</label>
@@ -32,9 +32,9 @@
                 <input type="text" id="args" name="args" placeholder="Arguments">
             </div>
          <div class="control-group">
-            <label class="control-label" for="inputTtl">Arguments</label>
+            <label class="control-label" for="inputTtl">Execution time (s)</label>
             <div class="controls">
-                <input type="text" id="ttl" name="ttl" placeholder="Execution time">
+                <input type="number" id="ttl" name="ttl" placeholder="Execution time (s)" required>
             </div>
          </div>
          <div class="control-group">
@@ -58,7 +58,8 @@
         <p>If you are having problems to submit a job, <a href="#">contact us</a>, or read <a href="#">our FAQ</a></p>
         </div>
         </div>
-
+<!-- firefox mimimi -->
+<form enctype="multipart/form-data" method="post" name="fake_file_form" id="fake_file_form"></form>
 <script language='javascript'>
     load_applications();
 </script>
