@@ -51,9 +51,9 @@
         <div class="fbox center span3">
             <div class="fchart center" id="chart02"></div>
             <div class="ftext center">
-                <div class="ftext-number">5252</div>
-                <div class="ftext-title">running</div>
-                <div class="ftext-title2">jobs</div>
+                <div class="ftext-number">152</div>
+                <div class="ftext-title">processed</div>
+                <div class="ftext-title2">hours</div>
                 <p>in the <strong>last hour</strong>, this the amount of jobs running in our cluster. <a href="">Read more</a></p>
             </div>
         </div>
@@ -61,19 +61,70 @@
         <div class="fbox center span3">
             <div class="fchart center" id="chart03"></div>
             <div class="ftext center">
-                <div class="ftext-number">5252</div>
-                <div class="ftext-title">running</div>
-                <div class="ftext-title2">jobs</div>
-                <p>in the <strong>last hour</strong>, this the amount of jobs running in our cluster. <a href="">Read more</a></p>
+                <div class="ftext-number">52200</div>
+                <div class="ftext-title">jobs execution</div>
+                <div class="ftext-title2">time</div>
+                <p>the average of execution time of our jobs, in minutes. <a href="">Read more</a></p>
             </div>
         </div>
 </div>
+
+<div class="container">
+        <div class="fbox center span3">
+
+            <div class="ftext center tall">
+                <div class="ftext-number">0.9</div>
+                <div class="ftext-title">service</div>
+                <div class="ftext-title2">quality</div>
+                <p>the average of execution time of our jobs, in minutes. <a href="">Read more</a></p>
+            </div>
+
+            <div class="ftext center tall">
+                <div class="ftext-number">222</div>
+                <div class="ftext-title">jobs in</div>
+                <div class="ftext-title2">queue</div>
+                <p>in the <strong>last hour</strong>, this the amount of jobs running in our cluster. <a href="">Read more</a></p>
+            </div>
+        </div>
+
+        <div class="fbox center span6">
+            <div class="fchart center" id="chart05"></div>
+            <div class="ftext center">
+                <div class="ftext-number">4874</div>
+                <div class="ftext-title">avg running</div>
+                <div class="ftext-title2">time</div>
+                <p>the average of running time of jobs completed in the <strong>last 24 hours</strong> (in minutes). <a href="">Read more</a></p>
+            </div>
+        </div>
+
+</div>
+
 
 </div>
 
 
 <script language="javascript">
-draw();
+
+var parseDate = d3.time.format("%d-%b-%y").parse;
+
+var data = [{'date': parseDate('1-Nov-12'), 'close': 20},
+        {'date': parseDate('1-Dec-12'), 'close': 154},
+        {'date': parseDate('1-Jan-13'), 'close': 249},
+        {'date': parseDate('1-Feb-13'), 'close': 300},
+        {'date': parseDate('1-Mar-13'), 'close': 328}];
+
+var data2 = [{'x': 'a', 'y': 0.1},
+        {'x': 'b', 'y': 0.15},
+        {'x': 'c', 'y': 0.1},
+        {'x': 'd', 'y': 0.5},
+        {'x': 'e', 'y': 0.15}];
+
+
+draw_line(data, "#chart01");
+draw_line(data, "#chart02");
+draw_line(data, "#chart03");
+
+draw_bar(data2, "#chart05");
 </script>
 
 </script>
