@@ -54,7 +54,7 @@ function upload_files(addr){
 
 function post_job(input_objs) {
     data = {};
-    form = $("#submit_form").serializeArray()
+    form = $("#submit_form").serializeArray();
     for (i in form)
         data[form[i].name] = form[i].value;
 
@@ -67,12 +67,52 @@ function post_job(input_objs) {
         data: JSON.stringify(data),
         //data: $(form).serializeArray(),
         contentType: "application/json",
-        error: function (data) { 
+        error: function (data) {
             return do_alert("Error in the server. (Post job failed)");
         },
         success: function(data) {
             var resp = data;
             href("#jobs");
+        }
+    });
+}
+
+function load_applications(){
+    $.ajax({
+        url: "/api/v1/apps/?token=" + get_token(),
+        dataType: "json",
+        error: function (data) {
+            return do_alert("Error getting jobs list.");
+        },
+        success: function(data) {
+            for (i in data["objects"]) {
+                app = data["objects"][i];
+                $("#apps_select")
+                    .append('<option value="'+ app.resource_uri + '">' + app.name + '</option>');
+            }
+            $("#apps_select").change(load_template);
+            $("#apps_select").change();
+        }
+    });
+}
+
+function load_template(){
+    name = slugify($("#name")[0].value);
+    app = $("#apps_select")[0].value;
+    $.ajax({
+        url: app + "?name=" + name + "&token=" + get_token(),
+        dataType: "json",
+        error: function (data) { 
+            return do_alert("Error getting template.");
+        },
+        success: function(data) {
+            // remove name to avoid collisions
+            delete data["name"];
+            for (p in data){
+                $('input[name="' + p + '"]').val(data[p]);
+                console.log(p);
+                console.log(data[p]);
+            }
         }
     });
 }
