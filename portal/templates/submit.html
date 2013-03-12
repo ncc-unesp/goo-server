@@ -10,7 +10,7 @@
          <div class="control-group">
             <label class="control-label" for="inputName">Name</label>
             <div class="controls">
-                <input type="text" id="name" name="name" placeholder="Name">
+                <input type="text" id="name" name="name" placeholder="Name" required>
             </div>
          </div>
          <div class="control-group">
@@ -39,9 +39,10 @@
          </div>
          <div class="control-group">
             <label class="control-label" for="inputFiles">Input files</label>
-            <div class="controls">
-                    <input name="files[]" id="inputFiles" type="file" multiple>
+            <div class="controls" id="files_div">
+                    <input name="files[]" onChange="form_add_file()" type="file" multiple>
             </div>
+            <progress id="submit_upload_bar" min="0" max="100" value="0" hidden>0% complete</progress>
          </div>
 
         <div class="form-actions">

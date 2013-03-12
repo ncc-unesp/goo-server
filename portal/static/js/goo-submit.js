@@ -1,55 +1,58 @@
 function create_job() {
-    if ($('#inputFiles')[0].files.length)
-        find_dataproxy();
+    has_files = false;
+    $("#files_div>:file").each(function () {
+        if (this.files.length > 0)
+            has_files = true;
+    });
+    if (has_files)
+        find_dataproxy(upload_files);
     else
         // no files
         post_job([]);
     return false;
 }
 
-function find_dataproxy(){
-    //find a dataproxy server and call upload_files
-    $.ajax({
-        type:"GET",
-        url: "/api/v1/dataproxyserver/?token=" + get_token(),
-        error: function (data) { 
-            return do_alert("Server error. (Request dataproxy failed)");
-        },
-        success: function (data) {
-            addr = data["objects"][0].url;
-            if(typeof addr == 'undefined')
-                return do_alert("Server error. (No data server found)");
-            upload_files(addr);
-        }
-    });
-}
-
 function upload_files(addr){
     //create a multipart-form, upload and call post_job
-    //var filesForm = new FormData($('inputFiles')[0]);
+    url = addr + "api/v1/dataproxy/objects/?compress&token=" + get_token();
+
+    $("#submit_upload_bar").show();
+
     var filesForm = new FormData();
-    filesForm.append("files", $('#inputFiles')[0]);
-    filesForm.append("name", slugify($("#name")[0].value) + "-input.zip");
-    $.ajax({
-        type:"POST",
-        url: addr + "api/v1/dataproxy/objects/?compress&token=" + get_token(),
-        // Form data
-        data: filesForm,
-        dataType: "json",
-        //Options to tell JQuery not to process data or worry about content-type
-        cache: false,
-        contentType: false,
-        processData: false,
-        error: function (data) {
-            return do_alert("File upload error.");
-        },
-        success: function (data) {
-            input_obj = data["resource_uri"];
-            if(typeof input_obj == 'undefined')
-                return do_alert("Error on upload. (No object id found)");
-            post_job([input_obj]);
+
+    n_files = 0;
+    $("#files_div>:file").each(function () {
+        for (i=0; i < this.files.length; i++) {
+            filesForm.append("file-" + n_files, this.files[i]);
+            n_files++;
         }
     });
+    filesForm.append("name", slugify($("#name")[0].value) + "-input.zip");
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+
+    xhr.onerror = function (data) {
+            return do_alert("File upload error.");
+        };
+
+    xhr.onload = function(e) {
+        data = $.parseJSON(e.target.response);
+        input_obj = data["resource_uri"];
+        if(typeof input_obj == 'undefined')
+            return do_alert("Error on upload. (No object id found)");
+        post_job([input_obj]);
+    };
+
+    xhr.upload.onprogress = function(e) {
+        if (e.lengthComputable) {
+            progress = (e.loaded / e.total) * 100;
+            $("#submit_upload_bar")[0].value = progress;
+            $("#submit_upload_bar").val(progress); // Fallback
+        }
+    };
+
+    xhr.send(filesForm);
 }
 
 function post_job(input_objs) {
@@ -110,8 +113,6 @@ function load_template(){
             delete data["name"];
             for (p in data){
                 $('input[name="' + p + '"]').val(data[p]);
-                console.log(p);
-                console.log(data[p]);
             }
         }
     });
@@ -122,4 +123,11 @@ function slugify(text) {
     text = text.replace(/-/gi, "_");
     text = text.replace(/\s/gi, "-");
     return text;
+}
+
+function form_add_file(){
+    $("#files_div>:file").each(function () {
+        if (this.files.length == 0) this.remove();
+    });
+    $("#files_div").append('<input name="files[]" onChange="form_add_file()" type="file" multiple>');
 }

@@ -114,8 +114,8 @@
     </tr>
     {{#input_objs}}
     <tr>
-        <td>{{id}}</td>
-        <td>{{name}}</td>
+        <td><a href="#object-{{id}}" onclick="get_object({{id}});">{{id}}</a></td>
+        <td><a href="#object-{{id}}" onclick="get_object({{id}});">{{name}}</a></td>
         <td>{{size}}</td>
     </thead>
     {{/input_objs}}

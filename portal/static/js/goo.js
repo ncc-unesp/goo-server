@@ -21,6 +21,10 @@ function view_change() {
     if (re_job_id)
         return view_job_detail(re_job_id[1]);
 
+    re_job_id = hash.match("^object-([0-9]+)$")
+    if (re_job_id)
+        return get_object(re_job_id[1]);
+
     // default: try to load hash as template
     container_render(hash);
 };
@@ -125,4 +129,36 @@ function get_user() {
 function get_token() {
     // return user login (string) or "undefined"
     return $.cookie("token");
+}
+
+function get_object(id) {
+    //download file from object proxy
+    find_dataproxy(function (server) {
+        url = addr + "api/v1/dataproxy/objects/"+ id +"/?token=" + get_token();
+        window.location = url;
+    });
+    return false;
+}
+
+function find_dataproxy(callback){
+    // find a dataproxy server and call upload_files
+    // check for cache
+    if (typeof goo_dataproxy_server == "undefined") {
+        $.ajax({
+            type:"GET",
+            url: "/api/v1/dataproxyserver/?token=" + get_token(),
+            error: function (data) {
+                return do_alert("Server error. (Request dataproxy failed)");
+            },
+            success: function (data) {
+                addr = data["objects"][0].url;
+                if(typeof addr == 'undefined')
+                    return do_alert("Server error. (No data server found)");
+                goo_dataproxy_server = addr;
+                callback(addr);
+            }
+        });
+    }
+    else
+        callback(goo_dataproxy_server);
 }
