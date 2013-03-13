@@ -86,32 +86,6 @@ pre {
     padding: 10px;
 }
 
-.footer {
-    border-top: 1px solid rgb(229, 229, 229);
-    background: url("../static/img/bg_footer.png") repeat scroll 0% 0% rgb(34, 34, 34);
-    padding: 30px 0px 0px;
-    color: rgb(145, 145, 145);
-}
-
-.footer .copyright {
-    border-bottom: 0px none;
-    font-size: 0.8em;
-    margin-bottom: 40px;
-}
-
-.footer ul {
-    list-style: none outside none;
-    margin: 0px;
-    padding: 0px;
-}
-
-hr.half1 {
-    height: 1px;
-    margin: 40px 0px;
-    background-image: -moz-linear-gradient(left center , rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-    border: 0px none;
-}
-
 .center {
      float: left;
      margin-left: auto;
@@ -269,6 +243,9 @@ path {
   fill: steelblue;
 }
 
+#loading {
+    margin: 50px;
+}
 
 div.tooltip {					/* set the CSS for tooltip divs */
   position: absolute;			/* reference for measurement */
@@ -298,4 +275,48 @@ section.stats h4 {
     font-size: 16px;
     line-height: 30px;
     margin: 0px 0px 20px;
+}
+
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+.wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+}
+
+/* Set the fixed height of the footer here */
+.push,
+.footer {
+  height: 60px;
+}
+.footer {
+  background-color: #f5f5f5;
+}
+
+
+.container .credit {
+    margin: 20px 0px;
+}
+
+.muted {
+    color: rgb(153, 153, 153);
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+  .footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
