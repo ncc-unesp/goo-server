@@ -99,9 +99,14 @@
 
 </div>
 
-
+<div class="container">
+<hr><h4>Jobs Comming From</h4>
+        <div class="fbox center span11">
+            <div class="fmap center" id="map"></div>
+        </div>
 </div>
 
+</div>
 
 <script language="javascript">
 
@@ -125,6 +130,8 @@ draw_line(data, "#chart02");
 draw_line(data, "#chart03");
 
 draw_bar(data2, "#chart05");
+
+draw_map("../static/json/world.json", "#map");
 </script>
 
 </script>

@@ -192,6 +192,18 @@ hr.half1 {
     float: none;
 }
 
+.fbox .fmap {
+    width: 1024px;
+    height: 500px;
+    background-color: #ffffff;
+    overflow: auto;
+    padding: 10px 10px 10px 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    float: none;
+}
+
 .fbox .ftext {
     width: 100%;
     margin: 10px;
@@ -241,6 +253,22 @@ path {
 .bar {
   fill: steelblue;
 }
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+#states {
+  fill: #aaa;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+#states .active {
+  fill: steelblue;
+}
+
 
 div.tooltip {					/* set the CSS for tooltip divs */
   position: absolute;			/* reference for measurement */
