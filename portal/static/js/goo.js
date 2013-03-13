@@ -14,6 +14,10 @@ function view_change() {
         // default view
         hash = "home";
 
+    // bind top buttons CSS actions
+    $(".navbar-inner li").removeClass("active");
+    $(".navbar-inner li a[href=#" + hash + "]").parent().addClass("active");
+
     if (hash == "jobs")
         return view_jobs_list();
 
