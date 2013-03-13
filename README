@@ -20,6 +20,8 @@ cd docs ;  make clean ; make html ; firefox ../portal/static/index.html ; cd -
 MAP
 ===
 
+To create the map, run:
+
 rm world.json ; ogr2ogr -overwrite -select name -f "GeoJSON" -simplify 0.8 world.json ne_50m_admin_0_countries.shp; du -sck world.json ; du -scm world.json
 
 DEPLOYMENT
