@@ -64,10 +64,10 @@ class Version(models.Model):
         return '%s %s' % (self.application, self.version)
 
 class Type(models.Model):
-    name = models.CharField(max_length=20)
-    version = models.ForeignKey(Version)
+    _name = models.CharField(max_length=20)
+    _version = models.ForeignKey(Version)
     executable = models.CharField(max_length=512) # if custom
-    app_obj = models.ForeignKey(Object, null=True, related_name='application_set')
+    _app_obj = models.ForeignKey(Object, null=True, related_name='application_set')
     args = models.CharField(max_length=512)
 
     # Files
@@ -76,23 +76,48 @@ class Type(models.Model):
     checkpoints = models.CharField(max_length=512)
 
     # Capabilities
-    multi_hosts = models.BooleanField(default='False') # MPI
-    multi_thread = models.BooleanField(default='False') # SMP
-    shared_fs = models.BooleanField(default='False')
+    _multi_hosts = models.BooleanField(default='False') # MPI
+    _multi_thread = models.BooleanField(default='False') # SMP
+    _shared_fs = models.BooleanField(default='False')
+
+    # Hints for template creation
+    _constant_fields = models.CharField(max_length=1024, default='')
+    _required_fields = models.CharField(max_length=1024, default='')
+
+    # Default values
+    hosts = models.PositiveIntegerField(default=1)
+    cores_per_host = models.PositiveIntegerField(default=1)
+    maxtime = models.PositiveIntegerField(default=43200) # 12 hours
+    diskspace = models.PositiveIntegerField(default=2048) # 2GB
+    memory = models.PositiveIntegerField(default=2048) # 2GB
 
 
     def __repr__ (self): # pragma: no cover
         return '<Type %s>' % self
 
     def __str__ (self):
-        return '%s %s' % (self.version, self.name)
+        return '%s %s' % (self._version, self._name)
+
+    def get_constant_fields(self):
+        """
+        Return a list of field that values are enforced by application.
+        """
+        return map(unicode.strip, self._constant_fields.split(','))
+
+    def get_required_fields(self):
+        """
+        Return a list of fields required for filled by user.
+        Some fields, ared required but not return in this method, because
+        are overwrite by default values.
+        """
+        return map(unicode.strip, self._required_fields.split(','))
 
 class Job(models.Model):
     name = models.CharField(max_length=20, blank=False)
     type = models.ForeignKey(Type)
     progress = models.PositiveIntegerField(default=0)
     hosts = models.PositiveIntegerField(default=1)
-    pph = models.PositiveIntegerField(default=1)
+    cores_per_host = models.PositiveIntegerField(default=1)
     priority = models.PositiveIntegerField(default=0)
     restart = models.BooleanField(default='False')
     user = models.ForeignKey(User)
@@ -111,11 +136,11 @@ class Job(models.Model):
     checkpoint_objs = models.ManyToManyField(Object, null=True, related_name='checkpoint_for')
 
     # max seconds to run
-    ttl = models.PositiveIntegerField(default=43200) # 12 hours
+    maxtime = models.PositiveIntegerField(default=43200) # 12 hours
 
     # MegaBytes
-    disk_requirement = models.PositiveIntegerField(default=2048) # 2GB
-    memory_requirement = models.PositiveIntegerField(default=2048) # 2GB
+    diskspace = models.PositiveIntegerField(default=2048) # 2GB
+    memory = models.PositiveIntegerField(default=2048) # 2GB
 
     # Status info
     STATUS_CHOICES = (
@@ -134,7 +159,7 @@ class Job(models.Model):
     parent = models.ManyToManyField('self', symmetrical=False)
 
     # MegaBytes
-    disk_in_use = models.PositiveIntegerField(default=0)
+    diskspace_in_use = models.PositiveIntegerField(default=0)
     memory_in_use = models.PositiveIntegerField(default=0)
 
     # aka tail -f

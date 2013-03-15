@@ -14,8 +14,8 @@ class Site(models.Model):
 
     def is_job_acceptable(self, job):
         if (job.hosts <= self.max_hosts) and \
-           (job.pph <= self.max_cores) and \
-           (job.ttl <= self.max_time):
+           (job.cores_per_host <= self.max_cores) and \
+           (job.maxtime <= self.max_time):
             return True
         else:
             return False
@@ -26,9 +26,9 @@ class Site(models.Model):
 
         p = Pilot()
         p.site = self
-        p.cores = job.pph
+        p.cores = job.cores_per_host
         p.hosts = job.hosts
-        p.memory = job.memory_requirement
+        p.memory = job.memory
         p.save()
 
         p.submit()
@@ -86,8 +86,8 @@ class Pilot(models.Model):
 
     def is_job_acceptable(self, job, time_left):
         if (job.hosts == self.hosts) and \
-           (job.pph == self.cores) and \
-           (job.ttl <= time_left):
+           (job.cores_per_host == self.cores) and \
+           (job.maxtime <= time_left):
             return True
         else:
             return False

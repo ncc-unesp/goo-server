@@ -9,6 +9,7 @@ class Object(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User)
     url = models.CharField(max_length=255)
+    public = models.BooleanField(default=False)
 
     TYPE_CHOICES = (
         ('A', 'Application'),

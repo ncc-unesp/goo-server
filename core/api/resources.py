@@ -102,7 +102,7 @@ class ApplicationResource(ModelResource):
         list_allowed_methods = ['get',]
         detail_allowed_methods = ['get',]
         list_exclude = ['executable', 'app_obj', 'args', 'inputs',
-                        'outputs', 'checkpoints', 'shared_fs',]
+                        'outputs', 'checkpoints', '_shared_fs',]
 
 
     def dehydrate_name(self, bundle):
@@ -148,8 +148,8 @@ class JobResource(ModelResource):
         list_allowed_methods = ['get', 'post', ]
         detail_allowed_methods = ['get', 'patch', 'delete', ]
         list_exclude = ['return_code', 'hosts', 'eta', 'memory_in_use',
-                        'memory_requirement', 'start_time', 'restart',
-                        'ttl', 'pph', 'disk_requirement', 'disk_in_use',
+                        'memory', 'start_time', 'restart',
+                        'maxtime', 'cores_per_host', 'diskspace', 'diskspace_in_use',
                         'create_time', 'end_time', 'modification_time',
                         'input_objs', 'output_objs', 'checkpoint_objs']
 

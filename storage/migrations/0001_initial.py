@@ -16,6 +16,7 @@ class Migration(SchemaMigration):
             ('create_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('url', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('public', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('object_type', self.gf('django.db.models.fields.CharField')(default='A', max_length=1)),
         ))
         db.send_create_signal('storage', ['Object'])
@@ -88,6 +89,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'object_type': ('django.db.models.fields.CharField', [], {'default': "'A'", 'max_length': '1'}),
+            'public': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'size': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})

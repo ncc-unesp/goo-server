@@ -78,7 +78,7 @@ GET /api/v1/jobs/schema/
                   "type": "datetime", 
                   "unique": false
               }, 
-              "disk_in_use": {
+              "diskspace_in_use": {
                   "blank": false, 
                   "default": 0, 
                   "help_text": "Integer data. Ex: 2673", 
