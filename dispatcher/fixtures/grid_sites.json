@@ -3,7 +3,7 @@
         "pk": 1,
         "model": "dispatcher.site",
         "fields": {
-            "name": "GridUNESP - short queue",
+            "name": "GridUNESP - short",
             "url": "globus://ce.grid.unesp.br/jobmanager-pbs?queue=short",
             "max_hosts": 512,
             "max_cores": 8,
