@@ -91,7 +91,7 @@ function load_applications(){
             for (i in data["objects"]) {
                 app = data["objects"][i];
                 $("#apps_select")
-                    .append('<option value="'+ app.resource_uri + '">' + app.name + '</option>');
+                    .append('<option value="'+ app.resource_uri + '">' + app._name + '</option>');
             }
             $("#apps_select").change(load_template);
             $("#apps_select").change();
@@ -100,17 +100,15 @@ function load_applications(){
 }
 
 function load_template(){
-    name = slugify($("#name")[0].value);
     app = $("#apps_select")[0].value;
     $.ajax({
-        url: app + "?name=" + name + "&token=" + get_token(),
+        url: app + "?token=" + get_token(),
         dataType: "json",
         error: function (data) { 
             return do_alert("Error getting template.");
         },
         success: function(data) {
             // remove name to avoid collisions
-            delete data["name"];
             for (p in data){
                 $('input[name="' + p + '"]').val(data[p]);
             }

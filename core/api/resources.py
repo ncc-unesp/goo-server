@@ -92,32 +92,28 @@ class ApplicationResource(ModelResource):
         GET    /apps/set/{id};{id}/  # Get a list of apps
     """
 
-    app_obj = fields.ToOneField(ObjectResource, 'app_obj', null=True)
-
     class Meta:
         resource_name = 'apps'
         authentication = UserTokenAuthentication()
         authorization = ReadOnlyAuthorization()
-        queryset = Type.objects.all()
-        list_allowed_methods = ['get',]
-        detail_allowed_methods = ['get',]
-        list_exclude = ['executable', 'app_obj', 'args', 'inputs',
-                        'outputs', 'checkpoints', '_shared_fs',]
+        queryset = Application.objects.all()
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
+        fields = ['id', 'resource_uri']
 
-
-    def dehydrate_name(self, bundle):
-        return bundle.obj
 
     def dehydrate(self, bundle):
-        if self.get_resource_uri(bundle) != bundle.request.path:
-            list_exclude = self._meta.list_exclude
-            for item in list_exclude:
-                del bundle.data[item]
+        bundle.data['_name'] = str(bundle.obj)
+
+        bundle.data['_description'] = bundle.obj._description
+        bundle.data['_usage'] = bundle.obj._usage
+
+        if self.get_resource_uri(bundle) == bundle.request.path:
+                for field in bundle.obj.get_required_fields():
+                    bundle.data[field] = getattr(bundle.obj, field, "")
+
         return bundle
 
-#    def dehydrate(self, bundle):
-#        bundle.data['custom_field'] = "Whatever you want"
-#        return bundle
 
 class JobResource(ModelResource):
     """This resource handler jobs requests.
@@ -133,7 +129,7 @@ class JobResource(ModelResource):
         DELETE /jobs/{id}/           # Delete a job
     """
 
-    app = fields.ToOneField(ApplicationResource, 'type', null=True)
+    application = fields.ToOneField(ApplicationResource, 'application')
 
     input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True, full=True)
     output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True, full=True)
@@ -145,8 +141,8 @@ class JobResource(ModelResource):
         authorization = Authorization()
         # Remove from query deleted jobs
         queryset = Job.objects.filter(~Q(status = 'D'))
-        list_allowed_methods = ['get', 'post', ]
-        detail_allowed_methods = ['get', 'patch', 'delete', ]
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'patch', 'delete']
         list_exclude = ['return_code', 'hosts', 'eta', 'memory_in_use',
                         'memory', 'start_time', 'restart',
                         'maxtime', 'cores_per_host', 'diskspace', 'diskspace_in_use',
@@ -169,8 +165,6 @@ class JobResource(ModelResource):
         else:
             # detail request
             bundle.data['slug'] = slugify(bundle.obj.name)
-
-        bundle.data['app_name'] = str(bundle.obj.type)
 
         return bundle
 

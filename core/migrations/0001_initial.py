@@ -29,23 +29,11 @@ class Migration(SchemaMigration):
         # Adding model 'Application'
         db.create_table('core_application', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-        ))
-        db.send_create_signal('core', ['Application'])
-
-        # Adding model 'Version'
-        db.create_table('core_version', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('version', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('application', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Application'])),
-        ))
-        db.send_create_signal('core', ['Version'])
-
-        # Adding model 'Type'
-        db.create_table('core_type', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('_name', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('_version', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Version'])),
+            ('_name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('_version', self.gf('django.db.models.fields.CharField')(max_length=63)),
+            ('_description', self.gf('django.db.models.fields.TextField')(default='')),
+            ('_usage', self.gf('django.db.models.fields.TextField')(default='')),
+            ('_public', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('executable', self.gf('django.db.models.fields.CharField')(max_length=512)),
             ('_app_obj', self.gf('django.db.models.fields.related.ForeignKey')(related_name='application_set', null=True, to=orm['storage.Object'])),
             ('args', self.gf('django.db.models.fields.CharField')(max_length=512)),
@@ -63,25 +51,24 @@ class Migration(SchemaMigration):
             ('diskspace', self.gf('django.db.models.fields.PositiveIntegerField')(default=2048)),
             ('memory', self.gf('django.db.models.fields.PositiveIntegerField')(default=2048)),
         ))
-        db.send_create_signal('core', ['Type'])
+        db.send_create_signal('core', ['Application'])
 
         # Adding model 'Job'
         db.create_table('core_job', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Type'])),
+            ('application', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Application'])),
             ('progress', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('hosts', self.gf('django.db.models.fields.PositiveIntegerField')(default=1)),
             ('cores_per_host', self.gf('django.db.models.fields.PositiveIntegerField')(default=1)),
             ('priority', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('restart', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('restart', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('executable', self.gf('django.db.models.fields.CharField')(max_length=512)),
             ('args', self.gf('django.db.models.fields.CharField')(max_length=512)),
             ('inputs', self.gf('django.db.models.fields.CharField')(max_length=512)),
             ('outputs', self.gf('django.db.models.fields.CharField')(max_length=512)),
             ('checkpoints', self.gf('django.db.models.fields.CharField')(max_length=512)),
-            ('app_objs', self.gf('django.db.models.fields.related.ForeignKey')(related_name='app_for', null=True, to=orm['storage.Object'])),
             ('maxtime', self.gf('django.db.models.fields.PositiveIntegerField')(default=43200)),
             ('diskspace', self.gf('django.db.models.fields.PositiveIntegerField')(default=2048)),
             ('memory', self.gf('django.db.models.fields.PositiveIntegerField')(default=2048)),
@@ -142,12 +129,6 @@ class Migration(SchemaMigration):
         # Deleting model 'Application'
         db.delete_table('core_application')
 
-        # Deleting model 'Version'
-        db.delete_table('core_version')
-
-        # Deleting model 'Type'
-        db.delete_table('core_type')
-
         # Deleting model 'Job'
         db.delete_table('core_job')
 
@@ -203,12 +184,32 @@ class Migration(SchemaMigration):
         },
         'core.application': {
             'Meta': {'object_name': 'Application'},
+            '_app_obj': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'application_set'", 'null': 'True', 'to': "orm['storage.Object']"}),
+            '_constant_fields': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '1024'}),
+            '_description': ('django.db.models.fields.TextField', [], {'default': "''"}),
+            '_multi_hosts': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            '_multi_thread': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            '_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            '_public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            '_required_fields': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '1024'}),
+            '_shared_fs': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            '_usage': ('django.db.models.fields.TextField', [], {'default': "''"}),
+            '_version': ('django.db.models.fields.CharField', [], {'max_length': '63'}),
+            'args': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
+            'checkpoints': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
+            'cores_per_host': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'}),
+            'diskspace': ('django.db.models.fields.PositiveIntegerField', [], {'default': '2048'}),
+            'executable': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
+            'hosts': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+            'inputs': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
+            'maxtime': ('django.db.models.fields.PositiveIntegerField', [], {'default': '43200'}),
+            'memory': ('django.db.models.fields.PositiveIntegerField', [], {'default': '2048'}),
+            'outputs': ('django.db.models.fields.CharField', [], {'max_length': '512'})
         },
         'core.job': {
             'Meta': {'object_name': 'Job'},
-            'app_objs': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'app_for'", 'null': 'True', 'to': "orm['storage.Object']"}),
+            'application': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['core.Application']"}),
             'args': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'checkpoint_objs': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'checkpoint_for'", 'null': 'True', 'to': "orm['storage.Object']"}),
             'checkpoints': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
@@ -235,34 +236,11 @@ class Migration(SchemaMigration):
             'priority': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'progress': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'progress_string': ('django.db.models.fields.TextField', [], {'default': "''"}),
-            'restart': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'restart': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'return_code': ('django.db.models.fields.IntegerField', [], {'default': 'None', 'null': 'True'}),
             'start_time': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'P'", 'max_length': '1'}),
-            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['core.Type']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        },
-        'core.type': {
-            'Meta': {'object_name': 'Type'},
-            '_app_obj': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'application_set'", 'null': 'True', 'to': "orm['storage.Object']"}),
-            '_constant_fields': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '1024'}),
-            '_multi_hosts': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            '_multi_thread': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            '_name': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
-            '_required_fields': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '1024'}),
-            '_shared_fs': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            '_version': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['core.Version']"}),
-            'args': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
-            'checkpoints': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
-            'cores_per_host': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'}),
-            'diskspace': ('django.db.models.fields.PositiveIntegerField', [], {'default': '2048'}),
-            'executable': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
-            'hosts': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'inputs': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
-            'maxtime': ('django.db.models.fields.PositiveIntegerField', [], {'default': '43200'}),
-            'memory': ('django.db.models.fields.PositiveIntegerField', [], {'default': '2048'}),
-            'outputs': ('django.db.models.fields.CharField', [], {'max_length': '512'})
         },
         'core.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
@@ -277,12 +255,6 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'token': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        },
-        'core.version': {
-            'Meta': {'object_name': 'Version'},
-            'application': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['core.Application']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'version': ('django.db.models.fields.CharField', [], {'max_length': '20'})
         },
         'dispatcher.pilot': {
             'Meta': {'object_name': 'Pilot'},

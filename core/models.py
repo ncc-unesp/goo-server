@@ -45,27 +45,17 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 class Application(models.Model):
     """Bla bla bla."""
 
-    name = models.CharField(max_length=255)
+    _name = models.CharField(max_length=255)
+    _version = models.CharField(max_length=63)
 
-    def __repr__ (self): # pragma: no cover
-        return '<Application %s>' % self
+    # description about the application
+    _description = models.TextField(default='')
+    # help text about the usage of this version
+    _usage = models.TextField(default='')
 
-    def __str__ (self):
-        return self.name
+    # if is public
+    _public = models.BooleanField(default=True)
 
-class Version(models.Model):
-    version = models.CharField(max_length=20)
-    application = models.ForeignKey(Application)
-
-    def __repr__ (self): # pragma: no cover
-        return '<Version %s>' % self
-
-    def __str__ (self):
-        return '%s %s' % (self.application, self.version)
-
-class Type(models.Model):
-    _name = models.CharField(max_length=20)
-    _version = models.ForeignKey(Version)
     executable = models.CharField(max_length=512) # if custom
     _app_obj = models.ForeignKey(Object, null=True, related_name='application_set')
     args = models.CharField(max_length=512)
@@ -91,35 +81,40 @@ class Type(models.Model):
     diskspace = models.PositiveIntegerField(default=2048) # 2GB
     memory = models.PositiveIntegerField(default=2048) # 2GB
 
-
     def __repr__ (self): # pragma: no cover
-        return '<Type %s>' % self
+        return '<Application %s>' % self
 
     def __str__ (self):
-        return '%s %s' % (self._version, self._name)
+        return '%s %s' % (self._name, self._version)
 
     def get_constant_fields(self):
         """
         Return a list of field that values are enforced by application.
         """
-        return map(unicode.strip, self._constant_fields.split(','))
+        if self._constant_fields:
+            return map(unicode.strip, self._constant_fields.split(','))
+        else:
+            return []
 
     def get_required_fields(self):
         """
         Return a list of fields required for filled by user.
-        Some fields, ared required but not return in this method, because
+        Some fields, are required but not return in this method, because
         are overwrite by default values.
         """
-        return map(unicode.strip, self._required_fields.split(','))
+        if self._required_fields:
+            return map(unicode.strip, self._required_fields.split(','))
+        else:
+            return []
 
 class Job(models.Model):
     name = models.CharField(max_length=20, blank=False)
-    type = models.ForeignKey(Type)
+    application = models.ForeignKey(Application)
     progress = models.PositiveIntegerField(default=0)
     hosts = models.PositiveIntegerField(default=1)
     cores_per_host = models.PositiveIntegerField(default=1)
     priority = models.PositiveIntegerField(default=0)
-    restart = models.BooleanField(default='False')
+    restart = models.BooleanField(default=False)
     user = models.ForeignKey(User)
 
     # values for execution that could be customized
@@ -128,7 +123,6 @@ class Job(models.Model):
     inputs = models.CharField(max_length=512)
     outputs = models.CharField(max_length=512)
     checkpoints = models.CharField(max_length=512)
-    app_objs = models.ForeignKey(Object, null=True, related_name='app_for')
 
     # objects id
     input_objs = models.ManyToManyField(Object, null=True, related_name='input_for')

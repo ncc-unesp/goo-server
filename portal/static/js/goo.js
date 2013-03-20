@@ -155,9 +155,10 @@ function find_dataproxy(callback){
                 return do_alert("Server error. (Request dataproxy failed)");
             },
             success: function (data) {
-                addr = data["objects"][0].url;
-                if(typeof addr == 'undefined')
+                server = data["objects"][0];
+                if(typeof server == 'undefined')
                     return do_alert("Server error. (No data server found)");
+                addr = server.url
                 goo_dataproxy_server = addr;
                 callback(addr);
             }
