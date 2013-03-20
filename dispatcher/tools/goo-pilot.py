@@ -110,7 +110,7 @@ def send_files(job, tmp_dir):
     if (ret_code != 0):
         raise ObjectUploadError
 
-    data = {"name": slug + '_output.zip'}
+    data = {"name": slug + '-output.zip'}
     data["size"] = output_pack_size
     data["url"] = remote_url
 
