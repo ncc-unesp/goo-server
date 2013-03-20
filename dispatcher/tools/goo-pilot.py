@@ -127,7 +127,10 @@ def job_loop():
     # create a temporary directory
     # If dir=None in mkstemp, it searchs automatically for TMPDIR and TEMP...
     tmp_path = os.environ.get("GOO_TMPDIR", None)
-    tmp_dir = tempfile.mkdtemp(prefix="goo-pilot", dir=tmp_path)
+    tmp_dir = tempfile.mkdtemp(prefix="goo-pilot-", dir=tmp_path)
+
+    orig_pwd = os.getcwd()
+    os.chdir(tmp_dir)
 
     # get the application.
     # TODO
@@ -199,6 +202,8 @@ def job_loop():
         job["status"] = "E"
         # should erase files first?
         return
+
+    os.chdir(orig_pwd)
 
     # remove temporary directory
     #shutil.rmtree(tmp_dir)
