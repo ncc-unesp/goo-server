@@ -132,8 +132,12 @@ def job_loop():
     # get the application.
     # TODO
 
-    # get the input files.
-    get_files(job, tmp_dir)
+    try:
+        # get the input files.
+        get_files(job, tmp_dir)
+    except ObjectDownloadError:
+        job["status"] = "E"
+        return
 
     # execute job
     # missing case name
