@@ -169,6 +169,12 @@ class Job(models.Model):
     pilot = models.ForeignKey(Pilot, default=None, null=True)
 
     def save(self, *args, **kwargs):
+        # enforce application constants
+        if self.application:
+            for attr in self.application.get_constant_fields():
+                value = getattr(self.application, attr)
+                setattr(self, attr, value)
+
         # get the last state to get some action
         if not self.id:
             # new object
