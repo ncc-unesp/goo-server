@@ -43,7 +43,7 @@
             "_name": "Python",
             "_version": "2.7.3",
             "outputs": "",
-            "_required_fields": "",
+            "_required_fields": "args, maxtime, diskspace, memory",
             "_shared_fs": true,
             "_description": "Python is a programming language that lets you work more quickly and integrate your systems more effectively. You can learn to use Python and see almost immediate gains in productivity and lower maintenance costs.",
             "_usage": "RTFM"
@@ -69,7 +69,7 @@
             "_name": "bash",
             "_version": "4.2",
             "outputs": "",
-            "_required_fields": "",
+            "_required_fields": "args, maxtime, diskspace, memory",
             "_shared_fs": true
         },
         "model": "core.application",
