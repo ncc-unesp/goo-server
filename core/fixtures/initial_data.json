@@ -4,7 +4,7 @@
             "_app_obj": null,
             "args": "-threads ${cores_per_host} ${name}.xml",
             "checkpoints": "",
-            "_constant_fields": "executable, inputs, outputs, checkpoints, hosts",
+            "_constant_fields": "executable, outputs, checkpoints, hosts",
             "cores_per_host": 1,
             "diskspace": 2048,
             "executable": "/opt/GridUNESP/beast/current/bin/beast",
