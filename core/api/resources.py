@@ -99,19 +99,9 @@ class ApplicationResource(ModelResource):
         queryset = Application.objects.all()
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
-        fields = ['id', 'resource_uri']
-
 
     def dehydrate(self, bundle):
         bundle.data['_name'] = str(bundle.obj)
-
-        bundle.data['_description'] = bundle.obj._description
-        bundle.data['_usage'] = bundle.obj._usage
-
-        if self.get_resource_uri(bundle) == bundle.request.path:
-                for field in bundle.obj.get_required_fields():
-                    bundle.data[field] = getattr(bundle.obj, field, "")
-
         return bundle
 
 

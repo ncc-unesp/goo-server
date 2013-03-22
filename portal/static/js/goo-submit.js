@@ -100,7 +100,18 @@ function load_applications(){
 }
 
 function load_template(){
+    //clear previus fields
+    $('#application_description').empty();
+    $('#application_usage').empty();
+    $('#application_optional').empty();
+    $('#application_required').empty();
+    $('#application_constant').empty();
+    $("a.accordion-toggle").first().click();
+
     app = $("#apps_select")[0].value;
+
+    if (!app) return false;
+
     $.ajax({
         url: app + "?token=" + get_token(),
         dataType: "json",
@@ -108,10 +119,31 @@ function load_template(){
             return do_alert("Error getting template.");
         },
         success: function(data) {
-            // remove name to avoid collisions
+            // fill description and usage
+            $('#application_description').text(data["_description"]);
+            $('#application_usage').text(data["_usage"]);
+            // load template
+            $('#application_optional').mustache('application_options_template');
+            // fill with data
             for (p in data){
                 $('input[name="' + p + '"]').val(data[p]);
             }
+            // move to correct section and add class
+            required = ["name"];
+            required = required.concat(data._required_fields.split(","));
+            for (p in required) {
+                field = required[p].trim();
+                group = $('input[name="' + field + '"]').attr("required", true).closest(".control-group");
+                $('#application_required').append(group);
+            }
+
+            constant = data._constant_fields.split(",");
+            for (p in constant) {
+                field = constant[p].trim();
+                group = $('input[name="' + field + '"]').attr("disabled", true).closest(".control-group");
+                $('#application_constant').append(group);
+            }
+
         }
     });
 }
