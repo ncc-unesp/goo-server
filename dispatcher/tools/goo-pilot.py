@@ -88,11 +88,9 @@ def install_app(job):
         tmp_dir = tempfile.mkdtemp(".zip", ".", INSTALL_DIR)
 
         # download
-        obj = job.server.do(app['_app_obj'])
-
         zip_file = '%s/app.zip' % tmp_dir
         local_url = 'file://' + zip_file
-        ret_code = call([GRIDFTP, "-q", meta['url'], local_url], close_fds=True)
+        ret_code = call([GRIDFTP, "-q", app['_app_obj']['url'], local_url], close_fds=True)
 
         if (ret_code != 0):
             raise ObjectDownloadError
