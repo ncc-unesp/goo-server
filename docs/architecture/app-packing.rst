@@ -7,7 +7,7 @@ Structure
 bin/ : *recommended*
   binaries (and scripts) from application
 
-libs/ : *recommended when necessary*
+lib/ : *recommended when necessary*
   libraries required for executing the application
 
 data/ : *recommended when necessary*
@@ -43,7 +43,7 @@ hooks/log
 
 hooks/test
   Execute the deployment tests.
-  The tests shouldn't take more than 1 minute to execute in a regura system.
+  The tests shouldn't take more than 1 minute to execute in a regular system.
   The test is responsable to control the maximum execution time.
   Must return 0 if OK, any other code if otherwise.
 

@@ -11,6 +11,7 @@ STDERR_SUFFIX = ".stderr"
 
 # TODO: get this from OSG ENV
 STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/winckler/"
+INSTALL_DIR = "/osg/app/gridunesp/goo"
 
 GRIDFTP = "/usr/bin/globus-url-copy"
 
@@ -66,10 +67,51 @@ class Job(dict):
 
         super(Job,self).__setitem__(key, value)
 
-def get_files(job, tmp_dir):
-    for i in job['input_objs']:
-        meta = job.server.do(i)
+def install_app(job):
+    def check_app_installed(app_id):
+        app_dir = os.path.join(INSTALL_DIR, app['id'])
+        control_file = os.path.join(app_dir, '.installed')
+        return os.path.exists(control_file)
 
+    app = job['application']
+
+    if not app['_app_obj']:
+        return False
+
+    if not os.path.isdir(INSTALL_DIR):
+        os.makedirs(INSTALL_DIR)
+
+    app_dir = os.path.join(INSTALL_DIR, app['id'])
+    if check_app_installed(app_id):
+        return True
+    else:
+        # create a temporary directory
+        tmp_dir = tempfile.mkdtemp(".zip", ".", INSTALL_DIR)
+
+        # download
+        obj = job.server.do(app['_app_obj'])
+
+        zip_file = '%s/app.zip' % tmp_dir
+        local_url = 'file://' + zip_file
+        ret_code = call([GRIDFTP, "-q", meta['url'], local_url], close_fds=True)
+
+        if (ret_code != 0):
+            raise ObjectDownloadError
+
+        # extract
+        ZipFile(zip_file, 'r').extractall(tmp_dir)
+        os.remove(zip_file)
+
+        # check for lock and move
+        if not check_app_installed(app_id):
+            app_dir = os.path.join(INSTALL_DIR, app['id'])
+            os.rename(tmp_dir, app_dir)
+            # create .installed
+            open(os.path.join(app_dir, '.installed'), 'w').close()
+
+
+def get_files(job, tmp_dir):
+    for meta in job['input_objs']:
         final_file = os.path.join(os.path.abspath(tmp_dir), meta['name'])
         local_url = 'file://' + final_file
         # meta['url'] has the remote_url
@@ -132,8 +174,13 @@ def job_loop():
     orig_pwd = os.getcwd()
     os.chdir(tmp_dir)
 
-    # get the application.
-    # TODO
+    try:
+        # get the application.
+        install_app(job)
+    except ObjectDownloadError:
+        job["status"] = "E"
+        return
+
 
     try:
         # get the input files.

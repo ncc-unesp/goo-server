@@ -23,11 +23,11 @@ class PilotJobResource(ModelResource):
         PATCH  /dispatcher/{id}/           # Partially update a job
     """
 
-    app = fields.ToOneField(ApplicationResource, 'type', null=True)
+    application = fields.ToOneField(ApplicationResource, 'application', full=True)
 
-    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True)
-    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True)
-    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True)
+    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True, full=True)
+    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True, full=True)
+    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True, full=True)
 
     class Meta:
         resource_name = 'dispatcher'

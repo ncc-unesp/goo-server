@@ -119,7 +119,7 @@ class JobResource(ModelResource):
         DELETE /jobs/{id}/           # Delete a job
     """
 
-    application = fields.ToOneField(ApplicationResource, 'application')
+    application = fields.ToOneField(ApplicationResource, 'application', full=True)
 
     input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True, full=True)
     output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True, full=True)
