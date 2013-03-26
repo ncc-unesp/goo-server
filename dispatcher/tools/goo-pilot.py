@@ -81,7 +81,6 @@ def install_app(job):
     if not os.path.isdir(INSTALL_DIR):
         os.makedirs(INSTALL_DIR)
 
-    app_dir = os.path.join(INSTALL_DIR, app['id'])
     if check_app_installed(app_id):
         return True
     else:
