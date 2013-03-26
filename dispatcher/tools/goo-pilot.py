@@ -69,7 +69,7 @@ class Job(dict):
 
 def install_app(job):
     def check_app_installed(app_id):
-        app_dir = os.path.join(INSTALL_DIR, app['id'])
+        app_dir = os.path.join(INSTALL_DIR, str(app['id']))
         control_file = os.path.join(app_dir, '.installed')
         return os.path.exists(control_file)
 
@@ -104,7 +104,7 @@ def install_app(job):
 
         # check for lock and move
         if not check_app_installed(app_id):
-            app_dir = os.path.join(INSTALL_DIR, app['id'])
+            app_dir = os.path.join(INSTALL_DIR, str(app['id']))
             os.rename(tmp_dir, app_dir)
             # create .installed
             open(os.path.join(app_dir, '.installed'), 'w').close()
