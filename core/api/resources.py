@@ -92,6 +92,8 @@ class ApplicationResource(ModelResource):
         GET    /apps/set/{id};{id}/  # Get a list of apps
     """
 
+    _app_obj = fields.ToOneField(ObjectResource, '_app_obj', full=True)
+
     class Meta:
         resource_name = 'apps'
         authentication = UserTokenAuthentication()
