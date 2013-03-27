@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, urllib2, json, time, os, tempfile, threading, shlex, uuid, shutil
+import sys, urllib2, urllib, json, time, os, tempfile, threading, shlex, uuid, shutil
 from subprocess import Popen, PIPE, call
 
 from zipfile import ZipFile
@@ -9,11 +9,7 @@ from glob import glob
 STDOUT_SUFFIX = ".stdout"
 STDERR_SUFFIX = ".stderr"
 
-# TODO: get this from OSG ENV
-STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/winckler/"
-INSTALL_DIR = "/osg/app/gridunesp/goo"
-
-GRIDFTP = "/usr/bin/globus-url-copy"
+GRIDFTP = "globus-url-copy"
 
 PROGRESS_FREQ = 10 # seconds
 CHECKPOINT_FREQ = 20 # seconds
@@ -68,62 +64,74 @@ class Job(dict):
         super(Job,self).__setitem__(key, value)
 
 def install_app(job):
-    def check_app_installed(app_id):
-        app_dir = os.path.join(INSTALL_DIR, str(app_id))
-        control_file = os.path.join(app_dir, '.installed')
-        return os.path.exists(control_file)
-
+    sys_app_dir = os.environ.get("OSG_APP", tempfile.gettempdir())
+    install_dir = os.path.join(sys_app_dir, "gridunesp", "goo")
     app = job['application']
 
     if not app['_app_obj']:
         return False
 
-    if not os.path.isdir(INSTALL_DIR):
-        os.makedirs(INSTALL_DIR)
+    app_path = os.path.join(install_dir, str(app['id']))
+    control_file = os.path.join(app_path, '.installed')
 
-    if check_app_installed(app['id']):
-        return True
-    else:
+    if not os.path.exists(control_file):
+        # create installation directory
+        if not os.path.isdir(install_dir):
+            os.makedirs(install_dir)
+
         # create a temporary directory
-        tmp_dir = tempfile.mkdtemp(".zip", ".", INSTALL_DIR)
-
-        # get info
-        obj_info = job.server.do(app['_app_obj'])
+        tmp_dir = tempfile.mkdtemp("-zip", ".", install_dir)
 
         # download
-        zip_file = '%s/app.zip' % tmp_dir
-        local_url = 'file://' + zip_file
-        ret_code = call([GRIDFTP, "-q", obj_info['url'], local_url], close_fds=True)
-
-        if (ret_code != 0):
-            raise ObjectDownloadError
+        zip_file = download_file(app['_app_obj'], tmp_dir, job.server)
 
         # extract
         ZipFile(zip_file, 'r').extractall(tmp_dir)
         os.remove(zip_file)
 
         # check for lock and move
-        if not check_app_installed(app['id']):
-            app_dir = os.path.join(INSTALL_DIR, str(app['id']))
-            os.rename(tmp_dir, app_dir)
+        if not os.path.exists(control_file):
+            os.rename(tmp_dir, app_path)
             # create .installed
-            open(os.path.join(app_dir, '.installed'), 'w').close()
+            open(control_file, 'w').close()
+        else:
+            shutil.rmtree(tmp_dir)
 
+    return app_path
+
+def download_file(src_uri, dst_dir, gooserver):
+    src_obj = gooserver.do(src_uri)
+    dst_path = os.path.join(os.path.abspath(dst_dir), src_obj['name'])
+
+    # try download via GSIFTP
+    src_url = src_obj['url']
+    dst_url = 'file://' + dst_path
+    ret_code = call([GRIDFTP, "-q", src_url, dst_url], close_fds=True)
+    if (ret_code != 0):
+        # error via GSIFTP
+        # trying HTTP
+        obj_servers = gooserver.do('/api/v1/dataproxyserver/')
+        # get first server
+        obj_server_url = obj_servers["objects"][0]["url"]
+
+        src_url = "%sapi/v1/dataproxy/objects/%d/?token=%s" % \
+                     (obj_server_url, src_obj['id'], gooserver.token)
+
+        print src_url
+        try:
+            urllib.urlretrieve(src_url, dst_path)
+        except IOError:
+            ObjectDownloadError
+
+    return dst_path
 
 def get_files(job, tmp_dir):
     for i in job['input_objs']:
-        meta = job.server.do(i)
-        final_file = os.path.join(os.path.abspath(tmp_dir), meta['name'])
-        local_url = 'file://' + final_file
-        # meta['url'] has the remote_url
-        ret_code = call([GRIDFTP, "-q", meta['url'], local_url], close_fds=True)
+        fname = download_file(i, tmp_dir, job.server)
 
-        if (ret_code != 0):
-            raise ObjectDownloadError
-
-        if os.path.splitext(final_file)[1].lower() == ".zip":
-            ZipFile(final_file, 'r').extractall(tmp_dir)
-            os.remove(final_file)
+        if os.path.splitext(fname)[1].lower() == ".zip":
+            ZipFile(fname, 'r').extractall(tmp_dir)
+            os.remove(fname)
 
 def send_files(job, tmp_dir):
     # cd into the directory
@@ -144,10 +152,13 @@ def send_files(job, tmp_dir):
     output_pack.close()
     output_pack_size = os.path.getsize(output_pack_name)
 
-    #gridftp copy
+    # gridftp copy
+    # TODO: get this from OSG ENV
+    STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/gridunesp/goo/"
+
     local_url = 'file://' + os.path.abspath(output_pack_name)
     remote_url = STORAGE_SERVER + str(uuid.uuid4()) + '.zip'
-    
+
     ret_code = call([GRIDFTP, "-q", local_url, remote_url], close_fds=True)
 
     if (ret_code != 0):
