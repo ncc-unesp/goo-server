@@ -20,7 +20,7 @@ def get_month_range(date):
     return first, last
 
 date = datetime(2011, 01, 01).replace(tzinfo=utc)
-for i in range(0,100000):
+for i in range(0,20000):
     job = Job()
     job.name = 'foo'
     job.user_id = 1
@@ -28,7 +28,8 @@ for i in range(0,100000):
     job.status = 'C'
     create = date + relativedelta(hours=random.uniform(0,17520)) # two years
     start = create + relativedelta(hours=random.uniform(0,6))
-    end = start + relativedelta(hours=random.gauss(12,8))
+#    end = start + relativedelta(hours=random.gauss(12,8)) # 12 hours, 8 hours
+    end = start + relativedelta(hours=random.gauss(360,240)) # 15 days, 10 days
 
     job.create_time = create
     job.start_time = start
