@@ -79,7 +79,7 @@
           "start_time": null,
           "status": "P",
           "maxtime": 43200,
-          "type": 1,
+          "application": 1,
           "user": 1
       },
       "model": "core.job",

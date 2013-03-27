@@ -138,7 +138,7 @@ class ApplicationTest(ResourceTestCase):
 
     # list apps details
     def test_get_apps_details(self):
-        app_id = Version.objects.all()[0].id
+        app_id = Application.objects.all()[0].id
         url = "%s%d/?token=%s" % (self.endpoint, app_id, self.token.token)
         request = self.client.get(url, self.format)
         self.assertValidJSONResponse(request)
@@ -161,7 +161,7 @@ class JobTest(ResourceTestCase):
         self.token.save()
 
         # create a job
-        self.job = Job(user=self.user, type=Type.objects.all()[0])
+        self.job = Job(user=self.user, application=Application.objects.all()[0])
         self.job.save()
 
     def test_get_job_list(self):
@@ -175,12 +175,12 @@ class JobTest(ResourceTestCase):
         self.assertValidJSONResponse(request)
 
     def test_post_job(self):
-        data = {"app" : "/api/v1/apps/1/"}
+        data = {"application" : "/api/v1/apps/1/"}
         url = "%s?token=%s" % (self.endpoint, self.token.token)
         self.assertHttpCreated(self.client.post(url, self.format, data=data))
 
     def test_patch_job(self):
-        job = Job(user=self.user, type=Type.objects.all()[0])
+        job = Job(user=self.user, application=Application.objects.all()[0])
         job.save()
         data = {"progress":"50"}
         url = "%s%d/?token=%s" % (self.endpoint, job.id, self.token.token)
@@ -188,7 +188,7 @@ class JobTest(ResourceTestCase):
         self.assertHttpAccepted(resp)
 
     def test_delete_job(self):
-        job = Job(user=self.user, type=Type.objects.all()[0])
+        job = Job(user=self.user, application=Application.objects.all()[0])
         job.save()
         url = "%s%d/?token=%s" % (self.endpoint, job.id, self.token.token)
         self.assertHttpAccepted(self.client.delete(url, self.format))

@@ -87,10 +87,13 @@ def install_app(job):
         # create a temporary directory
         tmp_dir = tempfile.mkdtemp(".zip", ".", INSTALL_DIR)
 
+        # get info
+        obj_info = job.server.do(app['_app_obj'])
+
         # download
         zip_file = '%s/app.zip' % tmp_dir
         local_url = 'file://' + zip_file
-        ret_code = call([GRIDFTP, "-q", app['_app_obj']['url'], local_url], close_fds=True)
+        ret_code = call([GRIDFTP, "-q", obj_info['url'], local_url], close_fds=True)
 
         if (ret_code != 0):
             raise ObjectDownloadError
@@ -108,7 +111,8 @@ def install_app(job):
 
 
 def get_files(job, tmp_dir):
-    for meta in job['input_objs']:
+    for i in job['input_objs']:
+        meta = job.server.do(i)
         final_file = os.path.join(os.path.abspath(tmp_dir), meta['name'])
         local_url = 'file://' + final_file
         # meta['url'] has the remote_url

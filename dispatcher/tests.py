@@ -18,7 +18,7 @@ class PilotJobResourceTest(ResourceTestCase):
         self.user.save()
 
         # create a job
-        self.job = Job(user=self.user, type=Type.objects.all()[0])
+        self.job = Job(user=self.user, application=Application.objects.all()[0])
         self.job.maxtime = 30
         self.job.save()
 
