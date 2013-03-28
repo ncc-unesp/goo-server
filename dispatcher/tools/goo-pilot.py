@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys, urllib2, urllib, json, time, os, tempfile, threading, shlex, uuid, shutil
-from subprocess import Popen, PIPE, call, check_output, CalledProcessError
+from subprocess import Popen, PIPE, call
 
 from zipfile import ZipFile
 from glob import glob
@@ -167,10 +167,12 @@ def upload_file(src_file, gooserver):
                         (gooserver.dataproxy, gooserver.token)
         args = "curl -s -F size=%d -F name=%s -F file=@%s %s" % \
                  (size, basename, src_file, request_url)
-        try:
-            resp = check_output(args, shell=True)
-            return json.loads(resp)["resource_uri"]
-        except CalledProcessError:
+
+        process = Popen(args, close_fds=True, stdout=PIPE, stderr=NULL, shell=True)
+        (stdout, stderr) = process.communicate()
+        if process.returncode == 0:
+            return json.loads(stdout)["resource_uri"]
+        else:
             raise ObjectDownloadError
 
     else:
