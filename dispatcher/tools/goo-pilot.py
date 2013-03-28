@@ -149,10 +149,10 @@ def upload_file(src_file, gooserver):
     basename = os.path.basename(src_file)
 
     # gridftp copy
-    # TODO: get this from OSG ENV OSG_DEFAULT_SE
-    STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/gridunesp/goo/"
+    STORAGE_SERVER = os.environ.get("OSG_DEFAULT_SE", "se.grid.unesp.br")
     local_url = 'file://' + src_file
-    remote_url = STORAGE_SERVER + str(uuid.uuid4()) + '.zip'
+    remote_url = "gsiftp://%s/store/gridunesp/goo/%s.zip" % (STORAGE_SERVER,
+                                                             str(uuid.uuid4()))
 
     NULL = open('/dev/null', 'w')
     ret_code = call([GRIDFTP, "-q", local_url, remote_url],
