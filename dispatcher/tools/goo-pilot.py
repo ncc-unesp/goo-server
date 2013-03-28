@@ -105,7 +105,12 @@ def set_dataserver(gooserver):
         gooserver.dataproxy = obj_servers["objects"][0]["url"]
 
 def download_file(src_uri, dst_dir, gooserver):
-    src_obj = gooserver.do(src_uri)
+    # hack: also accept src_uri as dict to avoid additional query
+    #   if input_objs full hydrated
+    if type(src_uri) == dict:
+        src_obj = src_uri
+    else:
+        src_obj = gooserver.do(src_uri)
     dst_path = os.path.join(os.path.abspath(dst_dir), src_obj['name'])
 
     # try download via GSIFTP
