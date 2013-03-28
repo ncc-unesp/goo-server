@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-
 import sys, urllib2, urllib, json, time, os, tempfile, threading, shlex, uuid, shutil
-from subprocess import Popen, PIPE, call
+from subprocess import Popen, PIPE, call, check_output, CalledProcessError
 
 from zipfile import ZipFile
 from glob import glob
@@ -99,6 +98,12 @@ def install_app(job):
 
     return app_path
 
+def set_dataserver(gooserver):
+    if not hasattr(gooserver, 'dataproxy'):
+        obj_servers = gooserver.do('/api/v1/dataproxyserver/')
+        # get first server
+        gooserver.dataproxy = obj_servers["objects"][0]["url"]
+
 def download_file(src_uri, dst_dir, gooserver):
     src_obj = gooserver.do(src_uri)
     dst_path = os.path.join(os.path.abspath(dst_dir), src_obj['name'])
@@ -106,18 +111,17 @@ def download_file(src_uri, dst_dir, gooserver):
     # try download via GSIFTP
     src_url = src_obj['url']
     dst_url = 'file://' + dst_path
-    ret_code = call([GRIDFTP, "-q", src_url, dst_url], close_fds=True)
+
+    NULL = open('/dev/null', 'w')
+    ret_code = call([GRIDFTP, "-q", src_url, dst_url], 
+                    stdout=NULL, stderr=NULL, close_fds=True)
     if (ret_code != 0):
         # error via GSIFTP
         # trying HTTP
-        obj_servers = gooserver.do('/api/v1/dataproxyserver/')
-        # get first server
-        obj_server_url = obj_servers["objects"][0]["url"]
-
+        set_dataserver(gooserver)
         src_url = "%sapi/v1/dataproxy/objects/%d/?token=%s" % \
-                     (obj_server_url, src_obj['id'], gooserver.token)
+                     (gooserver.dataproxy, src_obj['id'], gooserver.token)
 
-        print src_url
         try:
             urllib.urlretrieve(src_url, dst_path)
         except IOError:
@@ -133,13 +137,50 @@ def get_files(job, tmp_dir):
             ZipFile(fname, 'r').extractall(tmp_dir)
             os.remove(fname)
 
+def upload_file(src_file, gooserver):
+    src_file = os.path.abspath(src_file)
+
+    size = os.path.getsize(src_file)
+    basename = os.path.basename(src_file)
+
+    # gridftp copy
+    # TODO: get this from OSG ENV OSG_DEFAULT_SE
+    STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/gridunesp/goo/"
+    local_url = 'file://' + src_file
+    remote_url = STORAGE_SERVER + str(uuid.uuid4()) + '.zip'
+
+    NULL = open('/dev/null', 'w')
+    ret_code = call([GRIDFTP, "-q", local_url, remote_url],
+                    stdout=NULL, stderr=NULL, close_fds=True)
+
+    if (ret_code != 0):
+        # error via GSIFTP
+        # trying HTTP
+        set_dataserver(gooserver)
+        # using curl to avoid memory copy and multipart-form mess
+        request_url = "%sapi/v1/dataproxy/objects/?token=%s" % \
+                        (gooserver.dataproxy, gooserver.token)
+        args = "curl -s -F size=%d -F name=%s -F file=@%s %s" % \
+                 (size, basename, src_file, request_url)
+        try:
+            resp = check_output(args, shell=True)
+            return json.loads(resp)["resource_uri"]
+        except CalledProcessError:
+            raise ObjectDownloadError
+
+    else:
+        # GSIFTP upload ok. Save meta data.
+        data = {"name": base, "size": size, "url": remote_url}
+        resp = gooserver.do("/api/v1/objects/", "POST", data)
+        return resp["resource_uri"]
+
 def send_files(job, tmp_dir):
     # cd into the directory
     orig_pwd = os.getcwd()
     os.chdir(tmp_dir)
 
     slug = job['slug']
-    output_pack_name = '%s.zip' % slug
+    output_pack_name = '%s-output.zip' % slug
     output_pack = ZipFile(output_pack_name, 'w', allowZip64=True)
     output_pack.write(slug + STDOUT_SUFFIX)
     output_pack.write(slug + STDERR_SUFFIX)
@@ -150,26 +191,9 @@ def send_files(job, tmp_dir):
             output_pack.write(f)
 
     output_pack.close()
-    output_pack_size = os.path.getsize(output_pack_name)
 
-    # gridftp copy
-    # TODO: get this from OSG ENV
-    STORAGE_SERVER = "gsiftp://se.grid.unesp.br/store/gridunesp/goo/"
-
-    local_url = 'file://' + os.path.abspath(output_pack_name)
-    remote_url = STORAGE_SERVER + str(uuid.uuid4()) + '.zip'
-
-    ret_code = call([GRIDFTP, "-q", local_url, remote_url], close_fds=True)
-
-    if (ret_code != 0):
-        raise ObjectUploadError
-
-    data = {"name": slug + '-output.zip'}
-    data["size"] = output_pack_size
-    data["url"] = remote_url
-
-    resp = job.server.do("/api/v1/objects/", "POST", data)
-    job["output_objs"] = [ resp["resource_uri"] ]
+    output_pack_uri = upload_file(output_pack_name, job.server)
+    job["output_objs"] = [ output_pack_uri ]
 
     os.chdir(orig_pwd)
 
@@ -192,7 +216,6 @@ def job_loop():
     except ObjectDownloadError:
         job["status"] = "E"
         return
-
 
     try:
         # get the input files.
