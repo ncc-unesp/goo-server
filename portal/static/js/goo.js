@@ -26,8 +26,11 @@ function view_change() {
         return view_job_detail(re_job_id[1]);
 
     re_job_id = hash.match("^object-([0-9]+)$")
-    if (re_job_id)
-        return get_object(re_job_id[1]);
+    if (re_job_id) {
+        get_object(re_job_id[1]);
+        history.back();
+        return false;
+    }
 
     // default: try to load hash as template
     container_render(hash);

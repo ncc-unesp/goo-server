@@ -115,8 +115,8 @@
     </tr>
     {{#input_objs}}
     <tr>
-        <td><a href="#object-{{id}}" onclick="get_object({{id}});">{{id}}</a></td>
-        <td><a href="#object-{{id}}" onclick="get_object({{id}});">{{name}}</a></td>
+        <td><a href="#object-{{id}}" onclick="return get_object({{id}});">{{id}}</a></td>
+        <td><a href="#object-{{id}}" onclick="return get_object({{id}});">{{name}}</a></td>
         <td>{{size}}</td>
     </thead>
     {{/input_objs}}
@@ -134,8 +134,8 @@
     </tr>
     {{#output_objs}}
     <tr>
-        <td><a href="#object-{{id}}" onclick="get_object({{id}});">{{id}}</a></td>
-        <td><a href="#object-{{id}}" onclick="get_object({{id}});">{{name}}</a></td>
+        <td><a href="#object-{{id}}" onclick="return get_object({{id}});">{{id}}</a></td>
+        <td><a href="#object-{{id}}" onclick="return get_object({{id}});">{{name}}</a></td>
         <td>{{size}}</td>
     </thead>
     {{/output_objs}}
@@ -153,8 +153,8 @@
     </tr>
     {{#checkpoint_objs}}
     <tr>
-        <td><a href="#object-{{id}}" onclick="get_object({{id}});">{{id}}</a></td>
-        <td><a href="#object-{{id}}" onclick="get_object({{id}});">{{name}}</a></td>
+        <td><a href="#object-{{id}}" onclick="return get_object({{id}});">{{id}}</a></td>
+        <td><a href="#object-{{id}}" onclick="return get_object({{id}});">{{name}}</a></td>
         <td>{{size}}</td>
     </thead>
     {{/checkpoint_objs}}
