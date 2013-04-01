@@ -50,7 +50,7 @@ class ObjectResource(ModelResource):
         always_return_data = True
 
     def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(user=request.user)
+        return object_list.filter(Q(user=request.user) | Q(public=True))
 
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user

@@ -1,4 +1,5 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
+import threading
 
 class NoMatchError(Exception):
     pass
@@ -20,7 +21,9 @@ def allocate(job):
         raise NoMatchError
 
     for site in candidates:
-        site.submit_pilot_based_on_job(job)
+        threading.Thread(target=Site.submit_pilot_based_on_job,
+                                               args=(site, job)).start()
+        #site.submit_pilot_based_on_job(job)
 
 def match(pilot, time_left):
     """
