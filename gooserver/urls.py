@@ -17,6 +17,7 @@ v1_api.register(PilotJobResource())
 v1_api.register(DataProxyServerResource())
 v1_api.register(ObjectResource())
 v1_api.register(StatsJobsResource())
+v1_api.register(StatsHoursResource())
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
