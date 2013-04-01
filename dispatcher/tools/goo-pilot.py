@@ -219,7 +219,7 @@ def job_loop():
 
     try:
         # get the application.
-        install_app(job)
+        app_path = install_app(job)
     except ObjectDownloadError:
         job["status"] = "E"
         return
@@ -233,14 +233,26 @@ def job_loop():
 
     # execute job
     # missing case name
-    stdout_fname = job["slug"] + STDOUT_SUFFIX
-    stdout = open(os.path.join(tmp_dir, stdout_fname), 'w')
+    stdout = job["slug"] + STDOUT_SUFFIX
+    stderr = job["slug"] + STDERR_SUFFIX
 
-    stderr_fname = job["slug"] + STDERR_SUFFIX
-    stderr = open(os.path.join(tmp_dir, stderr_fname), 'w')
 
-    def execution_thread(job, stdout, stderr):
-        args = [ job["executable"], ]
+    def execution_thread(job, app_path, stdout, stderr):
+        env = os.environ.copy()
+        if app_path:
+            env["PATH"] = "%s/bin:%s" % (app_path, env.get("PATH",""))
+            env["LD_LIBRARY_PATH"] = "%s/lib:%s" % \
+                                       (app_path, env.get("LD_LIBRARY_PATH",""))
+        env["GOO_NAME"] = job["slug"]
+        env["GOO_STDOUT"] = stdout
+        env["GOO_STDERR"] = stderr
+        env["GOO_ARGS"] = job["args"]
+
+        # args
+        if job["executable"]:
+            args = [ job["executable"] ]
+        else:
+            args = [ "%s/hooks/execute" % app_path ]
 
         job_args = job["args"]
 
@@ -250,16 +262,23 @@ def job_loop():
 
         args.extend(shlex.split(job_args))
 
-        process = Popen(args, close_fds=True, stdout=stdout, stderr=stderr)
+        stdout_obj = open(stdout, 'w')
+        stderr_obj = open(stderr, 'w')
+
+        process = Popen(args, stdout=stdout_obj, stderr=stderr_obj,
+                        close_fds=True, env=env)
         process.wait()
         job["return_code"] = process.returncode
+
+        stdout_obj.close()
+        stderr_obj.close()
 
         #set progress to 100% if ret_code = 0
         if process.returncode == 0:
             job["progress"] = 100
 
     execution = threading.Thread(target=execution_thread,
-                                 args=(job, stdout, stderr))
+                                 args=(job, app_path, stdout, stderr))
 
     last_progress = time.clock()
     last_checkpoint = time.clock()
@@ -282,9 +301,6 @@ def job_loop():
         execution.join(60)
 
     # send output files
-    stdout.close()
-    stderr.close()
-
     try:
         send_files(job, tmp_dir)
     except ObjectUploadError:
