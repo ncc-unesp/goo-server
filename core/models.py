@@ -3,7 +3,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from datetime import timedelta
+from django.utils.timezone import utc
+from datetime import timedelta, datetime
 from django.utils.timezone import now
 
 import uuid
@@ -162,7 +163,8 @@ class Job(models.Model):
 
     eta = models.PositiveIntegerField(null=True, default=None)
     return_code = models.IntegerField(null=True, default=None)
-    create_time = models.DateTimeField(auto_now_add=True)
+    #create_time = models.DateTimeField(auto_now_add=True)
+    create_time = models.DateTimeField(default=datetime.utcnow().replace(tzinfo=utc))
     modification_time = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField(null=True, default=None)
     end_time = models.DateTimeField(null=True, default=None)
