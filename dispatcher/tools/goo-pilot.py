@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import sys, urllib2, urllib, json, time, os, tempfile, threading, shlex, uuid, shutil
+import sys, urllib2, urllib, json, time, os, tempfile, threading, shlex, uuid, shutil, stat
 from subprocess import Popen, PIPE, call
 
 from zipfile import ZipFile
@@ -87,6 +87,13 @@ def install_app(job):
         # extract
         ZipFile(zip_file, 'r').extractall(tmp_dir)
         os.remove(zip_file)
+
+        # set execution permissions
+        for d in ['bin', 'hooks']:
+            dpath = os.path.join(tmp_dir, d)
+            for f in os.listdir(dpath):
+                fpath = os.path.join(dpath, f)
+                os.chmod(fpath, stat.S_IXUSR|stat.S_IXGRP)
 
         # check for lock and move
         if not os.path.exists(control_file):
@@ -193,7 +200,7 @@ def send_files(job, tmp_dir):
     output_pack.write(slug + STDERR_SUFFIX)
 
     #pack requested files
-    for p in job['outputs'].split(","):
+    for p in job['outputs'].split():
         for f in glob(p):
             output_pack.write(f)
 
