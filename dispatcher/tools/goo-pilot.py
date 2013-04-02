@@ -93,7 +93,7 @@ def install_app(job):
             dpath = os.path.join(tmp_dir, d)
             for f in os.listdir(dpath):
                 fpath = os.path.join(dpath, f)
-                os.chmod(fpath, stat.S_IXUSR|stat.S_IXGRP)
+                os.chmod(fpath, stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP)
 
         # check for lock and move
         if not os.path.exists(control_file):
