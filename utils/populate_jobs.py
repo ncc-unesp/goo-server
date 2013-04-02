@@ -29,7 +29,7 @@ for i in range(0,20000):
     create = date + relativedelta(hours=random.uniform(0,17520)) # two years
     start = create + relativedelta(hours=random.uniform(0,6))
 #    end = start + relativedelta(hours=random.gauss(12,8)) # 12 hours, 8 hours
-    end = start + relativedelta(hours=random.gauss(360,240)) # 15 days, 10 days
+    end = start + relativedelta(hours=random.gauss(360,15)) # 15 days, 10 days
 
     job.create_time = create
     job.start_time = start

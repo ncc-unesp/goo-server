@@ -19,6 +19,9 @@ v1_api.register(DataProxyServerResource())
 v1_api.register(ObjectResource())
 v1_api.register(StatsJobsResource())
 v1_api.register(StatsHoursResource())
+v1_api.register(StatsQualityResource())
+v1_api.register(StatsQueueResource())
+v1_api.register(StatsAvgTimeResource())
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin

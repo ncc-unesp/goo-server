@@ -25,6 +25,12 @@ class StatsJobs(object):
         self.end = end
         self.count = count
 
+class AvgTimeJobs(object):
+    def __init__(self, x, percent):
+        self.x = x
+        self.percent = percent
+
+
 class GenericResource():
     def _get_month_range(self, date):
         """
@@ -37,7 +43,6 @@ class GenericResource():
         last = first + relativedelta(months = 1) - relativedelta(days=1)
         last = datetime(last.year, last.month, last.day, 23, 59, 59)
         return first.replace(tzinfo=utc), last.replace(tzinfo=utc)
-
 
 class StatsJobsResource(Resource, GenericResource):
     """This resource handler stats requests.
@@ -138,6 +143,173 @@ class StatsHoursResource(Resource, GenericResource):
 
                 cache.set(cache_id, stat, 60*30) # 30 min cache
 
+        return results
+
+    def dehydrate(self, bundle):
+        del bundle.data['resource_uri']
+        return bundle
+
+class StatsQualityResource(Resource, GenericResource):
+    """This resource handler stats requests.
+
+    Allowed Methods:
+
+        GET    /stats/quality/          # Get stats about quality of service
+    """
+
+    end = fields.DateTimeField(attribute='end')
+    count = fields.FloatField(attribute='count')
+
+    class Meta:
+        resource_name = 'stats/quality'
+        authorization = ReadOnlyAuthorization()
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['']
+
+    def obj_get_list(self, request=None, **kwargs):
+        """
+        Return a list of all jobs that:
+            end_time is in range OR
+            begin_time is in range OR
+            (begin_time <= begin AND
+             end_time >= end)
+        """
+        now = datetime.utcnow().replace(tzinfo=utc)
+        #now = datetime(2011,1,1).replace(tzinfo=utc)
+        begin, end = self._get_month_range(now)
+
+        cache_id = "quality_%s_%s" % (time.mktime(begin.timetuple()), time.mktime(end.timetuple()))
+
+        cached = cache.get(cache_id)
+        if cached:
+            jobs = cached
+        else:
+            jobs = Job.objects.filter(create_time__gte=begin).filter(create_time__lte=end).filter(status='C')
+            cache.set(cache_id, jobs, 60*30) # 30 min cache
+
+        quality = 0
+        for job in jobs:
+            diff1 = job.end_time - job.start_time
+            diff2 = job.end_time - job.create_time
+            quality += diff1.total_seconds() / diff2.total_seconds()
+
+        count = jobs.count()
+        if count is not 0:
+            quality = quality / jobs.count()
+
+        results = []
+        stat = StatsJobs(end, quality)
+        results.append(stat)
+
+        return results
+
+    def dehydrate(self, bundle):
+        del bundle.data['resource_uri']
+        return bundle
+
+class StatsQueueResource(Resource, GenericResource):
+    """This resource handler stats requests.
+
+    Allowed Methods:
+
+        GET    /stats/queue/       # Get stats about jobs in queue
+    """
+
+    end = fields.DateTimeField(attribute='end')
+    count = fields.IntegerField(attribute='count')
+
+    class Meta:
+        resource_name = 'stats/queue'
+        authorization = ReadOnlyAuthorization()
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['']
+
+    def obj_get_list(self, request=None, **kwargs):
+        """
+        Return a list of all jobs that:
+            end_time is in range OR
+            begin_time is in range OR
+            (begin_time <= begin AND
+             end_time >= end)
+        """
+        now = datetime.utcnow().replace(tzinfo=utc)
+        #now = datetime(2011,1,1).replace(tzinfo=utc)
+        #begin, end = self._get_month_range(now)
+
+        cache_id = "queue_%s" % time.mktime(now.timetuple())
+
+        cached = cache.get(cache_id)
+        if cached:
+            jobs = cached
+        else:
+            jobs = Job.objects.filter(status='P') # Pending
+            cache.set(cache_id, jobs, 60*30) # 30 min cache
+
+        count = jobs.count()
+        results = []
+        stat = StatsJobs(now, count)
+        results.append(stat)
+
+        return results
+
+    def dehydrate(self, bundle):
+        del bundle.data['resource_uri']
+        return bundle
+
+class StatsAvgTimeResource(Resource, GenericResource):
+    """This resource handler stats requests.
+
+    Allowed Methods:
+
+        GET    /stats/avgtime/       # Get stats about avg running time
+    """
+
+    x = fields.CharField(attribute='x')
+    percent = fields.FloatField(attribute='percent')
+
+    class Meta:
+        resource_name = 'stats/avgtime'
+        authorization = ReadOnlyAuthorization()
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['']
+
+    def obj_get_list(self, request=None, **kwargs):
+        #now = datetime.utcnow().replace(tzinfo=utc)
+        now = datetime(2011,1,1).replace(tzinfo=utc)
+        begin, end = self._get_month_range(now)
+
+        cache_id = "avgtime"
+
+        cached = cache.get(cache_id)
+        if cached:
+            jobs = cached
+        else:
+            jobs = Job.objects.filter(create_time__gte=begin).filter(create_time__lte=end).filter(status='C')
+            cache.set(cache_id, jobs, 60*30) # 30 min cache
+
+        ranges = [['<6hours',  0],
+                  ['<24hours', 0],
+                  ['<72hours', 0],
+                  ['>72hours', 0]]
+
+        for job in jobs:
+            diff = job.end_time - job.start_time
+            diff = diff.total_seconds()
+            if diff <= 21600:
+                ranges[0][1] += 1
+            elif diff <= 86400:
+                ranges[1][1] += 1
+            elif diff <= 259200:
+                ranges[2][1] += 1
+            else:
+                ranges[3][1] += 1
+
+        count = jobs.count()
+        results = []
+        for r in ranges:
+            percent = (r[1] * 100) / float(count)
+            stat = AvgTimeJobs(r[0], percent)
+            results.append(stat)
         return results
 
     def dehydrate(self, bundle):
