@@ -184,7 +184,7 @@ def upload_file(src_file, gooserver):
 
     else:
         # GSIFTP upload ok. Save meta data.
-        data = {"name": base, "size": size, "url": remote_url}
+        data = {"name": basename, "size": size, "url": remote_url}
         resp = gooserver.do("/api/v1/objects/", "POST", data)
         return resp["resource_uri"]
 
