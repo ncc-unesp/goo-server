@@ -326,7 +326,7 @@ def job_loop():
     os.chdir(orig_pwd)
 
     # remove temporary directory
-    #shutil.rmtree(tmp_dir)
+    shutil.rmtree(tmp_dir)
     
     # update info
     job["status"] = "C"
