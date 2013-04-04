@@ -1,5 +1,5 @@
 .progress {
-    margin-bottom: 0px; !important
+    margin-bottom: 0px !important;
 }
 
 .alert {
@@ -164,6 +164,11 @@ pre {
     -moz-border-radius: 5px;
     border-radius: 5px;
     float: none;
+}
+
+.pie {
+    width: 300px !important;
+    height: 215px !important;
 }
 
 .fbox .fmap {

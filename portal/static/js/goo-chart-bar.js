@@ -30,7 +30,7 @@ var svg = d3.select(divid).append("svg")
 
 
   x.domain(data.map(function(d) { return d.x; }));
-  y.domain([0, d3.max(data, function(d) { return d.y; })]);
+  y.domain([0, d3.max(data, function(d) { return d.percent; })]);
 
   svg.append("g")
       .attr("class", "x axis")
@@ -52,6 +52,6 @@ var svg = d3.select(divid).append("svg")
       .attr("class", "bar")
       .attr("x", function(d) { return x(d.x); })
       .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.y); })
-      .attr("height", function(d) { return height - y(d.y); });
+      .attr("y", function(d) { return y(d.percent); })
+      .attr("height", function(d) { return height - y(d.percent); });
 }

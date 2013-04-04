@@ -49,6 +49,16 @@
         </div>
 
         <div class="fbox center span3">
+            <div class="fchart center" id="chart05"></div>
+            <div class="ftext center">
+                <div class="ftext-number">4874</div>
+                <div class="ftext-title">avg running</div>
+                <div class="ftext-title2">time</div>
+                <p>the average of running time of jobs completed in the <strong>last 24 hours</strong> (in minutes). <a href="">Read more</a></p>
+            </div>
+        </div>
+
+        <div class="fbox center span3">
             <div class="fchart center" id="chart02"></div>
             <div class="ftext center">
                 <div class="ftext-number">152</div>
@@ -58,29 +68,20 @@
             </div>
         </div>
 
-        <div class="fbox center span3">
-            <div class="fchart center" id="chart03"></div>
-            <div class="ftext center">
-                <div class="ftext-number">52200</div>
-                <div class="ftext-title">jobs execution</div>
-                <div class="ftext-title2">time</div>
-                <p>the average of execution time of our jobs, in minutes. <a href="">Read more</a></p>
-            </div>
-        </div>
 </div>
 
 <div class="container">
         <div class="fbox center span3">
 
             <div class="ftext center tall">
-                <div class="ftext-number">0.9</div>
+                <div class="ftext-number" id="goo-stats-quality"></div>
                 <div class="ftext-title">service</div>
                 <div class="ftext-title2">quality</div>
                 <p>the average of execution time of our jobs, in minutes. <a href="">Read more</a></p>
             </div>
 
             <div class="ftext center tall">
-                <div class="ftext-number">222</div>
+                <div class="ftext-number" id="goo-stats-jobs-queue"></div>
                 <div class="ftext-title">jobs in</div>
                 <div class="ftext-title2">queue</div>
                 <p>in the <strong>last hour</strong>, this the amount of jobs running in our cluster. <a href="">Read more</a></p>
@@ -88,14 +89,13 @@
         </div>
 
         <div class="fbox center span6">
-            <div class="fchart center" id="chart05"></div>
+            <div class="fchart pie center" id="chart06"></div>
             <div class="ftext center">
-                <div class="ftext-number">4874</div>
-                <div class="ftext-title">avg running</div>
-                <div class="ftext-title2">time</div>
-                <p>the average of running time of jobs completed in the <strong>last 24 hours</strong> (in minutes). <a href="">Read more</a></p>
+                <p>Percentage of applications which were executed in our grid in the <strong>last month</strong>.</p>
             </div>
         </div>
+
+
 
 </div>
 
@@ -110,26 +110,51 @@
 
 <script language="javascript">
 
-var parseDate = d3.time.format("%d-%b-%y").parse;
+var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%S").parse;
 
-var data = [{'date': parseDate('1-Nov-12'), 'close': 20},
-        {'date': parseDate('1-Dec-12'), 'close': 154},
-        {'date': parseDate('1-Jan-13'), 'close': 249},
-        {'date': parseDate('1-Feb-13'), 'close': 300},
-        {'date': parseDate('1-Mar-13'), 'close': 328}];
+/* Draw Jobs Stats */
+$.get('/api/v1/stats/jobs/').done(function(data) {
+    objects = data.objects;
+    for (o in objects) {
+        item = objects[o];
+        item.date = parseDate(item.date);
+    }
+    draw_line(objects, "#chart01");
+})
 
-var data2 = [{'x': 'a', 'y': 0.1},
-        {'x': 'b', 'y': 0.15},
-        {'x': 'c', 'y': 0.1},
-        {'x': 'd', 'y': 0.5},
-        {'x': 'e', 'y': 0.15}];
+/* Draw Hours Stats */
+$.get('/api/v1/stats/hours/').done(function(data) {
+    objects = data.objects;
+    for (o in objects) {
+        item = objects[o];
+        item.date = parseDate(item.date);
+    }
+    draw_line(objects, "#chart02");
+})
+
+/* Draw Avg Time Stats */
+$.get('/api/v1/stats/avgtime/').done(function(data) {
+    objects = data.objects;
+    draw_bar(objects, "#chart05");
+})
+
+$.get('/api/v1/stats/apps/').done(function(data) {
+    objects = data.objects;
+    draw_pie(objects, "#chart06");
+})
 
 
-draw_line(data, "#chart01");
-draw_line(data, "#chart02");
-draw_line(data, "#chart03");
-
-draw_bar(data2, "#chart05");
+/* Get some metrics */
+$.get('/api/v1/stats/quality/').done(function(data) {
+    objects = data.objects;
+    quality = objects[0].value;
+    $('#goo-stats-quality').text(quality);
+})
+$.get('/api/v1/stats/queue/').done(function(data) {
+    objects = data.objects;
+    queue = objects[0].value;
+    $('#goo-stats-jobs-queue').text(queue);
+})
 
 draw_map("../static/json/world.json", "#map");
 </script>

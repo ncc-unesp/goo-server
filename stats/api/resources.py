@@ -21,9 +21,9 @@ from datetime import datetime
 import time
 
 class StatsJobs(object):
-    def __init__(self, end, count):
-        self.end = end
-        self.count = count
+    def __init__(self, date, value):
+        self.date = date
+        self.value = value
 
 class AvgTimeJobs(object):
     def __init__(self, x, percent):
@@ -57,8 +57,8 @@ class StatsJobsResource(Resource, GenericResource):
         GET    /stats/jobs/          # Get stats about running jobs
     """
 
-    end = fields.DateTimeField(attribute='end')
-    count = fields.IntegerField(attribute='count')
+    date = fields.DateTimeField(attribute='date')
+    value = fields.IntegerField(attribute='value')
 
     class Meta:
         resource_name = 'stats/jobs'
@@ -103,8 +103,8 @@ class StatsHoursResource(Resource, GenericResource):
                                         processed hours
     """
 
-    end = fields.DateTimeField(attribute='end')
-    count = fields.IntegerField(attribute='count')
+    date = fields.DateTimeField(attribute='date')
+    value = fields.IntegerField(attribute='value')
 
     class Meta:
         resource_name = 'stats/hours'
@@ -162,8 +162,8 @@ class StatsQualityResource(Resource, GenericResource):
         GET    /stats/quality/          # Get stats about quality of service
     """
 
-    end = fields.DateTimeField(attribute='end')
-    count = fields.FloatField(attribute='count')
+    date = fields.DateTimeField(attribute='date')
+    value = fields.FloatField(attribute='value')
 
     class Meta:
         resource_name = 'stats/quality'
@@ -220,8 +220,8 @@ class StatsQueueResource(Resource, GenericResource):
         GET    /stats/queue/       # Get stats about jobs in queue
     """
 
-    end = fields.DateTimeField(attribute='end')
-    count = fields.IntegerField(attribute='count')
+    date = fields.DateTimeField(attribute='date')
+    value = fields.IntegerField(attribute='value')
 
     class Meta:
         resource_name = 'stats/queue'
@@ -312,7 +312,7 @@ class StatsAvgTimeResource(Resource, GenericResource):
         count = jobs.count()
         results = []
         for r in ranges:
-            percent = (r[1] * 100) / float(count)
+            percent = r[1] / float(count)
             stat = AvgTimeJobs(r[0], percent)
             results.append(stat)
         return results
