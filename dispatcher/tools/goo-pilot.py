@@ -11,8 +11,8 @@ STDERR_SUFFIX = ".stderr"
 
 GRIDFTP = "globus-url-copy"
 
-PROGRESS_FREQ = 10 # seconds
-CHECKPOINT_FREQ = 20 # seconds
+PROGRESS_FREQ = 300 # seconds
+CHECKPOINT_FREQ = 7200 # seconds
 
 class NoJobError(Exception):
     pass
@@ -251,18 +251,18 @@ def job_loop():
     stdout = job["slug"] + STDOUT_SUFFIX
     stderr = job["slug"] + STDERR_SUFFIX
 
-
-    def execution_thread(job, app_path, stdout, stderr):
-        env = os.environ.copy()
-        if app_path:
+    # set environment (same for the job and the progress hook)
+    env = os.environ.copy()
+    if app_path:
             env["PATH"] = "%s/bin:%s" % (app_path, env.get("PATH",""))
             env["LD_LIBRARY_PATH"] = "%s/lib:%s" % \
                                        (app_path, env.get("LD_LIBRARY_PATH",""))
-        env["GOO_NAME"] = job["slug"]
-        env["GOO_STDOUT"] = stdout
-        env["GOO_STDERR"] = stderr
-        env["GOO_ARGS"] = job["args"]
+    env["GOO_NAME"] = job["slug"]
+    env["GOO_STDOUT"] = stdout
+    env["GOO_STDERR"] = stderr
+    env["GOO_ARGS"] = job["args"]
 
+    def execution_thread(job, app_path, env, stdout, stderr):
         # args
         if job["executable"]:
             args = [ job["executable"] ]
@@ -288,32 +288,32 @@ def job_loop():
         stdout_obj.close()
         stderr_obj.close()
 
-        #set progress to 100% if ret_code = 0
-        if process.returncode == 0:
-            job["progress"] = 100
-
     execution = threading.Thread(target=execution_thread,
-                                 args=(job, app_path, stdout, stderr))
+                                 args=(job, app_path, env, stdout, stderr))
 
-    last_progress = time.clock()
-    last_checkpoint = time.clock()
+    last_progress = time.time()
+    last_checkpoint = time.time()
 
     execution.start()
 
     while execution.is_alive():
-        if (time.clock() - last_progress) > PROGRESS_FREQ:
-            # do progress
-            # TODO
-            print "do progress"
+        if (time.time() - last_progress) > PROGRESS_FREQ:
+            # progress % and ETA
+            update_progress(job, app_path, env)
             last_progress = time.clock()
 
-        if (time.clock() - last_checkpoint) > CHECKPOINT_FREQ:
+        if (time.time() - last_checkpoint) > CHECKPOINT_FREQ:
             # copy checkpoint
             # TODO
-            print "copy checkpoint"
             last_checkpoint = time.clock()
 
         execution.join(60)
+
+    # force a last update
+    update_progress(job, app_path, env)
+    #set progress to 100% if ret_code = 0
+    if job["return_code"] == 0:
+        job["progress"] = 100
 
     # send output files
     try:
@@ -327,9 +327,36 @@ def job_loop():
 
     # remove temporary directory
     shutil.rmtree(tmp_dir)
-    
+
     # update info
     job["status"] = "C"
+
+def update_progress(job, app_path, env):
+    # progress % and ETA
+    hook = "%s/hooks/progress" % app_path
+    progress = None
+    eta = None
+    if os.path.exists(hook):
+        process = Popen(hook, stdout=PIPE, close_fds=True, env=env)
+        (stdout, stderr) = process.communicate()
+        if process.returncode == 0:
+            try:
+                progress = int(stdout.splitlines()[0])
+                eta = int(stdout.splitlines()[1])
+            except (ValueError, IndexError):
+                pass
+    if progress != None:
+        job["progress"] = progress
+    if eta != None:
+        job["eta"] = eta
+
+    # tail
+    hook = "%s/hooks/log" % app_path
+    if os.path.exists(hook):
+        process = Popen(hook, stdout=PIPE, close_fds=True, env=env)
+        (stdout, stderr) = process.communicate()
+        if process.returncode == 0:
+            job["progress_string"] = stdout[:6144]
 
 if __name__ == "__main__":
     # get server url and token from command line
