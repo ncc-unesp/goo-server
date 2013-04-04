@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys, urllib2, urllib, json, time, os, tempfile, threading, shlex, uuid, shutil, stat
+from string import Template
 from subprocess import Popen, PIPE, call
 
 from zipfile import ZipFile
@@ -48,19 +49,26 @@ class Job(dict):
         super(Job,self).__init__(*args, **kw)
 
         self.server = server
-
         # try to get a job
         try:
             data = server.do("/api/v1/dispatcher/", "POST", {"time_left": time_left})
         except urllib2.HTTPError:
             raise NoJobError
-            
+
         super(Job,self).update(data)
+        self._expand_templates()
 
     def __setitem__(self, key, value):
         self.server.do("/api/v1/dispatcher/%d/" % self["id"], "PATCH", {key: value})
-
         super(Job,self).__setitem__(key, value)
+
+    def _expand_templates(self):
+        for key, value in self.iteritems():
+            if type(value) == str or type(value) == unicode:
+                new = Template(value).safe_substitute(self)
+                # direct call parent setitem to avoid
+                # update job info with template expantion
+                super(Job,self).__setitem__(key, new)
 
 def install_app(job):
     sys_app_dir = os.environ.get("OSG_APP", tempfile.gettempdir())
@@ -318,7 +326,7 @@ def job_loop():
     os.chdir(orig_pwd)
 
     # remove temporary directory
-    #shutil.rmtree(tmp_dir)
+    shutil.rmtree(tmp_dir)
     
     # update info
     job["status"] = "C"
