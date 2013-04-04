@@ -3,6 +3,7 @@
       <h1>My Current Jobs</h1>
       <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
 
+      <h3><strong>{{total}}</strong> jobs</h3>
         <div class="content">
         <button onclick="href('#submit');" class="btn btn-large btn-primary">Submit a new job now!</button>
         </div>
@@ -55,13 +56,9 @@
 
     <div class="pagination">
     <ul>
-    <li><a href="#">Prev</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">Next</a></li>
+    {{#paginator}}
+    <li class="{{3}}"><a href="#" onclick="return view_jobs_list({{1}}, {{2}});">{{0}}</a></li>
+    {{/paginator}}
     </ul>
     </div>
 </div>

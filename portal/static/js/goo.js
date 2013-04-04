@@ -47,13 +47,66 @@ function href(anchor){
     location.hash = anchor;
 }
 
-function view_jobs_list() {
+function paginator(meta) {
+    paginator = [];
+
+    total = meta["total_count"];
+    limit = meta["limit"];
+    offset = meta["offset"];
+    pages = total / limit;
+    current = offset/limit;
+
+    c="enabled"
+    if (current == 0)
+        c="disabled"
+    item = ["Previous", (current-1)*limit, limit, c];
+    paginator.push(item);
+
+    plus = 3;
+    if ((current - plus) >0 ) {
+        item = ["...", 0, limit, "enabled"];
+        paginator.push(item);
+    }
+
+    for (i=current-plus; i<current+plus; i++) {
+        if ((i >= 0) && (i < pages)) {
+            c="enabled"
+            if (i == current)
+                c="active";
+            item = [i+1, i*limit, limit, c];
+            paginator.push(item);
+        }
+    }
+
+    if ((current + plus) < pages ) {
+        item = ["...", total-limit, limit, "enabled"];
+        paginator.push(item);
+    }
+
+    c="enabled"
+    if (current == pages-1)
+        c="disabled"
+    item = ["Next", (current+1)*limit, limit, c];
+    paginator.push(item);
+
+    return paginator;
+}
+
+function view_jobs_list(offset, limit) {
+    append = '';
+    if (typeof offset != "undefined")
+        append += "&offset=" + offset;
+    if (typeof limit != "undefined")
+        append += "&limit=" + limit;
+
     $.ajax({
         dataType: "json",
-        url: "/api/v1/jobs/?token=" + get_token(),
+        url: "/api/v1/jobs/?token=" + get_token() + append,
         success: function(data) {
             var resp = {};
             resp["jobs"] = data["objects"];
+            resp["total"] = data["meta"]["total_count"];
+            resp["paginator"] = paginator(data["meta"]);
             resp.status_name = function() {
                 if (this["status"] == "C") return "Completed";
                 if (this["status"] == "P") return "Pending";
