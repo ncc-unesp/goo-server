@@ -30,6 +30,11 @@ class AvgTimeJobs(object):
         self.x = x
         self.percent = percent
 
+class StatsApps(object):
+    def __init__(self, app, percent):
+        self.app = app
+        self.percent = percent
+
 
 class GenericResource():
     def _get_month_range(self, date):
@@ -309,6 +314,55 @@ class StatsAvgTimeResource(Resource, GenericResource):
         for r in ranges:
             percent = (r[1] * 100) / float(count)
             stat = AvgTimeJobs(r[0], percent)
+            results.append(stat)
+        return results
+
+    def dehydrate(self, bundle):
+        del bundle.data['resource_uri']
+        return bundle
+
+class StatsAppsResource(Resource, GenericResource):
+    """This resource handler stats requests.
+
+    Allowed Methods:
+
+        GET    /stats/apps/       # Get stats about applications
+    """
+
+    app = fields.CharField(attribute='app')
+    percent = fields.FloatField(attribute='percent')
+
+    class Meta:
+        resource_name = 'stats/apps'
+        authorization = ReadOnlyAuthorization()
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['']
+
+    def obj_get_list(self, request=None, **kwargs):
+        #now = datetime.utcnow().replace(tzinfo=utc)
+        now = datetime(2011,1,1).replace(tzinfo=utc)
+        begin, end = self._get_month_range(now)
+
+        cache_id = "statsapp"
+
+        cached = cache.get(cache_id)
+        if cached:
+            jobs = cached
+        else:
+            jobs = Job.objects.filter(create_time__gte=begin).filter(create_time__lte=end).filter(status='C')
+            cache.set(cache_id, jobs, 60*30) # 30 min cache
+
+        apps = {}
+        results = []
+        count = jobs.count()
+
+        for job in jobs:
+            app = job.application._name
+            apps[app] = 1 if not apps.has_key(app) else apps[app] + 1
+
+        for app in apps:
+            percent = (apps[app] * 100) / float(count)
+            stat = StatsApps(app, percent)
             results.append(stat)
         return results
 

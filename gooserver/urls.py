@@ -22,6 +22,7 @@ v1_api.register(StatsHoursResource())
 v1_api.register(StatsQualityResource())
 v1_api.register(StatsQueueResource())
 v1_api.register(StatsAvgTimeResource())
+v1_api.register(StatsAppsResource())
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
