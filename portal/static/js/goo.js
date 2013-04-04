@@ -47,7 +47,7 @@ function href(anchor){
     location.hash = anchor;
 }
 
-function paginator(meta) {
+function create_paginator(meta) {
     paginator = [];
 
     total = meta["total_count"];
@@ -56,9 +56,9 @@ function paginator(meta) {
     pages = total / limit;
     current = offset/limit;
 
-    c="enabled"
+    c="enabled";
     if (current == 0)
-        c="disabled"
+        c="disabled";
     item = ["Previous", (current-1)*limit, limit, c];
     paginator.push(item);
 
@@ -70,7 +70,7 @@ function paginator(meta) {
 
     for (i=current-plus; i<current+plus; i++) {
         if ((i >= 0) && (i < pages)) {
-            c="enabled"
+            c="enabled";
             if (i == current)
                 c="active";
             item = [i+1, i*limit, limit, c];
@@ -83,9 +83,9 @@ function paginator(meta) {
         paginator.push(item);
     }
 
-    c="enabled"
+    c="enabled";
     if (current == pages-1)
-        c="disabled"
+        c="disabled";
     item = ["Next", (current+1)*limit, limit, c];
     paginator.push(item);
 
@@ -106,7 +106,7 @@ function view_jobs_list(offset, limit) {
             var resp = {};
             resp["jobs"] = data["objects"];
             resp["total"] = data["meta"]["total_count"];
-            resp["paginator"] = paginator(data["meta"]);
+            resp["paginator"] = create_paginator(data["meta"]);
             resp.status_name = function() {
                 if (this["status"] == "C") return "Completed";
                 if (this["status"] == "P") return "Pending";
