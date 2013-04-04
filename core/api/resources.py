@@ -8,7 +8,7 @@ from core.models import *
 from storage.api.resources import ObjectResource
 
 from core.auth import UserTokenAuthentication
-from tastypie.authentication import BasicAuthentication
+from tastypie.authentication import Authentication, BasicAuthentication
 from tastypie.authorization import Authorization, ReadOnlyAuthorization
 
 from django.utils.timezone import now
@@ -96,7 +96,7 @@ class ApplicationResource(ModelResource):
 
     class Meta:
         resource_name = 'apps'
-        authentication = UserTokenAuthentication()
+        authentication = Authentication()
         authorization = ReadOnlyAuthorization()
         queryset = Application.objects.all()
         list_allowed_methods = ['get']
