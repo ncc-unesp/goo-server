@@ -157,6 +157,7 @@ class JobResource(ModelResource):
         else:
             # detail request
             bundle.data['slug'] = slugify(bundle.obj.name)
+        bundle.data['app_name'] = bundle.obj.application
 
         return bundle
 

@@ -45,7 +45,6 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 class Application(models.Model):
     """Bla bla bla."""
-
     _name = models.CharField(max_length=255)
     _version = models.CharField(max_length=63)
 

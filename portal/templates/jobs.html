@@ -17,6 +17,7 @@
                 <th width="20%">Job Name</th>
                 <th width="25%">App Name</th>
                 <th width="25%">Progress</th>
+                <th></th>
                 <th width="10%">Priority</th>
                 <th width="10%">Status</th>
                 <th width="5%">Action</th>
@@ -33,11 +34,12 @@
                     <div class="bar" style="width: {{progress}}%;"></div>
                     </div>
                 </td>
+                <td>{{progress}}%</td>
                 <td>{{priority}}</td>
                 <td><span class="label label-success">{{status_name}}</span></td>
                 <td>
                     <div class="btn-group">
-                        <button class="btn btn-mini btn-info"><i class="icon-minus-sign icon-white"></i> Cancel</button>
+                        <button class="btn btn-mini btn-warning"><i class="icon-minus-sign icon-white"></i> Cancel</button>
                         <button class="btn btn-mini btn-danger"><i class="icon-remove icon-white"></i> Remove</button>
                     </div>
                 </td>
