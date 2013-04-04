@@ -347,23 +347,25 @@ class StatsAppsResource(Resource, GenericResource):
 
         cached = cache.get(cache_id)
         if cached:
-            jobs = cached
+            results = cached
         else:
             jobs = Job.objects.filter(create_time__gte=begin).filter(create_time__lte=end).filter(status='C')
-            cache.set(cache_id, jobs, 60*30) # 30 min cache
 
-        apps = {}
-        results = []
-        count = jobs.count()
+            apps = {}
+            results = []
+            count = jobs.count()
 
-        for job in jobs:
-            app = job.application._name
-            apps[app] = 1 if not apps.has_key(app) else apps[app] + 1
+            for job in jobs:
+                app = job.application._name
+                apps[app] = 1 if not apps.has_key(app) else apps[app] + 1
 
-        for app in apps:
-            percent = (apps[app] * 100) / float(count)
-            stat = StatsApps(app, percent)
-            results.append(stat)
+            for app in apps:
+                percent = (apps[app] * 100) / float(count)
+                stat = StatsApps(app, percent)
+                results.append(stat)
+
+            cache.set(cache_id, results, 60*30) # 30 min cache
+
         return results
 
     def dehydrate(self, bundle):
