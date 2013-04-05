@@ -84,7 +84,7 @@ function create_paginator(meta) {
     }
 
     c="enabled";
-    if (current == pages-1)
+    if ((pages <= (plus*2)+1) || (current == pages-1))
         c="disabled";
     item = ["Next", (current+1)*limit, limit, c];
     paginator.push(item);
