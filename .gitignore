@@ -9,3 +9,5 @@ src/
 gooserver/src/
 docs/coverage/
 docs/build/
+static/
+portal/static/docs/

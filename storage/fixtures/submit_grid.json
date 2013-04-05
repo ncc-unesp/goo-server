@@ -1,0 +1,11 @@
+[
+  {
+    "pk": 1,
+    "model": "storage.dataproxyserver",
+    "fields": {
+      "name": "submit server @ GridUNESP",
+      "url": "https://submit.grid.unesp.br:8001/",
+      "enabled": true
+    }
+  }
+]

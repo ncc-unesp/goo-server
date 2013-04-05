@@ -2,7 +2,7 @@
 
 # You can set these variables from the command line.
 SPHINXBUILD   = sphinx-build
-BUILDDIR      = ../portal/static
+BUILDDIR      = ../portal/static/docs
 
 .PHONY: clean html
 
