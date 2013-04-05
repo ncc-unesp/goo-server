@@ -108,6 +108,9 @@ class Application(models.Model):
             return []
 
 class Job(models.Model):
+    class Meta:
+        ordering = ['-id']
+
     name = models.CharField(max_length=20, blank=False)
     application = models.ForeignKey(Application)
     # 0-100 (%) value or -1 when not available

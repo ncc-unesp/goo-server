@@ -133,6 +133,11 @@ class JobResource(ModelResource):
         authorization = Authorization()
         # Remove from query deleted jobs
         queryset = Job.objects.filter(~Q(status = 'D'))
+        ordering = ['id', 'status']
+        filtering = {
+            'status': ('exact'),
+            'return_code': ('exact', 'gt'),
+        }
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'patch', 'delete']
         list_exclude = ['return_code', 'hosts', 'eta', 'memory_in_use',
