@@ -74,7 +74,7 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 
-STATIC_ROOT = PROJECT_PATH + '/static/'
+STATIC_ROOT = PROJECT_PATH + '/portal/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -141,7 +141,6 @@ INSTALLED_APPS = (
     'core',
     'dispatcher',
     'storage',
-    'portal',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

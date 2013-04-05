@@ -31,7 +31,7 @@ var g = svg.append("g")
     .attr("id", "states");
 
 
-d3.json('../static/json/world.json', function(collection) {
+d3.json('json/world.json', function(collection) {
     g.selectAll('path')
         .data(collection.features)
         .enter().append('path')
