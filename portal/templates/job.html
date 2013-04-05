@@ -45,10 +45,28 @@
       </div>
 
       <div class="span3">
-            <a href="#" class="btn btn-danger btn-large  btn-block">
+            <button type="button" class="btn btn-danger btn-large btn-block" data-toggle="modal" data-target="#confirm-remove">
                 <strong style="display: block;"><i class="icon-remove icon-white"></i> Remove</strong>
                 <small>remove permanently this job!</small>
-            </a>
+            </button>
+
+            <!-- Modal -->
+            <div id="confirm-remove" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">Confirm remove job {{name}} with id {{id}}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>This operation is irreversible. You will remove this job from our Grid system, permanently.</p>
+                    <p>Are you sure about this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                    <button class="btn btn-danger">Yes, please remove job {{name}} ({{id}})</button>
+                </div>
+            </div>
+            <!-- /Modal -->
+
             <div class="text-center">
             - or -
             </div>
