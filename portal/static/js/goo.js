@@ -227,3 +227,19 @@ function find_dataproxy(callback){
     else
         callback(goo_dataproxy_server);
 }
+
+function delete_job(jid){
+    if (typeof jid == "number") {
+        $.ajax({
+            type:"DELETE",
+            url: "/api/v1/jobs/"+ jid +"/?token=" + get_token(),
+            error: function (data) {
+                return do_alert("Error deleting job " + jid + ".");
+            },
+            success: function (data) {
+                view_change();
+                return do_info("Job "+ jid +" successfully deleted.");
+            }
+        });
+    }
+}
