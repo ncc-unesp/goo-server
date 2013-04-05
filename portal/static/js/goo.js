@@ -147,7 +147,7 @@ function do_login() {
     password = $("#login_box>input[name=password]")[0].value;
 
     if (username == "") {
-        do_alert("Missing username");
+        do_error("Missing username");
         return;
         }
 
@@ -160,7 +160,7 @@ function do_login() {
         data: "{}", //mandatory
         url: "/api/v1/auth/",
         error: function(data) {
-                do_alert("Wrong login/password");
+                do_error("Wrong login/password");
             },
         success: function(data) {
                 $.cookie("user", username);
@@ -172,11 +172,26 @@ function do_login() {
     return false;
     };
 
-function do_alert(msg) {
+function do_error(msg) {
+    $('.alert').removeClass('alert-error');
+    $('.alert').removeClass('alert-info');
+    $('.alert').addClass('alert-error');
     $(".alert > #msg").html(msg);
+    $(".alert #title").html("Error");
     $('.alert').fadeIn(1000);
     $('.alert').delay(5000).fadeOut(1000);
 }
+
+function do_info(msg) {
+    $('.alert').removeClass('alert-error');
+    $('.alert').removeClass('alert-info');
+    $('.alert').addClass('alert-info');
+    $(".alert > #msg").html(msg);
+    $(".alert #title").html("Info");
+    $('.alert').fadeIn(1000);
+    $('.alert').delay(5000).fadeOut(1000);
+}
+
 
 function do_logout() {
     $.removeCookie("user");
@@ -212,12 +227,12 @@ function find_dataproxy(callback){
             type:"GET",
             url: "/api/v1/dataproxyserver/?token=" + get_token(),
             error: function (data) {
-                return do_alert("Server error. (Request dataproxy failed)");
+                return do_error("Server error. (Request dataproxy failed)");
             },
             success: function (data) {
                 server = data["objects"][0];
                 if(typeof server == 'undefined')
-                    return do_alert("Server error. (No data server found)");
+                    return do_error("Server error. (No data server found)");
                 addr = server.url
                 goo_dataproxy_server = addr;
                 callback(addr);
@@ -234,7 +249,7 @@ function delete_job(jid){
             type:"DELETE",
             url: "/api/v1/jobs/"+ jid +"/?token=" + get_token(),
             error: function (data) {
-                return do_alert("Error deleting job " + jid + ".");
+                return do_error("Error deleting job " + jid + ".");
             },
             success: function (data) {
                 view_change();

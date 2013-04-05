@@ -5,39 +5,32 @@
       <div class="span8">
         <table class="table table-condensed">
             <tr>
+                <th scope="row">Name</th>
+                <td>{{name}}</td>
                 <th scope="row" width="15%">Job ID</th>
                 <td>{{id}} <span class="label label-success">{{status_name}}</span></td>
             </tr>
             <tr>
-                <th scope="row">Name</th>
-                <td>{{name}}</td>
-            </tr>
-            <tr>
                 <th scope="row">App Name</th>
-                <td>{{app_name}}</td>
+                <td colspan="3">{{app_name}}</td>
             </tr>
             <tr>
                 <th scope="row">Executable</th>
-                <td>{{executable}} {{args}}</td>
+                <td colspan="3">{{executable}} {{args}}</td>
             </tr>
             <tr>
                 <th scope="row">Progress</th>
-                <td>{{progress}}%</td>
+                <td colspan="3">{{progress}}%</td>
             </tr>
             <tr>
                 <th scope="row">Return Code</th>
                 <td>{{return_code}}</td>
-            </tr>
-            <tr>
                 <th scope="row">Priority</th>
                 <td>{{priority}}</td>
             </tr>
-
             <tr>
                 <th scope="row">Created at</th>
                 <td>{{create_time}}</td>
-            </tr>
-            <tr>
                 <th scope="row">Modified at</th>
                 <td>{{modification_time}}</td>
             </tr>
