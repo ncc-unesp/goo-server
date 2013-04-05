@@ -114,7 +114,7 @@ class Job(models.Model):
     name = models.CharField(max_length=20, blank=False)
     application = models.ForeignKey(Application)
     # 0-100 (%) value or -1 when not available
-    progress = models.PositiveIntegerField(default='', null=True, blank=True)
+    progress = models.PositiveIntegerField(default=None, null=True)
     hosts = models.PositiveIntegerField(default=1)
     cores_per_host = models.PositiveIntegerField(default=1)
     priority = models.PositiveIntegerField(default=0)
