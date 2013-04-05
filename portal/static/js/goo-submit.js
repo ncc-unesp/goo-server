@@ -32,14 +32,14 @@ function upload_files(addr){
     var xhr = new XMLHttpRequest();
 
     xhr.onerror = function (data) {
-            return do_alert("File upload error.");
+            return do_error("File upload error.");
         };
 
     xhr.onload = function(e) {
         data = $.parseJSON(this.response);
         input_obj = data["resource_uri"];
         if(typeof input_obj == 'undefined')
-            return do_alert("Error on upload. (No object id found)");
+            return do_error("Error on upload. (No object id found)");
         post_job([input_obj]);
     };
 
@@ -71,7 +71,7 @@ function post_job(input_objs) {
         //data: $(form).serializeArray(),
         contentType: "application/json",
         error: function (data) {
-            return do_alert("Error in the server. (Post job failed)");
+            return do_error("Error in the server. (Post job failed)");
         },
         success: function(data) {
             var resp = data;
@@ -85,7 +85,7 @@ function load_applications(){
         url: "/api/v1/apps/?token=" + get_token(),
         dataType: "json",
         error: function (data) {
-            return do_alert("Error getting jobs list.");
+            return do_error("Error getting jobs list.");
         },
         success: function(data) {
             for (i in data["objects"]) {
@@ -116,7 +116,7 @@ function load_template(){
         url: app + "?token=" + get_token(),
         dataType: "json",
         error: function (data) { 
-            return do_alert("Error getting template.");
+            return do_error("Error getting template.");
         },
         success: function(data) {
             // fill description and usage

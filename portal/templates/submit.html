@@ -1,14 +1,13 @@
 <script id="submit" type="text/html">
 <div class="container">
     <h1>Submit a new job</h1>
-        <p>Plese read the <a href="#">User Guide</a>, before submit a job.</p>
-        <p>If you are having problems to submit a job, <a href="#">contact us</a>, or read <a href="#">our FAQ</a></p>
+
     <hr>
 
     <div class="row">
-      <div class="span5">
-      <h4>1. Please, choose an application</h4><hr>
+      <div class="span6">
       <form id="submit_form" onsubmit="return create_job();" class="form-horizontal">
+
          <div class="control-group" id="input_group_application">
             <label class="control-label" for="apps_select">Application</label>
             <div class="controls">
@@ -16,33 +15,22 @@
                     <option value=""></option>
                 </select>
             </div>
-       </div>
             <p id="application_description"></p>
             <p id="application_usage"></p>
-
-
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Submit Job</button>
-            <button type="button" class="btn" onclick="href('#jobs');">Cancel</button>
-        </div>
-        </form>
         </div>
 
-        <div class="span6">
-<h4>2. Fill all required fields</h4><hr>
 <div class="accordion">
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle">Required</a>
     </div>
-    <div class="accordion-body collapse">
+    <div class="accordion-body collapse in">
       <div class="accordion-inner">
+        Required fields...
         <div id="application_required"></div>
       </div>
     </div>
   </div>
-<br>
-<h4>3. Theses fields are optional</h4><hr>
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle">Optional</a>
@@ -68,6 +56,17 @@
 <div id="application_options">
 </div> <!-- end of application_options -->
 
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit Job</button>
+            <button type="button" class="btn" onclick="href('#jobs');">Cancel</button>
+        </div>
+        </form>
+        </div>
+
+        <div class="span4">
+        <h3>About job submission</h3>
+        <p>Plese read the <a href="#">User Guide</a>, before submit a job.</p>
+        <p>If you are having problems to submit a job, <a href="#">contact us</a>, or read <a href="#">our FAQ</a></p>
         </div>
         </div>
 
