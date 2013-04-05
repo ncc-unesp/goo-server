@@ -7,6 +7,28 @@
             "url": "globus://ce.grid.unesp.br/jobmanager-pbs?queue=short",
             "max_hosts": 512,
             "max_cores": 8,
+            "max_time": 10800
+        }
+    },
+    {  
+        "pk": 2,
+        "model": "dispatcher.site",
+        "fields": {
+            "name": "GridUNESP - medium",
+            "url": "globus://ce.grid.unesp.br/jobmanager-pbs?queue=medium",
+            "max_hosts": 512,
+            "max_cores": 8,
+            "max_time": 86400
+        }
+    },
+    {  
+        "pk": 3,
+        "model": "dispatcher.site",
+        "fields": {
+            "name": "GridUNESP - long",
+            "url": "globus://ce.grid.unesp.br/jobmanager-pbs?queue=long",
+            "max_hosts": 512,
+            "max_cores": 8,
             "max_time": 2592000
         }
     }
