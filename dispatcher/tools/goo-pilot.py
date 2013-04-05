@@ -219,10 +219,9 @@ def send_files(job, tmp_dir):
 
     os.chdir(orig_pwd)
 
-def job_loop():
+def job_loop(remaining_time):
     # get a job
-    #TODO: control the time left
-    job = Job(server, 400000)
+    job = Job(server, remaining_time)
 
     # create a temporary directory
     # If dir=None in mkstemp, it searchs automatically for TMPDIR and TEMP...
@@ -362,9 +361,14 @@ if __name__ == "__main__":
     # get server url and token from command line
     server = GooServer(sys.argv[1], sys.argv[2])
 
+    # get lease time
+    lease_time = int(os.environ.get("GOO_LEASE_TIME", 86400))
+    limit_time = time.time() + lease_time
+
     while True:
         try:
-            job_loop()
+            remaining_time = limit_time - time.time()
+            job_loop(remaining_time)
         except NoJobError:
             print "No more jobs."
             exit(0)

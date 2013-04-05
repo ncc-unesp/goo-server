@@ -45,8 +45,9 @@ def submit(pilot):
 
     # globus-job-submit ce.grid.unesp.br/jobmanager-pbs -x (queue=long) -s /usr/bin/id args
     cmd = ['/usr/bin/globus-job-submit',
-           '%s%s' % (site_addr.hostname, site_addr.path), 
-           '-x', '(%s)' % site_addr.query, 
+           '%s%s' % (site_addr.hostname, site_addr.path),
+           '-x', '(%s)' % site_addr.query,
+           '-env', 'GOO_LEASE_TIME=%d' % pilot.site.max_time,
            '-s', exec_path, url, pilot.token]
 
     devnull = open(os.devnull, 'w')
