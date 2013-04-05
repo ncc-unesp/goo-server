@@ -1,11 +1,13 @@
 <script id="submit" type="text/html">
 <div class="container">
     <h1>Submit a new job</h1>
-
+        <p>Plese read the <a href="#">User Guide</a>, before submit a job.</p>
+        <p>If you are having problems to submit a job, <a href="#">contact us</a>, or read <a href="#">our FAQ</a></p>
     <hr>
 
     <div class="row">
-      <div class="span6">
+      <div class="span7">
+      <h4>1. Please, choose an application</h4><hr>
       <form id="submit_form" onsubmit="return create_job();" class="form-horizontal">
 
          <div class="control-group" id="input_group_application">
@@ -15,10 +17,9 @@
                     <option value=""></option>
                 </select>
             </div>
-            <p id="application_description"></p>
-            <p id="application_usage"></p>
-        </div>
+       </div>
 
+<h4>2. Fill all required fields</h4><hr>
 <div class="accordion">
   <div class="accordion-group">
     <div class="accordion-heading">
@@ -31,6 +32,8 @@
       </div>
     </div>
   </div>
+<br>
+<h4>3. Theses fields are optional</h4><hr>
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle">Optional</a>
@@ -64,9 +67,9 @@
         </div>
 
         <div class="span4">
-        <h3>About job submission</h3>
-        <p>Plese read the <a href="#">User Guide</a>, before submit a job.</p>
-        <p>If you are having problems to submit a job, <a href="#">contact us</a>, or read <a href="#">our FAQ</a></p>
+        <h4>Description about your application</h4>
+            <p id="application_description"></p>
+            <p id="application_usage"></p>
         </div>
         </div>
 
