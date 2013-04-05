@@ -114,7 +114,11 @@ function view_jobs_list(offset, limit) {
                 return this["status"];
             };
             container_render('jobs', resp);
-        }})};
+        }})
+
+    return false;
+};
+
 
 function view_job_detail(id) {
     $.ajax({
