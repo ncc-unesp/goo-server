@@ -16,30 +16,15 @@ framework.
 
 """
 import os
-import sys
-
-sys.path.insert(0, "/var/lib/goo/goo-server")
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gooserver.settings")
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
-#from django.core.wsgi import get_wsgi_application
-#application = get_wsgi_application()
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
 
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication
 # application = HelloWorldApplication(application)
-
-from django.contrib.auth import authenticate
-
-def check_password(environ, user, password):
-    user = authenticate(user=user, password=password)
-    if user and user.is_active:
-        return True
-    else:
-        return False
-
-from django.core.handlers.wsgi import WSGIHandler
-application = WSGIHandler()
