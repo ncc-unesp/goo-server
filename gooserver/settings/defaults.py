@@ -14,12 +14,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-# Testing environment
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/tmp/goo-server.sqlite',                      # Or path to database file if using sqlite3.
-# Production environment
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-#        'NAME': 'goo-server',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -27,13 +23,7 @@ DATABASES = {
     }
 }
 
-PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
-
-# Set server contact url (to inform goo-pilot.py)
-# Testing environment
-BASE_URL = 'http://localhost:8000'
-# Production environment
-#BASE_URL = 'http://submit.grid.unesp.br:8000'
+PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), "../.."))
 
 sys.path.insert(0, os.path.join(PROJECT_PATH, "vendors"))
 
