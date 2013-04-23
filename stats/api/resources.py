@@ -312,7 +312,10 @@ class StatsAvgTimeResource(Resource, GenericResource):
         count = jobs.count()
         results = []
         for r in ranges:
-            percent = r[1] / float(count)
+            try:
+                percent = r[1] / float(count)
+            except ZeroDivisionError:
+                percent = 0
             stat = AvgTimeJobs(r[0], percent)
             results.append(stat)
         return results
