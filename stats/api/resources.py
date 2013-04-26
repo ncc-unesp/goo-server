@@ -188,7 +188,7 @@ class StatsResource(Resource, GenericResource):
                 if job.end_time is None:
                     end_time = end
                 else:
-                    end_time = min(end, job.edit_ime)
+                    end_time = min(end, job.end_time)
 
                 if job.start_time is None:
                     start_time = begin
