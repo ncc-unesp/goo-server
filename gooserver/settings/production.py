@@ -18,3 +18,5 @@ DATABASES = {
 # Set server contact url (to inform goo-pilot.py)
 # Production environment
 BASE_URL = 'https://submit.grid.unesp.br'
+
+WSGI_APPLICATION = 'gooserver.wsgi-production.application'

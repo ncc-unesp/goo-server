@@ -18,3 +18,5 @@ DATABASES = {
 # Set server contact url (to inform goo-pilot.py)
 # Testing environment
 BASE_URL = 'https://beta.grid.unesp.br'
+
+WSGI_APPLICATION = 'gooserver.wsgi-beta.application'

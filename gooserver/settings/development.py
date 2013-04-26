@@ -18,3 +18,5 @@ DATABASES = {
 # Set server contact url (to inform goo-pilot.py)
 # Testing environment
 BASE_URL = 'http://localhost:8000'
+
+WSGI_APPLICATION = 'gooserver.wsgi-development.application'
