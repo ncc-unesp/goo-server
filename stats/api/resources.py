@@ -180,14 +180,23 @@ class StatsResource(Resource, GenericResource):
         else:
             jobs = Job.objects.filter(Q(end_time__range=[begin, end]) | \
                                       Q(start_time__range=[begin, end]) | \
-                                      Q(start_time__lte=begin) & Q(end_time__gte=end))
+                                      Q(start_time__lte=begin) & \
+                                      Q(end_time__gte=end))
 
             processed_hours = 0
             for job in jobs:
-                end_time = end if job.end_time is None else min(end, job.end_time)
-                start_time = begin if job.start_time is None else max(begin, job.start_time)
-                delta = end_time - start_time
-                processed_hours += (delta.seconds * job.hosts * job.cores_per_host) / 60 ** 2
+                if jobs.end_time is None:
+                    end_time = end
+                else:
+                    end_time = min(end, job.edit_ime)
+
+                if job.start_time is None:
+                    start_time = begin
+                else:
+                    max(begin, job.start_time)
+
+                d = end_time - start_time
+                processed_hours += (d.seconds*job.hosts*job.cores_per_host)/60**2
 
             cache.set(cache_id, processed_hours, 60*30) # 30 min cache
 
@@ -196,24 +205,15 @@ class StatsResource(Resource, GenericResource):
 
     def obj_get_list(self, request=None, **kwargs):
 
-        queue_size = self._get_queue_size()
-        running_jobs = self._get_running_jobs()
-        quality = self._get_quality()
-        avg_time = self._get_avg_time()
-        processed_hours = self._get_processed_hours()
+        values = {'queue': ['Jobs in queue', self._get_queue_size()],
+                  'running': ['Running jobs', self._get_running_jobs()],
+                  'quality': ['Quality of service', self._get_quality()],
+                  'avg_time': ['Quality of service', self._get_quality()],
+                  'hours': ['Processed Hours', self._get_processed_hours()]}
 
         results = []
-        queue_size = Stats('queue', 'Jobs in queue', queue_size)
-        running_jobs = Stats('running', 'Running jobs', running_jobs)
-        quality = Stats('quality', 'Quality of service', quality)
-        avg_time = Stats('avg_time', 'Avg running time', avg_time)
-        processed_hours = Stats('processed_hours', 'Processed Hours', processed_hours)
-
-        results.append(queue_size)
-        results.append(running_jobs)
-        results.append(quality)
-        results.append(avg_time)
-        results.append(processed_hours)
+        for v in values.items():
+            results.append(Stats(v[0], v[1][0], v[1][1]))
 
         return results
 
@@ -257,7 +257,8 @@ class StatsJobsResource(Resource, GenericResource):
             begin, end = self._get_month_range(now - relativedelta(months = i))
             jobs = Job.objects.filter(Q(end_time__range=[begin, end]) | \
                                       Q(start_time__range=[begin, end]) | \
-                                      Q(start_time__lte=begin) & Q(end_time__gte=end))
+                                      Q(start_time__lte=begin) & \
+                                      Q(end_time__gte=end))
 
 
             stat = StatsJobs(end, jobs.count())
@@ -301,7 +302,8 @@ class StatsHoursResource(Resource, GenericResource):
         for i in range(0,12):
             begin, end = self._get_month_range(now - relativedelta(months = i))
 
-            cache_id = "%d_%s_%s" % (i, time.mktime(begin.timetuple()), time.mktime(end.timetuple()))
+            cache_id = "%d_%s_%s" % (i, time.mktime(begin.timetuple()),
+                                                    time.mktime(end.timetuple()))
 
             cached = cache.get(cache_id)
             if cached:
@@ -309,14 +311,23 @@ class StatsHoursResource(Resource, GenericResource):
             else:
                 jobs = Job.objects.filter(Q(end_time__range=[begin, end]) | \
                                           Q(start_time__range=[begin, end]) | \
-                                          Q(start_time__lte=begin) & Q(end_time__gte=end))
+                                          Q(start_time__lte=begin) & \
+                                          Q(end_time__gte=end))
 
                 count = 0
                 for job in jobs:
-                    end_time = end if job.end_time is None else min(end, job.end_time)
-                    start_time = begin if job.start_time is None else max(begin, job.start_time)
+                    if job.end_time is None:
+                        end_time = end
+                    else:
+                        end_time = min(end, job.end_time)
+
+                    if job.start_time is None:
+                        start_time = begin
+                    else:
+                        start_time = max(begin, job.start_time)
+
                     delta = end_time - start_time
-                    count += (delta.seconds * job.hosts * job.cores_per_host) / 60 ** 2
+                    count += (delta.seconds*job.hosts*job.cores_per_host)/60**2
 
                 stat = StatsJobs(end, count)
                 results.append(stat)
@@ -357,7 +368,8 @@ class StatsAvgTimeResource(Resource, GenericResource):
         if cached:
             jobs = cached
         else:
-            jobs = Job.objects.filter(create_time__gte=begin).filter(create_time__lte=end).filter(status='C')
+            jobs = Job.objects.filter(create_time__gte=begin)
+            jobs = jobs.filter(create_time__lte=end).filter(status='C')
             cache.set(cache_id, jobs, 60*30) # 30 min cache
 
         ranges = [['<6hours',  0],
@@ -420,7 +432,8 @@ class StatsAppsResource(Resource, GenericResource):
         if cached:
             results = cached
         else:
-            jobs = Job.objects.filter(create_time__gte=begin).filter(create_time__lte=end).filter(status='C')
+            jobs = Job.objects.filter(create_time__gte=begin)
+            jobs = jobs.filter(create_time__lte=end).filter(status='C')
 
             apps = {}
             results = []
