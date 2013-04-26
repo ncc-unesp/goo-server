@@ -193,7 +193,7 @@ class StatsResource(Resource, GenericResource):
                 if job.start_time is None:
                     start_time = begin
                 else:
-                    max(begin, job.start_time)
+                    start_time = max(begin, job.start_time)
 
                 d = end_time - start_time
                 processed_hours += (d.seconds*job.hosts*job.cores_per_host)/60**2
