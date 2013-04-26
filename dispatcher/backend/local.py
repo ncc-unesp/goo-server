@@ -6,14 +6,14 @@ from subprocess import Popen, PIPE
 import os, signal
 from urlparse import urlparse
 
-from gooserver.settings import PROJECT_PATH, BASE_URL
+from django.conf import settings
 
 def submit(pilot):
     """
     submit a pilot job using local protocol
     """
-    exec_path = os.path.join(PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
-    url = BASE_URL
+    exec_path = os.path.join(settings.PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
+    url = settings.BASE_URL
     pid = Popen([exec_path, url, pilot.token],
                 close_fds=True, stdout=PIPE, stderr=PIPE).pid
     pilot.url = 'local://%d' % pid

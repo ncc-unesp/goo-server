@@ -2,7 +2,7 @@
 from subprocess import Popen, PIPE, call, check_output
 import os
 
-from gooserver.settings import PROJECT_PATH, BASE_URL
+from django.conf import settings
 
 import logging
 logger = logging.getLogger(__name__)
@@ -40,8 +40,8 @@ def submit(pilot):
     
     site_addr = urlparse.urlparse(pilot.site.url)
 
-    exec_path = os.path.join(PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
-    url = BASE_URL
+    exec_path = os.path.join(settings.PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
+    url = settings.BASE_URL
 
     # globus-job-submit ce.grid.unesp.br/jobmanager-pbs -x (queue=long) -s /usr/bin/id args
     cmd = ['/usr/bin/globus-job-submit',
