@@ -41,7 +41,7 @@
         <div class="fbox center span3">
             <div class="fchart center" id="chart01"></div>
             <div class="ftext center">
-                <div class="ftext-number">5252</div>
+                <div class="ftext-number" id="goo-stats-jobs-running"></div>
                 <div class="ftext-title">running</div>
                 <div class="ftext-title2">jobs</div>
                 <p>this is the amount of jobs running <strong>just now</strong>
@@ -52,7 +52,7 @@ in our cluster. <a href="">Read more</a></p>
         <div class="fbox center span3">
             <div class="fchart center" id="chart05"></div>
             <div class="ftext center">
-                <div class="ftext-number">4874</div>
+                <div class="ftext-number" id="goo-stats-avg-time"></div>
                 <div class="ftext-title">avg running</div>
                 <div class="ftext-title2">time</div>
                 <p>the average of running time of completed jobs in the
@@ -63,7 +63,7 @@ in our cluster. <a href="">Read more</a></p>
         <div class="fbox center span3">
             <div class="fchart center" id="chart02"></div>
             <div class="ftext center">
-                <div class="ftext-number">152</div>
+                <div class="ftext-number" id="goo-stats-processed-hours"></div>
                 <div class="ftext-title">processed</div>
                 <div class="ftext-title2">hours</div>
                 <p>in the <strong>current month</strong>, this the amount of
@@ -151,15 +151,25 @@ $.get('/api/v1/stats/apps/').done(function(data) {
 
 
 /* Get some metrics */
-$.get('/api/v1/stats/quality/').done(function(data) {
+$.get('/api/v1/stats/general/').done(function(data) {
     objects = data.objects;
-    quality = objects[0].value;
-    $('#goo-stats-quality').text(quality);
-})
-$.get('/api/v1/stats/queue/').done(function(data) {
-    objects = data.objects;
+
     queue = objects[0].value;
     $('#goo-stats-jobs-queue').text(queue);
+
+    running = objects[1].value;
+    $('#goo-stats-jobs-running').text(running);
+
+    quality = objects[2].value;
+    $('#goo-stats-quality').text(quality);
+
+    avg_time = objects[3].value;
+    $('#goo-stats-avg-time').text(avg_time);
+
+    processed_hours = objects[4].value;
+    $('#goo-stats-processed-hours').text(processed_hours);
+
+
 })
 
 // draw_map("json/world.json", "#map");
