@@ -188,6 +188,12 @@ class Job(models.Model):
             old_self = Job.objects.get(pk=self.id)
             last_status = old_self.status
 
+        #save times
+        if (self.status == 'R') and (last_status != 'R'):
+            self.start_time = now()
+        if (self.status != 'R') and (last_status == 'R'):
+            self.end_time = now()
+
         super(Job, self).save(*args, **kwargs)
         new_self = Job.objects.get(pk=self.id)
 
