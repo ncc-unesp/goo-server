@@ -1,6 +1,5 @@
 function draw_map(map, divid) {
 
-
 var width = 1024,
     height = 500,
     centered;
@@ -12,9 +11,10 @@ var projection = d3.geo.equirectangular()
 var path = d3.geo.path()
     .projection(projection);
 
- var color = d3.scale.linear()
-    .domain([2, 3, 5, 13, 20, 25])
-    .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+var color = d3.scale.linear()
+    .domain([1, 15, 16, 17, 20, 30])
+    //.range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+    .range(["#00becc", "#0092cc", "#0088cc", "#0074cc", "#0060cc", "#0044cc"]);
 
 var svg = d3.select(divid).append("svg")
     .attr("width", width)
@@ -30,7 +30,6 @@ var g = svg.append("g")
     .append("g")
     .attr("id", "states");
 
-
 d3.json('json/world.json', function(collection) {
     g.selectAll('path')
         .data(collection.features)
@@ -41,6 +40,5 @@ d3.json('json/world.json', function(collection) {
         .style('stroke', 'white')
         .style('stroke-width', 1);
 }); 
-
 
 }
