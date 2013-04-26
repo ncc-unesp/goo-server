@@ -185,7 +185,7 @@ class StatsResource(Resource, GenericResource):
 
             processed_hours = 0
             for job in jobs:
-                if jobs.end_time is None:
+                if job.end_time is None:
                     end_time = end
                 else:
                     end_time = min(end, job.edit_ime)
