@@ -9,7 +9,7 @@
             "diskspace": 2048,
             "executable": "/usr/bin/python",
             "hosts": 1,
-            "inputs": "",
+            "inputs": "*.py",
             "maxtime": 43200,
             "memory": 2048,
             "_multi_hosts": true,
@@ -17,10 +17,10 @@
             "_name": "python",
             "_version": "2.7.3",
             "outputs": "",
-            "_required_fields": "args, maxtime, diskspace, memory",
+            "_required_fields": "args, maxtime, diskspace, memory, inputs",
             "_shared_fs": true,
             "_description": "Python is a programming language that lets you work more quickly and integrate your systems more effectively. You can learn to use Python and see almost immediate gains in productivity and lower maintenance costs.",
-            "_usage": "To run a python script, send the file as input and set args to the filename. Alternatively, use only the args: -c 'import os; print os.uname()'"
+            "_usage": "To run a python script, send the file as input and set args to the filename."
         },
         "model": "core.application",
         "pk": 1

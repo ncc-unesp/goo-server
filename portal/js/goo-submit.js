@@ -19,15 +19,20 @@ function upload_files(addr){
     $("#submit_upload_bar").show();
 
     var filesForm = new FormData($("#fake_file_form")[0]);
+    filenames = "";
 
     n_files = 0;
     $("#files_div>:file").each(function () {
         for (i=0; i < this.files.length; i++) {
             filesForm.append("file-" + n_files, this.files[i]);
+            filenames += this.files[i].name + " ";
             n_files++;
         }
     });
     filesForm.append("name", slugify($("#name")[0].value) + "-input.zip");
+
+    // set inputs to file names
+    $('input[name="inputs"]').val(filenames);
 
     var xhr = new XMLHttpRequest();
 
