@@ -254,18 +254,6 @@ function find_dataproxy(callback){
         callback(goo_dataproxy_server);
 }
 
-check_dataproxy(addr, callback){
-    $.ajax({
-        type:"POST",
-        url: "/api/v1/",
-        error: function (data) {
-                return do_error("Error connecting to data server. Probably missing CA certificate.");
-            },
-        
-    });
-    
-}
-
 function delete_job(jid){
     if (typeof jid == "number") {
         $.ajax({
