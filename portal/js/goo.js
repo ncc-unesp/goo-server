@@ -220,7 +220,7 @@ function get_object(id) {
 }
 
 function find_dataproxy(callback){
-    // find a dataproxy server and call upload_files
+    // find a dataproxy server and call callback
     // check for cache
     if (typeof goo_dataproxy_server == "undefined") {
         $.ajax({
@@ -233,14 +233,37 @@ function find_dataproxy(callback){
                 server = data["objects"][0];
                 if(typeof server == 'undefined')
                     return do_error("Server error. (No data server found)");
-                addr = server.url
-                goo_dataproxy_server = addr;
-                callback(addr);
+                addr = server.url;
+                
+                // check if dataproxy is reachable
+                $.ajax({
+                    type:"POST",
+                    url: addr + "/api/v1/",
+                    error: function (data) {
+                            return do_error("Error connecting to data server.<br/>Probably missing CA certificate.");
+                    },
+                    success: function (data) {
+                        goo_dataproxy_server = addr;
+                        callback(addr);
+                    }
+                });
             }
         });
     }
     else
         callback(goo_dataproxy_server);
+}
+
+check_dataproxy(addr, callback){
+    $.ajax({
+        type:"POST",
+        url: "/api/v1/",
+        error: function (data) {
+                return do_error("Error connecting to data server. Probably missing CA certificate.");
+            },
+        
+    });
+    
 }
 
 function delete_job(jid){
