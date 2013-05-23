@@ -44,7 +44,11 @@ function container_render(template, data) {
 };
 
 function href(anchor){
-    location.hash = anchor;
+    // force refresh
+    if (location.hash == anchor)
+        view_change();
+    else
+        location.hash = anchor;
 }
 
 function create_paginator(meta) {
