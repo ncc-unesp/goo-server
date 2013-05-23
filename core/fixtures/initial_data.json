@@ -2,14 +2,14 @@
     {
         "fields": {
             "_app_obj": null,
-            "args": "",
+            "args": "${name}.py",
             "checkpoints": "",
             "_constant_fields": "executable",
             "cores_per_host": 1,
             "diskspace": 2048,
             "executable": "/usr/bin/python",
             "hosts": 1,
-            "inputs": "*.py",
+            "inputs": "${name}.py",
             "maxtime": 43200,
             "memory": 2048,
             "_multi_hosts": true,
