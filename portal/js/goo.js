@@ -171,6 +171,7 @@ function do_login() {
                 $.cookie("token", data["token"]);
                 render_login();
                 href("#jobs");
+                check_cacert();
             }
         });
     return false;
@@ -244,7 +245,7 @@ function find_dataproxy(callback){
                     type:"POST",
                     url: addr + "/api/v1/",
                     error: function (data) {
-                            return do_error("Error connecting to data server.<br/>Probably missing CA certificate.");
+                        return $('#missing-ca-modal').modal();
                     },
                     success: function (data) {
                         goo_dataproxy_server = addr;
@@ -256,6 +257,10 @@ function find_dataproxy(callback){
     }
     else
         callback(goo_dataproxy_server);
+}
+
+function check_cacert(){
+    find_dataproxy();
 }
 
 function delete_job(jid){

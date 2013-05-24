@@ -110,6 +110,24 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="missing-ca-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Warning: Missing CA certificate!</h3>
+        </div>
+        <div class="modal-body">
+            <p>We couldn't connect to some servers. This is required for the complete operation of the system.</p>
+            <p>The most common cause is a missing certificate from your certification authority.</p>
+            <p>You should go to <a href="http://gridca.ansp.br/en/carootcert/">ANSP GridCA</a> and install the certificate on your browser.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <a class="btn" href="http://gridca.ansp.br/en/carootcert/">Go to ANSP GridCA</a>
+        </div>
+    </div>
+    <!-- /Modal -->
+
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
