@@ -189,7 +189,7 @@ def upload_file(src_file, gooserver):
         if process.returncode == 0:
             return json.loads(stdout)["resource_uri"]
         else:
-            raise ObjectDownloadError
+            raise ObjectUploadError
 
     else:
         # GSIFTP upload ok. Save meta data.
