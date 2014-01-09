@@ -180,7 +180,8 @@ def upload_file(src_file, gooserver):
         # using curl to avoid memory copy and multipart-form mess
         request_url = "%sapi/v1/dataproxy/objects/?token=%s" % \
                         (gooserver.dataproxy, gooserver.token)
-        args = "curl -s -F size=%d -F name=%s -F file=@%s %s" % \
+        # -k (insecure) to avoid certificate error
+        args = "curl -k -s -F size=%d -F name=%s -F file=@%s %s" % \
                  (size, basename, src_file, request_url)
 
         process = Popen(args, close_fds=True, stdout=PIPE, stderr=NULL, shell=True)
