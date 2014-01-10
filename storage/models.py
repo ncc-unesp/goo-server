@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class Object(models.Model):
     name = models.CharField(max_length=255)
+    sha1 = models.CharField(max_length=40, primary_key=True)
     size = models.PositiveIntegerField(default=0)
     create_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User)
