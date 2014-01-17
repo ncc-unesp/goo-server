@@ -22,6 +22,8 @@ class DataProxyServerResource(ModelResource):
         resource_name = 'dataproxyserver'
         authentication = AnyTokenAuthentication()
         authorization = Authorization()
+        # Remove token from any query
+        excludes = ['token']
         # Remove from query disabled data proxy servers
         queryset = DataProxyServer.objects.filter(~Q(enabled = False))
         list_allowed_methods = ['get',]

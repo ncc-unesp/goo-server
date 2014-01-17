@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
 class Object(models.Model):
     name = models.CharField(max_length=255)
     sha1 = models.CharField(max_length=40)
@@ -34,6 +32,7 @@ class DataProxyServer(models.Model):
     name = models.CharField(max_length=255)
     url = models.CharField(max_length=255)
     enabled = models.BooleanField(default=True)
+    token = models.CharField(max_length=512)
 
     def __repr__ (self):
         return '<ObjectProxy %s>' % self
