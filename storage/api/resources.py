@@ -38,6 +38,9 @@ class ObjectResource(ModelResource):
         POST   /objects/             # Submmit a new object
         DELETE /objects/{id}/        # Delete a object
     """
+
+    data_proxy_servers = fields.ToManyField(DataProxyServerResource, 'data_proxy_servers', null=True, full=True)
+
     class Meta:
         resource_name = 'objects'
         authentication = AnyTokenAuthentication()

@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 
 class Object(models.Model):
     name = models.CharField(max_length=255)
-    sha1 = models.CharField(max_length=40, primary_key=True)
+    sha1 = models.CharField(max_length=40)
     size = models.PositiveIntegerField(default=0)
     create_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User)
-    url = models.CharField(max_length=255)
+    data_proxy_servers = models.ManyToManyField(DataProxyServer, blank=True)
     public = models.BooleanField(default=False)
 
     TYPE_CHOICES = (
