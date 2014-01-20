@@ -218,7 +218,7 @@ function get_token() {
 function get_object(id) {
     //download file from object proxy
     find_dataproxy(function (server) {
-        url = addr + "api/v1/dataproxy/objects/"+ id +"/?token=" + get_token();
+        url = addr + "api/v1/dataproxy/dataobjects/"+ id +"/?token=" + get_token();
         window.location = url;
     });
     return false;
@@ -235,7 +235,7 @@ function find_dataproxy(callback){
                 return do_error("Server error. (Request dataproxy failed)");
             },
             success: function (data) {
-                server = data["objects"][0];
+                server = data["dataobjects"][0];
                 if(typeof server == 'undefined')
                     return do_error("Server error. (No data server found)");
                 addr = server.url;

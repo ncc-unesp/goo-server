@@ -9,7 +9,7 @@ from django.utils.timezone import now
 
 import uuid
 from dispatcher.models import Pilot
-from storage.models import Object
+from storage.models import DataObject
 
 from dispatcher import scheduler
 
@@ -57,7 +57,7 @@ class Application(models.Model):
     _public = models.BooleanField(default=True)
 
     executable = models.CharField(max_length=512) # if custom
-    _app_obj = models.ForeignKey(Object, null=True, related_name='application_set')
+    _app_obj = models.ForeignKey(DataObject, null=True, related_name='application_set')
     args = models.CharField(max_length=512)
 
     # Files
@@ -129,9 +129,9 @@ class Job(models.Model):
     checkpoints = models.CharField(max_length=512)
 
     # objects id
-    input_objs = models.ManyToManyField(Object, null=True, related_name='input_for')
-    output_objs = models.ManyToManyField(Object, null=True, related_name='output_for')
-    checkpoint_objs = models.ManyToManyField(Object, null=True, related_name='checkpoint_for')
+    input_objs = models.ManyToManyField(DataObject, null=True, related_name='input_for')
+    output_objs = models.ManyToManyField(DataObject, null=True, related_name='output_for')
+    checkpoint_objs = models.ManyToManyField(DataObject, null=True, related_name='checkpoint_for')
 
     # max seconds to run
     maxtime = models.PositiveIntegerField(default=43200) # 12 hours

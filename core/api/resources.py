@@ -5,7 +5,7 @@ from tastypie import fields
 from django.db.models import Q
 from core.models import *
 
-from storage.api.resources import ObjectResource
+from storage.api.resources import DataObjectResource
 
 from core.auth import UserTokenAuthentication
 from tastypie.authentication import Authentication, BasicAuthentication
@@ -92,7 +92,7 @@ class ApplicationResource(ModelResource):
         GET    /apps/set/{id};{id}/  # Get a list of apps
     """
 
-    _app_obj = fields.ToOneField(ObjectResource, '_app_obj', null=True)
+    _app_obj = fields.ToOneField(DataObjectResource, '_app_obj', null=True)
 
     class Meta:
         resource_name = 'apps'
@@ -123,9 +123,9 @@ class JobResource(ModelResource):
 
     application = fields.ToOneField(ApplicationResource, 'application')
 
-    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True, full=True)
-    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True, full=True)
-    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True, full=True)
+    input_objs = fields.ToManyField(DataObjectResource, 'input_objs', null=True, full=True)
+    output_objs = fields.ToManyField(DataObjectResource, 'output_objs', null=True, full=True)
+    checkpoint_objs = fields.ToManyField(DataObjectResource, 'checkpoint_objs', null=True, full=True)
 
     class Meta:
         resource_name = 'jobs'

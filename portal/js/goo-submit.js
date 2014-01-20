@@ -14,7 +14,7 @@ function create_job() {
 
 function upload_files(addr){
     //create a multipart-form, upload and call post_job
-    url = addr + "api/v1/dataproxy/objects/?compress&format=json&token=" + get_token();
+    url = addr + "api/v1/dataproxy/dataobjects/?compress&format=json&token=" + get_token();
 
     $("#submit_upload_bar").show();
 
@@ -44,7 +44,7 @@ function upload_files(addr){
         data = $.parseJSON(this.response);
         input_obj = data["resource_uri"];
         if(typeof input_obj == 'undefined')
-            return do_error("Error on upload. (No object id found)");
+            return do_error("Error on upload. (No data object id found)");
         post_job([input_obj]);
     };
 
@@ -93,8 +93,8 @@ function load_applications(){
             return do_error("Error getting jobs list.");
         },
         success: function(data) {
-            for (i in data["objects"]) {
-                app = data["objects"][i];
+            for (i in data["dataobjects"]) {
+                app = data["dataobjects"][i];
                 $("#apps_select")
                     .append('<option value="'+ app.resource_uri + '">' + app._name + '</option>');
             }

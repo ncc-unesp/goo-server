@@ -7,7 +7,7 @@ from tastypie import fields
 from dispatcher.models import Pilot
 from core.models import Job
 from core.api.resources import ApplicationResource
-from storage.api.resources import ObjectResource
+from storage.api.resources import DataObjectResource
 
 from django.template.defaultfilters import slugify
 from django.conf.urls import url
@@ -62,9 +62,9 @@ class PilotJobResource(ModelResource):
 
     application = fields.ToOneField(ApplicationResource, 'application', full=True)
 
-    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True, full=True)
-    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True, full=True)
-    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True, full=True)
+    input_objs = fields.ToManyField(DataObjectResource, 'input_objs', null=True, full=True)
+    output_objs = fields.ToManyField(DataObjectResource, 'output_objs', null=True, full=True)
+    checkpoint_objs = fields.ToManyField(DataObjectResource, 'checkpoint_objs', null=True, full=True)
 
     class Meta:
         resource_name = 'dispatcher'

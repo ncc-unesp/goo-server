@@ -29,25 +29,25 @@ class DataProxyServerResource(ModelResource):
         list_allowed_methods = ['get',]
         detail_allowed_methods = []
 
-class ObjectResource(ModelResource):
+class DataObjectResource(ModelResource):
     """This resource handler objects requests.
 
     Allowed Methods:
     ----------------
 
-        GET    /objects/             # Get all objects of an user
-        GET    /objects/{id}         # Get info about an user object
-        POST   /objects/             # Submmit a new object
-        DELETE /objects/{id}/        # Delete a object
+        GET    /dataobjects/             # Get all objects of an user
+        GET    /dataobjects/{id}         # Get info about an user object
+        POST   /dataobjects/             # Submmit a new object
+        DELETE /dataobjects/{id}/        # Delete a object
     """
 
     data_proxy_servers = fields.ToManyField(DataProxyServerResource, 'data_proxy_servers', null=True, full=True)
 
     class Meta:
-        resource_name = 'objects'
+        resource_name = 'dataobjects'
         authentication = AnyTokenAuthentication()
         authorization = Authorization()
-        queryset = Object.objects.all()
+        queryset = DataObject.objects.all()
         list_allowed_methods = ['get', 'post', ]
         detail_allowed_methods = ['get', 'delete', ]
 
