@@ -5,6 +5,7 @@
     "fields": {
       "name": "submit server @ GridUNESP",
       "url": "https://submit.grid.unesp.br:8001/",
+      "token": "",
       "enabled": true
     }
   }

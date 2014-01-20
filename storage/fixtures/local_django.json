@@ -5,6 +5,7 @@
     "fields": {
       "name": "Localhost Development",
       "url": "http://localhost:8001/",
+      "token": "",
       "enabled": true
     }
   }
