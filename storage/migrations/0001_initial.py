@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -8,35 +8,48 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Object'
-        db.create_table(u'storage_object', (
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('sha1', self.gf('django.db.models.fields.CharField')(max_length=40, primary_key=True)),
-            ('size', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('create_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('url', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('public', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('object_type', self.gf('django.db.models.fields.CharField')(default='A', max_length=1)),
-        ))
-        db.send_create_signal(u'storage', ['Object'])
-
         # Adding model 'DataProxyServer'
         db.create_table(u'storage_dataproxyserver', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('url', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('enabled', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('token', self.gf('django.db.models.fields.CharField')(max_length=512)),
         ))
         db.send_create_signal(u'storage', ['DataProxyServer'])
 
+        # Adding model 'DataObject'
+        db.create_table(u'storage_dataobject', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('sha1', self.gf('django.db.models.fields.CharField')(max_length=40)),
+            ('size', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('create_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('public', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('object_type', self.gf('django.db.models.fields.CharField')(default='A', max_length=1)),
+        ))
+        db.send_create_signal(u'storage', ['DataObject'])
+
+        # Adding M2M table for field data_proxy_servers on 'DataObject'
+        m2m_table_name = db.shorten_name(u'storage_dataobject_data_proxy_servers')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('dataobject', models.ForeignKey(orm[u'storage.dataobject'], null=False)),
+            ('dataproxyserver', models.ForeignKey(orm[u'storage.dataproxyserver'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['dataobject_id', 'dataproxyserver_id'])
+
 
     def backwards(self, orm):
-        # Deleting model 'Object'
-        db.delete_table(u'storage_object')
-
         # Deleting model 'DataProxyServer'
         db.delete_table(u'storage_dataproxyserver')
+
+        # Deleting model 'DataObject'
+        db.delete_table(u'storage_dataobject')
+
+        # Removing M2M table for field data_proxy_servers on 'DataObject'
+        db.delete_table(db.shorten_name(u'storage_dataobject_data_proxy_servers'))
 
 
     models = {
@@ -58,7 +71,7 @@ class Migration(SchemaMigration):
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -66,7 +79,7 @@ class Migration(SchemaMigration):
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         u'contenttypes.contenttype': {
@@ -76,23 +89,25 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'storage.dataobject': {
+            'Meta': {'object_name': 'DataObject'},
+            'create_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'data_proxy_servers': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['storage.DataProxyServer']", 'symmetrical': 'False', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'object_type': ('django.db.models.fields.CharField', [], {'default': "'A'", 'max_length': '1'}),
+            'public': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sha1': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
+            'size': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
         u'storage.dataproxyserver': {
             'Meta': {'object_name': 'DataProxyServer'},
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'token': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        },
-        u'storage.object': {
-            'Meta': {'object_name': 'Object'},
-            'create_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'object_type': ('django.db.models.fields.CharField', [], {'default': "'A'", 'max_length': '1'}),
-            'public': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'sha1': ('django.db.models.fields.CharField', [], {'max_length': '40', 'primary_key': 'True'}),
-            'size': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'url': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }
 
