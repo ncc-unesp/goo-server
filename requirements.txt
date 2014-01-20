@@ -1,5 +1,5 @@
 django>=1.6.0
-South>=0.7.6
+South>=0.8.4
 django-auth-ldap>=1.0.19
 django-extensions>=1.0.1
 django-tastypie>=0.10.0
