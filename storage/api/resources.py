@@ -3,7 +3,7 @@
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.authentication import BasicAuthentication
-from storage.auth import AnyTokenAuthentication
+from storage.auth import StorageAuthentication, StorageAuthorization
 from tastypie.authorization import Authorization, ReadOnlyAuthorization
 from django.db.models import Q
 from storage.models import *
@@ -20,7 +20,7 @@ class DataProxyServerResource(ModelResource):
 
     class Meta:
         resource_name = 'dataproxyserver'
-        authentication = AnyTokenAuthentication()
+        authentication = StorageAuthentication()
         authorization = Authorization()
         # Remove token from any query
         excludes = ['token']
@@ -41,12 +41,14 @@ class DataObjectResource(ModelResource):
         DELETE /dataobjects/{id}/        # Delete a object
     """
 
-    data_proxy_servers = fields.ToManyField(DataProxyServerResource, 'data_proxy_servers', null=True, full=True)
+    data_proxy_servers = fields.ToManyField(DataProxyServerResource,
+                                            'data_proxy_servers',
+                                            null=True, full=True)
 
     class Meta:
         resource_name = 'dataobjects'
-        authentication = AnyTokenAuthentication()
-        authorization = Authorization()
+        authentication = StorageAuthentication()
+        authorization = StorageAuthorization()
         queryset = DataObject.objects.all()
         list_allowed_methods = ['get', 'post', ]
         detail_allowed_methods = ['get', 'delete', ]
@@ -59,4 +61,5 @@ class DataObjectResource(ModelResource):
 
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
+        bundle.obj.data_proxy_servers = bundle.request.dps
         return bundle

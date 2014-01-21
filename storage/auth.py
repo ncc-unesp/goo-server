@@ -9,13 +9,14 @@ from django.utils.timezone import now
 
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
+from tastypie.exceptions import Unauthorized
 
-class AnyTokenAuthentication(Authentication):
+class StorageAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
         # check if token exists inside the request
         try:
-            server_token = request.REQUEST['token']
-            user_token = request.REQUEST['user_token']
+            server_token = request.REQUEST['proxy_token']
+            user_token = request.REQUEST['token']
         except KeyError:
             return False
 
@@ -25,8 +26,8 @@ class AnyTokenAuthentication(Authentication):
             request.dps = DPS.objects.filter(enabled=True)
             request.dps = request.dps.get(token=server_token)
         except DPS.DoesNotExist, DPS.MultipleObjectsReturned:
-            # DPS token
-            return False
+            # direct request, no DPS token
+            request.dps = None
 
         # lets try user tokens first
         try:
@@ -58,3 +59,10 @@ class AnyTokenAuthentication(Authentication):
     # Optional but recommended
     def get_identifier(self, request):
         return request.user.username
+
+class StorageAuthorization(Authorization):
+    def create_list(self, object_list, bundle):
+        if not bundle.request.dps:
+            return Unauthorized
+
+        return object_list
