@@ -61,5 +61,8 @@ class DataObjectResource(ModelResource):
 
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
-        bundle.obj.data_proxy_servers = bundle.request.dps
-        return bundle
+        return super(DataObjectResource, self).hydrate(bundle)
+
+    def hydrate_m2m(self, bundle):
+        bundle.obj.data_proxy_servers.add(bundle.request.dps)
+        return super(DataObjectResource, self).hydrate_m2m(bundle)
