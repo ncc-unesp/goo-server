@@ -77,9 +77,9 @@ class CheckTokenResource(ModelResource):
                 name='api_dispatch_detail'),
         ]
 
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(token=request.REQUEST['token'])
-
+    def get_object_list(self, request):
+        ol = super(CheckTokenResource, self).get_object_list(request)
+        return ol.filter(token=request.REQUEST['token'])
 
 class ApplicationResource(ModelResource):
     """This resource handler app requests.
