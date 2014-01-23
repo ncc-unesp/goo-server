@@ -235,7 +235,7 @@ function find_dataproxy(callback){
                 return do_error("Server error. (Request dataproxy failed)");
             },
             success: function (data) {
-                server = data["dataobjects"][0];
+                server = data["objects"][0];
                 if(typeof server == 'undefined')
                     return do_error("Server error. (No data server found)");
                 addr = server.url;
