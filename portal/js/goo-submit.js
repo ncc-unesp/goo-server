@@ -93,8 +93,8 @@ function load_applications(){
             return do_error("Error getting jobs list.");
         },
         success: function(data) {
-            for (i in data["dataobjects"]) {
-                app = data["dataobjects"][i];
+            for (i in data["objects"]) {
+                app = data["objects"][i];
                 $("#apps_select")
                     .append('<option value="'+ app.resource_uri + '">' + app._name + '</option>');
             }
