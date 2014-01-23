@@ -34,6 +34,12 @@ class GooServer:
 
         return json.loads(urllib2.urlopen(request).read())
 
+    def set_dataserver(self):
+        if not hasattr(self, 'dataproxy'):
+            obj_servers = self.do('/api/v1/dataproxyserver/')
+            # get first server
+            self.dataproxy = obj_servers["objects"][0]["url"]
+
     class RequestWithMethod(urllib2.Request):
       def __init__(self, method, *args, **kwargs):
         self._method = method
@@ -111,12 +117,6 @@ def install_app(job):
 
     return app_path
 
-def set_dataserver(gooserver):
-    if not hasattr(gooserver, 'dataproxy'):
-        obj_servers = gooserver.do('/api/v1/dataproxyserver/')
-        # get first server
-        gooserver.dataproxy = obj_servers["objects"][0]["url"]
-
 def download_file(src_uri, dst_dir, gooserver):
     # hack: also accept src_uri as dict to avoid additional query
     #   if input_objs full hydrated
@@ -127,8 +127,8 @@ def download_file(src_uri, dst_dir, gooserver):
     dst_path = os.path.join(os.path.abspath(dst_dir), src_obj['name'])
 
     # trying HTTP
-    set_dataserver(gooserver)
-    src_url = "%sapi/v1/dataproxy/objects/%d/?token=%s" % \
+    gooserver.set_dataserver()
+    src_url = "%sapi/v1/dataproxy/dataobjects/%d/?token=%s" % \
                  (gooserver.dataproxy, src_obj['id'], gooserver.token)
     try:
         urllib.urlretrieve(src_url, dst_path)
@@ -152,15 +152,15 @@ def upload_file(src_file, gooserver):
     basename = os.path.basename(src_file)
 
     # trying HTTP
-    set_dataserver(gooserver)
+    gooserver.set_dataserver()
     # using curl to avoid memory copy and multipart-form mess
-    request_url = "%sapi/v1/dataproxy/objects/?token=%s" % \
+    request_url = "%sapi/v1/dataproxy/dataobjects/?token=%s" % \
                     (gooserver.dataproxy, gooserver.token)
     # -k (insecure) to avoid certificate error
     args = "curl -k -s -F size=%d -F name=%s -F file=@%s %s" % \
              (size, basename, src_file, request_url)
 
-    process = Popen(args, close_fds=True, stdout=PIPE, stderr=NULL, shell=True)
+    process = Popen(args, close_fds=True, stdout=PIPE, stderr=PIPE, shell=True)
     (stdout, stderr) = process.communicate()
     if process.returncode == 0:
         return json.loads(stdout)["resource_uri"]
