@@ -113,6 +113,7 @@ function view_jobs_list(offset, limit) {
             resp["paginator"] = create_paginator(data["meta"]);
             resp.status_name = function() {
                 if (this["status"] == "C") return "Completed";
+                if (this["status"] == "R") return "Running";
                 if (this["status"] == "P") return "Pending";
                 if (this["status"] == "E") return "Error";
                 return this["status"];
@@ -132,6 +133,7 @@ function view_job_detail(id) {
             var resp = data;
             resp.status_name = function() {
                 if (this["status"] == "C") return "Completed";
+                if (this["status"] == "R") return "Running";
                 if (this["status"] == "P") return "Pending";
                 if (this["status"] == "E") return "Error";
                 return this["status"];
