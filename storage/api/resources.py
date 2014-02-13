@@ -56,9 +56,6 @@ class DataObjectResource(ModelResource):
         # Return data on the POST query
         always_return_data = True
 
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(Q(user=request.user) | Q(public=True))
-
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
         return super(DataObjectResource, self).hydrate(bundle)

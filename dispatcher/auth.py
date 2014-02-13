@@ -1,5 +1,6 @@
 from dispatcher.models import Pilot
 from tastypie.authentication import Authentication
+from tastypie.exceptions import Unauthorized
 
 class PilotTokenAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
@@ -28,3 +29,34 @@ class PilotTokenAuthentication(Authentication):
             return True
 
         return False # pragma: no cover
+
+class PilotAuthorization(Authorization):
+    def read_list(self, object_list, bundle):
+        return object_list.filter(pilot=bundle.request.pilot)
+
+    def read_detail(self, object_list, bundle):
+        return bundle.obj.pilot == bundle.request.pilot
+
+    def create_list(self, object_list, bundle):
+        return object_list
+
+    def create_detail(self, object_list, bundle):
+        return bundle.obj.pilot == bundle.request.pilot
+
+    def update_list(self, object_list, bundle):
+        allowed = []
+
+        for obj in object_list:
+            if obj.pilot == bundle.request.pilot:
+                allowed.append(obj)
+
+        return allowed
+
+    def update_detail(self, object_list, bundle):
+        return bundle.obj.pilot == bundle.request.pilot
+
+    def delete_list(self, object_list, bundle):
+        raise Unauthorized("Sorry, no deletes.")
+
+    def delete_detail(self, object_list, bundle):
+        raise Unauthorized("Sorry, no deletes.")

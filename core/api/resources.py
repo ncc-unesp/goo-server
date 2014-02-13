@@ -8,8 +8,11 @@ from core.models import *
 from storage.api.resources import DataObjectResource
 
 from core.auth import UserTokenAuthentication
-from tastypie.authentication import Authentication, BasicAuthentication
-from tastypie.authorization import Authorization, ReadOnlyAuthorization
+from core.auth import UserObjectsOnlyAuthorization
+from core.auth import UserObjectsAndPublicAuthorization
+
+from tastypie.authentication import BasicAuthentication
+from tastypie.authorization import ReadOnlyAuthorization
 
 from django.utils.timezone import now
 from django.template.defaultfilters import slugify
@@ -35,16 +38,13 @@ class AuthResource(ModelResource):
     class Meta:
         resource_name = 'auth'
         authentication = BasicAuthentication()
-        authorization = Authorization()
+        authorization = UserObjectsOnlyAuthorization()
         allowed_methods = ['get','post', 'delete']
         fields = ['token', 'expire_time']
         # only select valid tokens (not expired)
         queryset = UserToken.objects.filter(expire_time__gt=now())
         # return token on POST request
         always_return_data = True
-
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(user=request.user)
 
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
@@ -104,16 +104,10 @@ class ApplicationResource(ModelResource):
     class Meta:
         resource_name = 'apps'
         authentication = UserTokenAuthentication()
-        authorization = Authorization()
+        authorization = UserObjectsAndPublicAuthorization()
         queryset = Application.objects.all()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post', 'put']
-
-    def apply_authorization_limits(self, request, object_list):
-        if request.method == 'GET':
-            return object_list.filter(Q(_public=true) | Q(_user=request.user))
-        else:
-            return object_list.filter(user=request.user)
 
     def dehydrate(self, bundle):
         bundle.data['_name'] = str(bundle.obj)
@@ -146,7 +140,7 @@ class JobResource(ModelResource):
     class Meta:
         resource_name = 'jobs'
         authentication = UserTokenAuthentication()
-        authorization = Authorization()
+        authorization = UserObjectsOnlyAuthorization()
         # Remove from query deleted jobs
         queryset = Job.objects.filter(~Q(status = 'D'))
         ordering = ['id', 'status']
@@ -164,10 +158,6 @@ class JobResource(ModelResource):
 
         # Return data on the POST query
         always_return_data = True
-
-
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(user=request.user)
 
     def dehydrate(self, bundle):
         if self.get_resource_uri(bundle) != bundle.request.path:

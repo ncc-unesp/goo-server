@@ -1,6 +1,7 @@
 from tastypie.resources import ModelResource
-from dispatcher.auth import PilotTokenAuthentication
-from tastypie.authorization import Authorization, ReadOnlyAuthorization
+from dispatcher.auth import PilotTokenAuthentication, PilotAuthorization
+
+from tastypie.authorization import ReadOnlyAuthorization
 from tastypie.exceptions import NotFound
 from tastypie import fields
 
@@ -70,16 +71,13 @@ class PilotJobResource(ModelResource):
     class Meta:
         resource_name = 'dispatcher'
         authentication = PilotTokenAuthentication()
-        authorization = Authorization()
+        authorization = PilotAuthorization()
         # Remove from query deleted jobs
         queryset = Job.objects.all()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['get', 'patch']
         # Return data on the POST query
         always_return_data = True
-
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(pilot=request.pilot)
 
     def dehydrate(self, bundle):
         bundle.data['slug'] = slugify(bundle.obj.name)

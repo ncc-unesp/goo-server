@@ -8,6 +8,9 @@ from django.utils.timezone import now
 
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
+from tastypie.exceptions import Unauthorized
+
+from django.db.models import Q
 
 class UserTokenAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
@@ -34,3 +37,47 @@ class UserTokenAuthentication(Authentication):
     # Optional but recommended
     def get_identifier(self, request):
         return request.user.username
+
+class UserObjectsOnlyAuthorization(Authorization):
+    def read_list(self, object_list, bundle):
+        return object_list.filter(user=bundle.request.user)
+
+    def read_detail(self, object_list, bundle):
+        return bundle.obj.user == bundle.request.user
+
+    def create_list(self, object_list, bundle):
+        return object_list
+
+    def create_detail(self, object_list, bundle):
+        return bundle.obj.user == bundle.request.user
+
+    def update_list(self, object_list, bundle):
+        allowed = []
+
+        for obj in object_list:
+            if obj.user == bundle.request.user:
+                allowed.append(obj)
+
+        return allowed
+
+    def update_detail(self, object_list, bundle):
+        return bundle.obj.user == bundle.request.user
+
+    def delete_list(self, object_list, bundle):
+        allowed = []
+
+        for obj in object_list:
+            if obj.user == bundle.request.user:
+                allowed.append(obj)
+
+        return allowed
+
+    def delete_detail(self, object_list, bundle):
+        return bundle.obj.user == bundle.request.user
+
+class UserObjectsAndPublicAuthorization(UserObjectsOnlyAuthorization):
+    def read_list(self, object_list, bundle):
+        return object_list.filter(Q(_public=true)|Q(_user=bundle.request.user))
+
+    def read_detail(self, object_list, bundle):
+        return (bundle.obj.user == bundle.request.user | bundle.obj._public)

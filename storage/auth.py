@@ -11,6 +11,8 @@ from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
 
+from django.db.models import Q
+
 class StorageAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
         # check if token exists inside the request
@@ -61,8 +63,35 @@ class StorageAuthentication(Authentication):
         return request.user.username
 
 class StorageAuthorization(Authorization):
+    def read_list(self, object_list, bundle):
+        return object_list.filter(Q(user=bundle.request.user) | Q(public=True))
+
+    def read_detail(self, object_list, bundle):
+        return (bundle.obj.user == bundle.request.user | bundle.obj.public)
+
     def create_list(self, object_list, bundle):
+        # only allow creation from a DPS request
         if not bundle.request.dps:
             return Unauthorized
-
         return object_list
+
+    def create_detail(self, object_list, bundle):
+        return Unauthorized
+
+    def update_list(self, object_list, bundle):
+        return Unauthorized
+
+    def update_detail(self, object_list, bundle):
+        return Unauthorized
+
+    def delete_list(self, object_list, bundle):
+        allowed = []
+
+        for obj in object_list:
+            if obj.user == bundle.request.user:
+                allowed.append(obj)
+
+        return allowed
+
+    def delete_detail(self, object_list, bundle):
+        return bundle.obj.user == bundle.request.user
