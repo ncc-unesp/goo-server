@@ -76,7 +76,9 @@ class StorageAuthorization(Authorization):
         return object_list
 
     def create_detail(self, object_list, bundle):
-        return Unauthorized
+        if not bundle.request.dps:
+            return Unauthorized
+        return bundle.obj.user == bundle.request.user
 
     def update_list(self, object_list, bundle):
         return Unauthorized
