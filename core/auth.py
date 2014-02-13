@@ -80,7 +80,7 @@ class ApplicationAuthorization(UserObjectsOnlyAuthorization):
         return object_list.filter(Q(_public=True)|Q(_user=bundle.request.user))
 
     def read_detail(self, object_list, bundle):
-        return (bundle.obj._user == bundle.request.user | bundle.obj._public)
+        return (bundle.obj._user == bundle.request.user) | bundle.obj._public
 
     def create_list(self, object_list, bundle):
         return object_list

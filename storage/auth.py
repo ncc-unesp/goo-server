@@ -67,7 +67,7 @@ class StorageAuthorization(Authorization):
         return object_list.filter(Q(user=bundle.request.user) | Q(public=True))
 
     def read_detail(self, object_list, bundle):
-        return (bundle.obj.user == bundle.request.user | bundle.obj.public)
+        return (bundle.obj.user == bundle.request.user) | bundle.obj.public
 
     def create_list(self, object_list, bundle):
         # only allow creation from a DPS request
