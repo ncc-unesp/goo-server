@@ -1,5 +1,6 @@
 from dispatcher.models import Pilot
 from tastypie.authentication import Authentication
+from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
 
 class PilotTokenAuthentication(Authentication):
