@@ -77,7 +77,7 @@ class UserObjectsOnlyAuthorization(Authorization):
 
 class UserObjectsAndPublicAuthorization(UserObjectsOnlyAuthorization):
     def read_list(self, object_list, bundle):
-        return object_list.filter(Q(_public=true)|Q(_user=bundle.request.user))
+        return object_list.filter(Q(_public=True)|Q(_user=bundle.request.user))
 
     def read_detail(self, object_list, bundle):
         return (bundle.obj.user == bundle.request.user | bundle.obj._public)
