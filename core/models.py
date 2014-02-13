@@ -47,7 +47,7 @@ class Application(models.Model):
     # the user who registered this application
     _user = models.ForeignKey(User)
     # if is public
-    _public = models.BooleanField(default=True)
+    _public = models.BooleanField(default=False)
 
     _name = models.CharField(max_length=255)
     _version = models.CharField(max_length=63)

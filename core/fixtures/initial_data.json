@@ -1,6 +1,8 @@
 [
     {
         "fields": {
+            "_public": true,
+            "_user": 1,
             "_app_obj": null,
             "args": "${name}.py",
             "checkpoints": "",
@@ -27,6 +29,8 @@
     },
     {
         "fields": {
+            "_public": true,
+            "_user": 1,
             "_app_obj": null,
             "args": "",
             "checkpoints": "",
