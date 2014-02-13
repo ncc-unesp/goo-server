@@ -44,7 +44,11 @@ class UserProfile(models.Model):
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 class Application(models.Model):
-    """Bla bla bla."""
+    # the user who registered this application
+    _user = models.ForeignKey(User)
+    # if is public
+    _public = models.BooleanField(default=True)
+
     _name = models.CharField(max_length=255)
     _version = models.CharField(max_length=63)
 
@@ -52,9 +56,6 @@ class Application(models.Model):
     _description = models.TextField(default='')
     # help text about the usage of this version
     _usage = models.TextField(default='')
-
-    # if is public
-    _public = models.BooleanField(default=True)
 
     executable = models.CharField(max_length=512) # if custom
     _app_obj = models.ForeignKey(DataObject, null=True, related_name='application_set')

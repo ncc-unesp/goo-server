@@ -90,22 +90,38 @@ class ApplicationResource(ModelResource):
         GET    /apps/{id}            # Get info about a app
         GET    /apps/schema/         # Get app schema
         GET    /apps/set/{id};{id}/  # Get a list of apps
+
+        POST   /apps/                # Registed a new app
+        POST   /apps/{id}/           # Update an app
+        PATCH  /apps/{id}/           # Partially update an app
+
+        (no DELETE because Applications are a FK of Jobs)
+
     """
 
     _app_obj = fields.ToOneField(DataObjectResource, '_app_obj', null=True)
 
     class Meta:
         resource_name = 'apps'
-        authentication = Authentication()
-        authorization = ReadOnlyAuthorization()
+        authentication = UserTokenAuthentication()
+        authorization = Authorization()
         queryset = Application.objects.all()
-        list_allowed_methods = ['get']
-        detail_allowed_methods = ['get']
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post', 'put']
+
+    def apply_authorization_limits(self, request, object_list):
+        if request.method == 'GET':
+            return object_list.filter(Q(_public=true) | Q(_user=request.user))
+        else:
+            return object_list.filter(user=request.user)
 
     def dehydrate(self, bundle):
         bundle.data['_name'] = str(bundle.obj)
         return bundle
 
+    def hydrate(self, bundle):
+        bundle.obj.user = bundle.request.user
+        return bundle
 
 class JobResource(ModelResource):
     """This resource handler jobs requests.
