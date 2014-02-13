@@ -9,7 +9,7 @@ from storage.api.resources import DataObjectResource
 
 from core.auth import UserTokenAuthentication
 from core.auth import UserObjectsOnlyAuthorization
-from core.auth import UserObjectsAndPublicAuthorization
+from core.auth import ApplicationAuthorization
 
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
@@ -104,7 +104,7 @@ class ApplicationResource(ModelResource):
     class Meta:
         resource_name = 'apps'
         authentication = UserTokenAuthentication()
-        authorization = UserObjectsAndPublicAuthorization()
+        authorization = ApplicationAuthorization()
         queryset = Application.objects.all()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post', 'put']
@@ -114,7 +114,8 @@ class ApplicationResource(ModelResource):
         return bundle
 
     def hydrate(self, bundle):
-        bundle.obj.user = bundle.request.user
+        if not bundle.obj._user:
+            bundle.obj._user = bundle.request.user
         return bundle
 
 class JobResource(ModelResource):

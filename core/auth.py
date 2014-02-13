@@ -75,9 +75,33 @@ class UserObjectsOnlyAuthorization(Authorization):
     def delete_detail(self, object_list, bundle):
         return bundle.obj.user == bundle.request.user
 
-class UserObjectsAndPublicAuthorization(UserObjectsOnlyAuthorization):
+class ApplicationAuthorization(UserObjectsOnlyAuthorization):
     def read_list(self, object_list, bundle):
         return object_list.filter(Q(_public=True)|Q(_user=bundle.request.user))
 
     def read_detail(self, object_list, bundle):
-        return (bundle.obj.user == bundle.request.user | bundle.obj._public)
+        return (bundle.obj._user == bundle.request.user | bundle.obj._public)
+
+    def create_list(self, object_list, bundle):
+        return object_list
+
+    def create_detail(self, object_list, bundle):
+        return bundle.obj._user == bundle.request.user
+
+    def update_list(self, object_list, bundle):
+        allowed = []
+
+        for obj in object_list:
+            if obj._user == bundle.request.user:
+                allowed.append(obj)
+
+        return allowed
+
+    def update_detail(self, object_list, bundle):
+        return bundle.obj._user == bundle.request.user
+
+    def delete_list(self, object_list, bundle):
+        raise Unauthorized("Sorry, no deletes.")
+
+    def delete_detail(self, object_list, bundle):
+        raise Unauthorized("Sorry, no deletes.")
