@@ -106,16 +106,16 @@ class ApplicationResource(ModelResource):
         authentication = UserTokenAuthentication()
         authorization = ApplicationAuthorization()
         queryset = Application.objects.all()
+        ordering = ['_name', '_version']
         list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'post', 'put']
+        detail_allowed_methods = ['get', 'post', 'patch']
 
     def dehydrate(self, bundle):
         bundle.data['_name'] = str(bundle.obj)
         return bundle
 
     def hydrate(self, bundle):
-        if not bundle.obj._user:
-            bundle.obj._user = bundle.request.user
+        bundle.obj._user = bundle.request.user
         return bundle
 
 class JobResource(ModelResource):
