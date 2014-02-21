@@ -183,8 +183,10 @@ class JobResource(ModelResource):
         # set missing default values
         # has an application AND is a new object
         if bundle.obj.application and not bundle.obj.pk:
-            for attr in self.application.get_default_fields():
+            for attr in bundle.obj.application.get_default_fields():
                 if not bundle.data.has_key(attr):
-                    bundle.obj = getattr(bundle.obj.application, attr)
+                    setattr(bundle.obj,
+                            attr,
+                            getattr(bundle.obj.application, attr))
 
         return bundle

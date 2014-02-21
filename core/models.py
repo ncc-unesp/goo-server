@@ -113,8 +113,8 @@ class Application(models.Model):
         Return a list of default fields to set default values
         """
         l = self.__dict__.keys()
-        l.remove(id)
-        l = filter(lambda x: False if x[0] == "_" else True, l)
+        l.remove('id')
+        return filter(lambda x: False if x[0] == "_" else True, l)
 
 class Job(models.Model):
     class Meta:
