@@ -320,6 +320,10 @@ def update_progress(job, app_path, env):
     if eta != None:
         job["eta"] = eta
 
+    # just send a keep alive
+    if (not progress) and (not eta):
+        job["status"] = "R"
+
     # tail
     hook = "%s/hooks/log" % app_path
     if os.path.exists(hook):
