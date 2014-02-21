@@ -42,7 +42,7 @@ def submit(pilot):
     site_addr = urlparse.urlparse(pilot.site.url)
     args_site = ['%s%s' % (site_addr.hostname, site_addr.path)]
 
-    job_rsl = '(host_xcount=%d)(xcount=%d)' % (pilot.hosts, pilot.cores)
+    job_rsl = '(jobType=single)(host_xcount=%d)(xcount=%d)' % (pilot.hosts, pilot.cores)
     args_rsl = [ '-x', '%s(%s)' % (job_rsl, site_addr.query) ]
 
     args_lease_time = ['-env', 'GOO_LEASE_TIME=%d' % pilot.site.max_time]
