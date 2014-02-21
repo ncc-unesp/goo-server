@@ -345,5 +345,5 @@ if __name__ == "__main__":
             remaining_time = limit_time - time.time()
             job_loop(remaining_time)
         except NoJobError:
-            print "No more jobs."
+            #print "No more jobs."
             exit(0)
