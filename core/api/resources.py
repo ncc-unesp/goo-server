@@ -175,10 +175,14 @@ class JobResource(ModelResource):
 
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
+        return bundle
+
+    def full_hydrate(self, bundle):
+        bundle = super(JobResource, self).full_hydrate(bundle)
 
         # set missing default values
         # has an application AND is a new object
-        if bundle.obj.application and not bundle.obj.id:
+        if bundle.obj.application and not bundle.obj.pk:
             for attr in self.application.get_default_fields():
                 if not bundle.data.has_key(attr):
                     bundle.obj = getattr(bundle.obj.application, attr)
