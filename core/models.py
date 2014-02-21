@@ -108,6 +108,14 @@ class Application(models.Model):
         else:
             return []
 
+    def get_default_fields(self):
+        """
+        Return a list of default fields to set default values
+        """
+        l = self.__dict__.keys()
+        l.remove(id)
+        l = filter(lambda x: False if x[0] == "_" else True, l)
+
 class Job(models.Model):
     class Meta:
         ordering = ['-id']
