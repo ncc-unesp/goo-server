@@ -48,6 +48,8 @@ class Application(models.Model):
     _user = models.ForeignKey(User)
     # if is public
     _public = models.BooleanField(default=False)
+    # if is active (should be listed)
+    _active = models.BooleanField(default=True)
 
     _name = models.CharField(max_length=255)
     _version = models.CharField(max_length=63)

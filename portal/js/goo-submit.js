@@ -95,8 +95,9 @@ function load_applications(){
         success: function(data) {
             for (i in data["objects"]) {
                 app = data["objects"][i];
-                $("#apps_select")
-                    .append('<option value="'+ app.resource_uri + '">' + app._name + '</option>');
+                if (app._active)
+                    $("#apps_select")
+                        .append('<option value="'+ app.resource_uri + '">' + app._name + '</option>');
             }
             $("#apps_select").change(load_template);
             $("#apps_select").change();
