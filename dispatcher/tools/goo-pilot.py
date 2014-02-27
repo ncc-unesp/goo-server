@@ -231,6 +231,8 @@ def job_loop(remaining_time):
     env["GOO_STDOUT"] = stdout
     env["GOO_STDERR"] = stderr
     env["GOO_ARGS"] = job["args"]
+    env["GOO_HOSTS"] = job["hosts"]
+    env["GOO_CORES_PER_HOST"] = job["cores_per_host"]
 
     def execution_thread(job, app_path, env, stdout, stderr):
         # args
