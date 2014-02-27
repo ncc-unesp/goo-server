@@ -14,20 +14,25 @@ function create_job() {
 
 function upload_files(addr){
     //create a multipart-form, upload and call post_job
-    url = addr + "api/v1/dataproxy/objects/?compress&format=json&token=" + get_token();
+    url = addr + "api/v1/dataproxy/dataobjects/?compress&format=json&token=" + get_token();
 
     $("#submit_upload_bar").show();
 
     var filesForm = new FormData($("#fake_file_form")[0]);
+    filenames = "";
 
     n_files = 0;
     $("#files_div>:file").each(function () {
         for (i=0; i < this.files.length; i++) {
             filesForm.append("file-" + n_files, this.files[i]);
+            filenames += this.files[i].name + " ";
             n_files++;
         }
     });
     filesForm.append("name", slugify($("#name")[0].value) + "-input.zip");
+
+    // set inputs to file names
+    $('input[name="inputs"]').val(filenames);
 
     var xhr = new XMLHttpRequest();
 
@@ -39,7 +44,7 @@ function upload_files(addr){
         data = $.parseJSON(this.response);
         input_obj = data["resource_uri"];
         if(typeof input_obj == 'undefined')
-            return do_error("Error on upload. (No object id found)");
+            return do_error("Error on upload. (No data object id found)");
         post_job([input_obj]);
     };
 
@@ -90,8 +95,9 @@ function load_applications(){
         success: function(data) {
             for (i in data["objects"]) {
                 app = data["objects"][i];
-                $("#apps_select")
-                    .append('<option value="'+ app.resource_uri + '">' + app._name + '</option>');
+                if (app._active)
+                    $("#apps_select")
+                        .append('<option value="'+ app.resource_uri + '">' + app._name + '</option>');
             }
             $("#apps_select").change(load_template);
             $("#apps_select").change();

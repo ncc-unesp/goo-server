@@ -9,8 +9,6 @@ from glob import glob
 STDOUT_SUFFIX = ".stdout"
 STDERR_SUFFIX = ".stderr"
 
-GRIDFTP = "globus-url-copy"
-
 PROGRESS_FREQ = 300 # seconds
 CHECKPOINT_FREQ = 7200 # seconds
 
@@ -35,6 +33,12 @@ class GooServer:
         request.add_data(json.dumps(data))
 
         return json.loads(urllib2.urlopen(request).read())
+
+    def set_dataserver(self):
+        if not hasattr(self, 'dataproxy'):
+            obj_servers = self.do('/api/v1/dataproxyserver/')
+            # get first server
+            self.dataproxy = obj_servers["objects"][0]["url"]
 
     class RequestWithMethod(urllib2.Request):
       def __init__(self, method, *args, **kwargs):
@@ -113,12 +117,6 @@ def install_app(job):
 
     return app_path
 
-def set_dataserver(gooserver):
-    if not hasattr(gooserver, 'dataproxy'):
-        obj_servers = gooserver.do('/api/v1/dataproxyserver/')
-        # get first server
-        gooserver.dataproxy = obj_servers["objects"][0]["url"]
-
 def download_file(src_uri, dst_dir, gooserver):
     # hack: also accept src_uri as dict to avoid additional query
     #   if input_objs full hydrated
@@ -128,24 +126,14 @@ def download_file(src_uri, dst_dir, gooserver):
         src_obj = gooserver.do(src_uri)
     dst_path = os.path.join(os.path.abspath(dst_dir), src_obj['name'])
 
-    # try download via GSIFTP
-    src_url = src_obj['url']
-    dst_url = 'file://' + dst_path
-
-    NULL = open('/dev/null', 'w')
-    ret_code = call([GRIDFTP, "-q", src_url, dst_url], 
-                    stdout=NULL, stderr=NULL, close_fds=True)
-    if (ret_code != 0):
-        # error via GSIFTP
-        # trying HTTP
-        set_dataserver(gooserver)
-        src_url = "%sapi/v1/dataproxy/objects/%d/?token=%s" % \
-                     (gooserver.dataproxy, src_obj['id'], gooserver.token)
-
-        try:
-            urllib.urlretrieve(src_url, dst_path)
-        except IOError:
-            ObjectDownloadError
+    # trying HTTP
+    gooserver.set_dataserver()
+    src_url = "%sapi/v1/dataproxy/dataobjects/%d/?token=%s" % \
+                 (gooserver.dataproxy, src_obj['id'], gooserver.token)
+    try:
+        urllib.urlretrieve(src_url, dst_path)
+    except IOError:
+        ObjectDownloadError
 
     return dst_path
 
@@ -163,38 +151,21 @@ def upload_file(src_file, gooserver):
     size = os.path.getsize(src_file)
     basename = os.path.basename(src_file)
 
-    # gridftp copy
-    STORAGE_SERVER = os.environ.get("OSG_DEFAULT_SE", "se.grid.unesp.br")
-    local_url = 'file://' + src_file
-    remote_url = "gsiftp://%s/store/gridunesp/goo/%s.zip" % (STORAGE_SERVER,
-                                                             str(uuid.uuid4()))
+    # trying HTTP
+    gooserver.set_dataserver()
+    # using curl to avoid memory copy and multipart-form mess
+    request_url = "%sapi/v1/dataproxy/dataobjects/?token=%s" % \
+                    (gooserver.dataproxy, gooserver.token)
+    # -k (insecure) to avoid certificate error
+    args = "curl -k -s -F size=%d -F name=%s -F file=@%s %s" % \
+             (size, basename, src_file, request_url)
 
-    NULL = open('/dev/null', 'w')
-    ret_code = call([GRIDFTP, "-q", local_url, remote_url],
-                    stdout=NULL, stderr=NULL, close_fds=True)
-
-    if (ret_code != 0):
-        # error via GSIFTP
-        # trying HTTP
-        set_dataserver(gooserver)
-        # using curl to avoid memory copy and multipart-form mess
-        request_url = "%sapi/v1/dataproxy/objects/?token=%s" % \
-                        (gooserver.dataproxy, gooserver.token)
-        args = "curl -s -F size=%d -F name=%s -F file=@%s %s" % \
-                 (size, basename, src_file, request_url)
-
-        process = Popen(args, close_fds=True, stdout=PIPE, stderr=NULL, shell=True)
-        (stdout, stderr) = process.communicate()
-        if process.returncode == 0:
-            return json.loads(stdout)["resource_uri"]
-        else:
-            raise ObjectDownloadError
-
+    process = Popen(args, close_fds=True, stdout=PIPE, stderr=PIPE, shell=True)
+    (stdout, stderr) = process.communicate()
+    if process.returncode == 0:
+        return json.loads(stdout)["resource_uri"]
     else:
-        # GSIFTP upload ok. Save meta data.
-        data = {"name": basename, "size": size, "url": remote_url}
-        resp = gooserver.do("/api/v1/objects/", "POST", data)
-        return resp["resource_uri"]
+        raise ObjectUploadError
 
 def send_files(job, tmp_dir):
     # cd into the directory
@@ -349,6 +320,10 @@ def update_progress(job, app_path, env):
     if eta != None:
         job["eta"] = eta
 
+    # just send a keep alive
+    if (not progress) and (not eta):
+        job["status"] = "R"
+
     # tail
     hook = "%s/hooks/log" % app_path
     if os.path.exists(hook):
@@ -370,5 +345,5 @@ if __name__ == "__main__":
             remaining_time = limit_time - time.time()
             job_loop(remaining_time)
         except NoJobError:
-            print "No more jobs."
+            #print "No more jobs."
             exit(0)

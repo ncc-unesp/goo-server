@@ -107,10 +107,13 @@
         </div>
 
          <div class="control-group" id="input_group_inputs">
-            <label class="control-label" for="inputs">Input files</label>
+            <label class="control-label" for="inputs">Select the input files</label>
             <div class="controls" id="files_div">
-                    <input type="text" id="inputs" name="inputs" placeholder="Input filenames">
                     <input name="files[]" onChange="form_add_file()" type="file" multiple>
+            </div>
+            <label class="control-label" for="inputs">Expected input files</label>
+            <div class="controls">
+                    <input type="text" id="inputs" name="inputs" placeholder="*" readonly>
             </div>
             <progress id="submit_upload_bar" min="0" max="100" value="0" hidden>0% complete</progress>
          </div>

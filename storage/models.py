@@ -1,14 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
-class Object(models.Model):
+class DataProxyServer(models.Model):
     name = models.CharField(max_length=255)
+    url = models.CharField(max_length=255)
+    enabled = models.BooleanField(default=True)
+    token = models.CharField(max_length=512)
+
+    def __repr__ (self):
+        return '<DataObjectProxy %s>' % self
+
+    def __str__ (self):
+        return self.name
+
+class DataObject(models.Model):
+    name = models.CharField(max_length=255)
+    sha1 = models.CharField(max_length=40)
     size = models.PositiveIntegerField(default=0)
     create_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User)
-    url = models.CharField(max_length=255)
+    data_proxy_servers = models.ManyToManyField(DataProxyServer, blank=True)
     public = models.BooleanField(default=False)
 
     TYPE_CHOICES = (
@@ -24,18 +35,7 @@ class Object(models.Model):
                                    default='A')
 
     def __repr__ (self):
-        return '<Object %s>' % self
-
-    def __str__ (self):
-        return self.name
-
-class DataProxyServer(models.Model):
-    name = models.CharField(max_length=255)
-    url = models.CharField(max_length=255)
-    enabled = models.BooleanField(default=True)
-
-    def __repr__ (self):
-        return '<ObjectProxy %s>' % self
+        return '<DataObject %s>' % self
 
     def __str__ (self):
         return self.name

@@ -44,7 +44,11 @@ function container_render(template, data) {
 };
 
 function href(anchor){
-    location.hash = anchor;
+    // force refresh
+    if (location.hash == anchor)
+        view_change();
+    else
+        location.hash = anchor;
 }
 
 function create_paginator(meta) {
@@ -109,6 +113,7 @@ function view_jobs_list(offset, limit) {
             resp["paginator"] = create_paginator(data["meta"]);
             resp.status_name = function() {
                 if (this["status"] == "C") return "Completed";
+                if (this["status"] == "R") return "Running";
                 if (this["status"] == "P") return "Pending";
                 if (this["status"] == "E") return "Error";
                 return this["status"];
@@ -128,6 +133,7 @@ function view_job_detail(id) {
             var resp = data;
             resp.status_name = function() {
                 if (this["status"] == "C") return "Completed";
+                if (this["status"] == "R") return "Running";
                 if (this["status"] == "P") return "Pending";
                 if (this["status"] == "E") return "Error";
                 return this["status"];
@@ -167,6 +173,7 @@ function do_login() {
                 $.cookie("token", data["token"]);
                 render_login();
                 href("#jobs");
+                check_cacert();
             }
         });
     return false;
@@ -213,14 +220,14 @@ function get_token() {
 function get_object(id) {
     //download file from object proxy
     find_dataproxy(function (server) {
-        url = addr + "api/v1/dataproxy/objects/"+ id +"/?token=" + get_token();
+        url = addr + "api/v1/dataproxy/dataobjects/"+ id +"/?token=" + get_token();
         window.location = url;
     });
     return false;
 }
 
 function find_dataproxy(callback){
-    // find a dataproxy server and call upload_files
+    // find a dataproxy server and call callback
     // check for cache
     if (typeof goo_dataproxy_server == "undefined") {
         $.ajax({
@@ -233,14 +240,29 @@ function find_dataproxy(callback){
                 server = data["objects"][0];
                 if(typeof server == 'undefined')
                     return do_error("Server error. (No data server found)");
-                addr = server.url
-                goo_dataproxy_server = addr;
-                callback(addr);
+                addr = server.url;
+                
+                // check if dataproxy is reachable
+                $.ajax({
+                    type:"POST",
+                    url: addr + "/api/v1/",
+                    error: function (data) {
+                        return $('#missing-ca-modal').modal();
+                    },
+                    success: function (data) {
+                        goo_dataproxy_server = addr;
+                        callback(addr);
+                    }
+                });
             }
         });
     }
     else
         callback(goo_dataproxy_server);
+}
+
+function check_cacert(){
+    find_dataproxy();
 }
 
 function delete_job(jid){

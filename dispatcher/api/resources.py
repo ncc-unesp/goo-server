@@ -1,13 +1,14 @@
 from tastypie.resources import ModelResource
-from dispatcher.auth import PilotTokenAuthentication
-from tastypie.authorization import Authorization, ReadOnlyAuthorization
+from dispatcher.auth import PilotTokenAuthentication, PilotAuthorization
+
+from tastypie.authorization import ReadOnlyAuthorization
 from tastypie.exceptions import NotFound
 from tastypie import fields
 
 from dispatcher.models import Pilot
 from core.models import Job
 from core.api.resources import ApplicationResource
-from storage.api.resources import ObjectResource
+from storage.api.resources import DataObjectResource
 
 from django.template.defaultfilters import slugify
 from django.conf.urls import url
@@ -40,8 +41,9 @@ class CheckPilotTokenResource(ModelResource):
                 name='api_dispatch_detail'),
         ]
 
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(token=request.REQUEST['token'])
+    def get_object_list(self, request):
+        ol = super(CheckPilotTokenResource, self).get_object_list(request)
+        return ol.filter(token=request.REQUEST['token'])
 
     def dehydrate(self, bundle):
         bundle.data['valid'] = True
@@ -62,23 +64,20 @@ class PilotJobResource(ModelResource):
 
     application = fields.ToOneField(ApplicationResource, 'application', full=True)
 
-    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True, full=True)
-    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True, full=True)
-    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True, full=True)
+    input_objs = fields.ToManyField(DataObjectResource, 'input_objs', null=True, full=True)
+    output_objs = fields.ToManyField(DataObjectResource, 'output_objs', null=True, full=True)
+    checkpoint_objs = fields.ToManyField(DataObjectResource, 'checkpoint_objs', null=True, full=True)
 
     class Meta:
         resource_name = 'dispatcher'
         authentication = PilotTokenAuthentication()
-        authorization = Authorization()
+        authorization = PilotAuthorization()
         # Remove from query deleted jobs
         queryset = Job.objects.all()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['get', 'patch']
         # Return data on the POST query
         always_return_data = True
-
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(pilot=request.pilot)
 
     def dehydrate(self, bundle):
         bundle.data['slug'] = slugify(bundle.obj.name)

@@ -5,6 +5,7 @@
     "fields": {
       "name": "Data Proxy NCC",
       "url": "http://dps.ncc.unesp.br/",
+      "token": "",
       "enabled": true
     }
   },
@@ -14,6 +15,7 @@
     "fields": {
       "name": "Data Proxy USP",
       "url": "http://dps.usp.br/",
+      "token": "",
       "enabled": true
     }
   }

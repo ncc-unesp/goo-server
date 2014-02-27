@@ -37,18 +37,28 @@ def submit(pilot):
     """
     submit a pilot job using GRAM protocol
     """
-    
+    args_globus_cmd = ['/usr/bin/globus-job-submit']
+
     site_addr = urlparse.urlparse(pilot.site.url)
+    args_site = ['%s%s' % (site_addr.hostname, site_addr.path)]
+
+    job_rsl = '(jobType=single)(host_xcount=%d)(xcount=%d)' % (pilot.hosts, pilot.cores)
+    args_rsl = [ '-x', '%s(%s)' % (job_rsl, site_addr.query) ]
+
+    args_lease_time = ['-env', 'GOO_LEASE_TIME=%d' % pilot.site.max_time]
+
+    # shared filesystem quickfix (gridunesp specific)
+    args_tmp_dir = []
+    if pilot.hosts > 1:
+        args_tmp_dir = ['-env', 'GOO_TMPDIR=/store']
 
     exec_path = os.path.join(settings.PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
     url = settings.BASE_URL
+    args_exec = ['-s', exec_path, url, pilot.token]
 
     # globus-job-submit ce.grid.unesp.br/jobmanager-pbs -x (queue=long) -s /usr/bin/id args
-    cmd = ['/usr/bin/globus-job-submit',
-           '%s%s' % (site_addr.hostname, site_addr.path),
-           '-x', '(%s)' % site_addr.query,
-           '-env', 'GOO_LEASE_TIME=%d' % pilot.site.max_time,
-           '-s', exec_path, url, pilot.token]
+    cmd = args_globus_cmd + args_site + args_rsl \
+          + args_lease_time + args_tmp_dir + args_exec
 
     devnull = open(os.devnull, 'w')
     # can raise CalledProcessError

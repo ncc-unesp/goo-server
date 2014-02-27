@@ -9,7 +9,7 @@ from django.utils.timezone import now
 
 import uuid
 from dispatcher.models import Pilot
-from storage.models import Object
+from storage.models import DataObject
 
 from dispatcher import scheduler
 
@@ -44,7 +44,13 @@ class UserProfile(models.Model):
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 class Application(models.Model):
-    """Bla bla bla."""
+    # the user who registered this application
+    _user = models.ForeignKey(User)
+    # if is public
+    _public = models.BooleanField(default=False)
+    # if is active (should be listed)
+    _active = models.BooleanField(default=True)
+
     _name = models.CharField(max_length=255)
     _version = models.CharField(max_length=63)
 
@@ -53,11 +59,8 @@ class Application(models.Model):
     # help text about the usage of this version
     _usage = models.TextField(default='')
 
-    # if is public
-    _public = models.BooleanField(default=True)
-
     executable = models.CharField(max_length=512) # if custom
-    _app_obj = models.ForeignKey(Object, null=True, related_name='application_set')
+    _app_obj = models.ForeignKey(DataObject, null=True, related_name='application_set')
     args = models.CharField(max_length=512)
 
     # Files
@@ -107,6 +110,14 @@ class Application(models.Model):
         else:
             return []
 
+    def get_default_fields(self):
+        """
+        Return a list of default fields to set default values
+        """
+        l = self.__dict__.keys()
+        l.remove('id')
+        return filter(lambda x: False if x[0] == "_" else True, l)
+
 class Job(models.Model):
     class Meta:
         ordering = ['-id']
@@ -129,9 +140,9 @@ class Job(models.Model):
     checkpoints = models.CharField(max_length=512)
 
     # objects id
-    input_objs = models.ManyToManyField(Object, null=True, related_name='input_for')
-    output_objs = models.ManyToManyField(Object, null=True, related_name='output_for')
-    checkpoint_objs = models.ManyToManyField(Object, null=True, related_name='checkpoint_for')
+    input_objs = models.ManyToManyField(DataObject, null=True, related_name='input_for')
+    output_objs = models.ManyToManyField(DataObject, null=True, related_name='output_for')
+    checkpoint_objs = models.ManyToManyField(DataObject, null=True, related_name='checkpoint_for')
 
     # max seconds to run
     maxtime = models.PositiveIntegerField(default=43200) # 12 hours

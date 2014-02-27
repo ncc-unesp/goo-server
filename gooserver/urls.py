@@ -1,7 +1,5 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
-from django.views.generic.simple import redirect_to
 from django.conf.urls import patterns, include, url
-from django.views.generic.simple import direct_to_template
 from tastypie.api import Api
 from core.api.resources import *
 from dispatcher.api.resources import *
@@ -16,7 +14,7 @@ v1_api.register(JobResource())
 v1_api.register(CheckPilotTokenResource())
 v1_api.register(PilotJobResource())
 v1_api.register(DataProxyServerResource())
-v1_api.register(ObjectResource())
+v1_api.register(DataObjectResource())
 v1_api.register(StatsJobsResource())
 v1_api.register(StatsHoursResource())
 v1_api.register(StatsAvgTimeResource())

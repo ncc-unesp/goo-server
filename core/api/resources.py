@@ -5,11 +5,14 @@ from tastypie import fields
 from django.db.models import Q
 from core.models import *
 
-from storage.api.resources import ObjectResource
+from storage.api.resources import DataObjectResource
 
 from core.auth import UserTokenAuthentication
-from tastypie.authentication import Authentication, BasicAuthentication
-from tastypie.authorization import Authorization, ReadOnlyAuthorization
+from core.auth import UserObjectsOnlyAuthorization
+from core.auth import ApplicationAuthorization
+
+from tastypie.authentication import BasicAuthentication
+from tastypie.authorization import ReadOnlyAuthorization
 
 from django.utils.timezone import now
 from django.template.defaultfilters import slugify
@@ -35,16 +38,13 @@ class AuthResource(ModelResource):
     class Meta:
         resource_name = 'auth'
         authentication = BasicAuthentication()
-        authorization = Authorization()
+        authorization = UserObjectsOnlyAuthorization()
         allowed_methods = ['get','post', 'delete']
         fields = ['token', 'expire_time']
         # only select valid tokens (not expired)
         queryset = UserToken.objects.filter(expire_time__gt=now())
         # return token on POST request
         always_return_data = True
-
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(user=request.user)
 
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
@@ -77,9 +77,9 @@ class CheckTokenResource(ModelResource):
                 name='api_dispatch_detail'),
         ]
 
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(token=request.REQUEST['token'])
-
+    def get_object_list(self, request):
+        ol = super(CheckTokenResource, self).get_object_list(request)
+        return ol.filter(token=request.REQUEST['token'])
 
 class ApplicationResource(ModelResource):
     """This resource handler app requests.
@@ -90,22 +90,33 @@ class ApplicationResource(ModelResource):
         GET    /apps/{id}            # Get info about a app
         GET    /apps/schema/         # Get app schema
         GET    /apps/set/{id};{id}/  # Get a list of apps
+
+        POST   /apps/                # Registed a new app
+        POST   /apps/{id}/           # Update an app
+        PATCH  /apps/{id}/           # Partially update an app
+
+        (no DELETE because Applications are a FK of Jobs)
+
     """
 
-    _app_obj = fields.ToOneField(ObjectResource, '_app_obj', null=True)
+    _app_obj = fields.ToOneField(DataObjectResource, '_app_obj', null=True)
 
     class Meta:
         resource_name = 'apps'
-        authentication = Authentication()
-        authorization = ReadOnlyAuthorization()
+        authentication = UserTokenAuthentication()
+        authorization = ApplicationAuthorization()
         queryset = Application.objects.all()
-        list_allowed_methods = ['get']
-        detail_allowed_methods = ['get']
+        ordering = ['_name', '_version']
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post', 'patch']
 
     def dehydrate(self, bundle):
         bundle.data['_name'] = str(bundle.obj)
         return bundle
 
+    def hydrate(self, bundle):
+        bundle.obj._user = bundle.request.user
+        return bundle
 
 class JobResource(ModelResource):
     """This resource handler jobs requests.
@@ -123,14 +134,14 @@ class JobResource(ModelResource):
 
     application = fields.ToOneField(ApplicationResource, 'application')
 
-    input_objs = fields.ToManyField(ObjectResource, 'input_objs', null=True, full=True)
-    output_objs = fields.ToManyField(ObjectResource, 'output_objs', null=True, full=True)
-    checkpoint_objs = fields.ToManyField(ObjectResource, 'checkpoint_objs', null=True, full=True)
+    input_objs = fields.ToManyField(DataObjectResource, 'input_objs', null=True, full=True)
+    output_objs = fields.ToManyField(DataObjectResource, 'output_objs', null=True, full=True)
+    checkpoint_objs = fields.ToManyField(DataObjectResource, 'checkpoint_objs', null=True, full=True)
 
     class Meta:
         resource_name = 'jobs'
         authentication = UserTokenAuthentication()
-        authorization = Authorization()
+        authorization = UserObjectsOnlyAuthorization()
         # Remove from query deleted jobs
         queryset = Job.objects.filter(~Q(status = 'D'))
         ordering = ['id', 'status']
@@ -149,10 +160,6 @@ class JobResource(ModelResource):
         # Return data on the POST query
         always_return_data = True
 
-
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(user=request.user)
-
     def dehydrate(self, bundle):
         if self.get_resource_uri(bundle) != bundle.request.path:
             # list request
@@ -168,4 +175,18 @@ class JobResource(ModelResource):
 
     def hydrate(self, bundle):
         bundle.obj.user = bundle.request.user
+        return bundle
+
+    def full_hydrate(self, bundle):
+        bundle = super(JobResource, self).full_hydrate(bundle)
+
+        # set missing default values
+        # has an application AND is a new object
+        if bundle.obj.application and not bundle.obj.pk:
+            for attr in bundle.obj.application.get_default_fields():
+                if not bundle.data.has_key(attr):
+                    setattr(bundle.obj,
+                            attr,
+                            getattr(bundle.obj.application, attr))
+
         return bundle
