@@ -40,3 +40,10 @@ ProxyPass /api http://submit.grid.unesp.br:8000/api
         allow from all
 </Directory>
 Alias /portal /<path>/goo-server/portal
+
+Enable cronjob (watchdog)
+-------------------------
+
+Add to crontab:
+
+  PYTHONPATH=/var/lib/goo/goo-server:$PYTHONPATH DJANGO_SETTINGS_MODULE=gooserver.settings.production /var/lib/goo/goo-server/dispatcher/tools/watchdog.py
