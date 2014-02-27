@@ -160,7 +160,7 @@ class JobResource(ModelResource):
             for item in list_exclude:
                 del bundle.data[item]
         else:
-            # detail request
+           # detail request
             bundle.data['slug'] = slugify(bundle.obj.name)
         bundle.data['app_name'] = bundle.obj.application
 
