@@ -220,7 +220,7 @@ function get_token() {
 function get_object(id) {
     //download file from object proxy
     find_dataproxy(function (server) {
-        url = addr + "api/v1/dataproxy/dataobjects/"+ id +"/?token=" + get_token();
+        url = addr + "api/v1/dataobjects/"+ id +"/?token=" + get_token();
         window.location = url;
     });
     return false;

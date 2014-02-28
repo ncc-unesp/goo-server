@@ -14,7 +14,7 @@ function create_job() {
 
 function upload_files(addr){
     //create a multipart-form, upload and call post_job
-    url = addr + "api/v1/dataproxy/dataobjects/?compress&format=json&token=" + get_token();
+    url = addr + "api/v1/dataobjects/?compress&format=json&token=" + get_token();
 
     $("#submit_upload_bar").show();
 
