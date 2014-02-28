@@ -149,7 +149,7 @@ def download_file(src_uri, dst_dir, gooserver):
 
     # trying HTTP
     gooserver.set_dataserver()
-    src_url = "%sapi/v1/dataproxy/dataobjects/%d/?token=%s" % \
+    src_url = "%sapi/v1/dataobjects/%d/?token=%s" % \
                  (gooserver.dataproxy, src_obj['id'], gooserver.token)
     try:
         urllib.urlretrieve(src_url, dst_path)
@@ -175,7 +175,7 @@ def upload_file(src_file, gooserver):
     # trying HTTP
     gooserver.set_dataserver()
     # using curl to avoid memory copy and multipart-form mess
-    request_url = "%sapi/v1/dataproxy/dataobjects/?token=%s" % \
+    request_url = "%sapi/v1/dataobjects/?token=%s" % \
                     (gooserver.dataproxy, gooserver.token)
     # -k (insecure) to avoid certificate error
     args = "curl -k -s -F size=%d -F name=%s -F file=@%s %s" % \
