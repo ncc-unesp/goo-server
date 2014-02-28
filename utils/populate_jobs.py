@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # This file is part of goo-server.
 #
 # Copyright (c) 2103-2014 by Nucleo de Computacao Cientifica, UNESP
@@ -19,7 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 #
-#!/usr/bin/env python
 
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
