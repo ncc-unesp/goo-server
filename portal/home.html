@@ -25,10 +25,48 @@
     <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
 </div>
 
-
 <section class="container stats">
-               <h1>Discover our new job control system</h1>
-               <iframe height="320px" width="480px" src="https://www.youtube.com/embed/U-HUnvawyvU?rel=0&autoplay=0&showinfo=0&controls=1" autoplay="0" showinfo="0" control="1" frameborder="0" style="margin-top: 20px; margin-bottom: 0px"></iframe>
+<div class="row">
+<style media="screen" type="text/css">
+.fbox {
+    margin:20px;
+}
+</style>
+<div class="col-md-4 span4">
+        <div class="fbox center span4">
+            <div class="ftext center">
+                <div class="ftext-number" id="goo-stats-jobs-running"></div>
+                <div class="ftext-title">running</div>
+                <div class="ftext-title2">jobs</div>
+                <p>this is the amount of jobs running <strong>just now</strong> in our cluster.</p>
+            </div>
+        </div>
+
+        <div class="fbox center span4">
+            <div class="ftext center">
+                <div class="ftext-number" id="goo-stats-avg-time"></div>
+                <div class="ftext-title">avg running</div>
+                <div class="ftext-title2">time</div>
+                <p>the average of running time of completed jobs in the <strong>current mounth</strong> (in minutes).</p>
+            </div>
+        </div>
+
+        <div class="fbox center span4">
+            <div class="ftext center">
+                <div class="ftext-number" id="goo-stats-processed-hours"></div>
+                <div class="ftext-title">processed</div>
+                <div class="ftext-title2">hours</div>
+                <p>in the <strong>current month</strong>, this the amount of hours that our cluster processed.</p>
+            </div>
+        </div>
+</div>
+
+<div class="col-md-8 span8">
+    <iframe height="320px" width="480px" src="https://www.youtube.com/embed/U-HUnvawyvU?rel=0&autoplay=0&showinfo=0&controls=1" autoplay="0" showinfo="0" control="1" frameborder="0" style="margin-top: 20px; margin-bottom: 0px"></iframe>
+<h3>Discover our new job control system</h3>
+</div>
+
+</div>
 <!--
                <h3>Our last stats</h3>
                <h4>* updates can be delayed by 30 minutes.</h4>
@@ -168,6 +206,5 @@ $.get('/api/v1/stats/general/').done(function(data) {
 
 draw_map("json/world.json", "#map");
 </script>
-
-</script>
 -->
+</script>
