@@ -27,11 +27,6 @@
 
 <section class="container stats">
 <div class="row">
-<style media="screen" type="text/css">
-.fbox {
-    margin:20px;
-}
-</style>
 <div class="col-md-4 span6">
         <div class="fbox center span4">
             <div class="ftext center">
@@ -43,7 +38,7 @@
 
         <div class="fbox center span4">
             <div class="ftext center">
-                <div class="ftext-number" id="goo-stats-jobs-queue"></div>
+                <div class="ftext-number ftext-number-right" id="goo-stats-jobs-queue"></div>
                 <div class="ftext-title2">pending</div>
                 <p>jobs to be executed.</p>
             </div>
@@ -59,9 +54,9 @@
 
         <div class="fbox center span4">
             <div class="ftext center">
-                <div class="ftext-number" id="goo-stats-cores-load"></div>
-                <div class="ftext-title2">cluster</div>
-                <p>usage in %.</p>
+                <div class="ftext-number ftext-number-right" id="goo-stats-cores-load"></div>
+                <div class="ftext-title2">load</div>
+                <p>in our clusters.</p>
             </div>
         </div>
 
@@ -223,7 +218,7 @@ $.get('https://ncc.unesp.br/overview/goo.json').done(function(data) {
     $('#goo-stats-jobs-running').text(data.jobs_running);
     $('#goo-stats-jobs-queue').text(data.jobs_queue);
     $('#goo-stats-active-users').text(data.active_users);
-    $('#goo-stats-cores-load').text(data.cores_load.toFixed(1));
+    $('#goo-stats-cores-load').text(data.cores_load.toFixed(1)+'%');
 })
 
 
