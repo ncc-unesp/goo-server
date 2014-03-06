@@ -32,36 +32,42 @@
     margin:20px;
 }
 </style>
-<div class="col-md-4 span4">
+<div class="col-md-4 span6">
         <div class="fbox center span4">
             <div class="ftext center">
-                <div class="ftext-number" id="goo-stats-jobs-running">202</div>
-                <div class="ftext-title">running</div>
-                <div class="ftext-title2">jobs</div>
-                <p>this is the amount of jobs running <strong>just now</strong> in our cluster.</p>
+                <div class="ftext-number" id="goo-stats-jobs-running"></div>
+                <div class="ftext-title2">running</div>
+                <p>jobs in our resources.</p>
             </div>
         </div>
 
         <div class="fbox center span4">
             <div class="ftext center">
-                <div class="ftext-number" id="goo-stats-avg-time">9882</div>
-                <div class="ftext-title">avg running</div>
-                <div class="ftext-title2">time</div>
-                <p>the average of running time of completed jobs in the <strong>current mounth</strong> (in minutes).</p>
+                <div class="ftext-number" id="goo-stats-jobs-queue"></div>
+                <div class="ftext-title2">pending</div>
+                <p>jobs to be executed.</p>
             </div>
         </div>
 
         <div class="fbox center span4">
             <div class="ftext center">
-                <div class="ftext-number" id="goo-stats-processed-hours">2873</div>
-                <div class="ftext-title">processed</div>
-                <div class="ftext-title2">hours</div>
-                <p>in the <strong>current month</strong>, this the amount of hours that our cluster processed.</p>
+                <div class="ftext-number" id="goo-stats-active-users"></div>
+                <div class="ftext-title2">active users</div>
+                <p>with jobs in running state.</p>
             </div>
         </div>
+
+        <div class="fbox center span4">
+            <div class="ftext center">
+                <div class="ftext-number" id="goo-stats-cores-load"></div>
+                <div class="ftext-title2">cluster</div>
+                <p>usage in %.</p>
+            </div>
+        </div>
+
 </div>
 
-<div class="col-md-8 span8">
+<div class="col-md-6 span6">
     <iframe height="320px" width="480px" src="https://www.youtube.com/embed/U-HUnvawyvU?rel=0&autoplay=0&showinfo=0&controls=1" autoplay="0" showinfo="0" control="1" frameborder="0" style="margin-top: 20px; margin-bottom: 0px"></iframe>
 <h2 class="font: 22px;">Discover our new job control system</h2>
 <p>(Watch our screen cast above)</p>
@@ -208,4 +214,19 @@ $.get('/api/v1/stats/general/').done(function(data) {
 draw_map("json/world.json", "#map");
 </script>
 -->
+
+<script language="javascript">
+
+$.get('https://ncc.unesp.br/overview/goo.json').done(function(data) {
+
+
+    $('#goo-stats-jobs-running').text(data.jobs_running);
+    $('#goo-stats-jobs-queue').text(data.jobs_queue);
+    $('#goo-stats-active-users').text(data.active_users);
+    $('#goo-stats-cores-load').text(data.cores_load.toFixed(1));
+})
+
+
+</script>
+
 </script>

@@ -148,10 +148,9 @@ pre {
 
 
 .fbox {
-    margin: 40px;
+    margin: 0px !important;
     position: relative;
     text-align: center;
-    width: 300px;
 }
 
 .fbox .fchart {
@@ -190,10 +189,10 @@ pre {
 .fbox .ftext-number {
       float: left;
       margin-left: 15px;
-      line-height: 62px;
+      line-height: 72px;
       font-weight: 600;
       color: #81AF30;
-      font-size: 52px;
+      font-size: 72px;
 }
 
 
