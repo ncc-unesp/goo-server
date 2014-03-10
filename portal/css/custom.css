@@ -196,10 +196,6 @@ pre {
       font-size: 72px;
 }
 
-.fbox .ftext-number-right {
-      float: right;
-}
-
 .fbox .ftext-title {
       float: none;
       margin-left: 5px;
@@ -213,9 +209,38 @@ pre {
       line-height: 44px;
       font-size: 36px;
       font-weight: 800;
-    text-transform: uppercase;
+      text-transform: uppercase;
 }
 
+.stats-box {
+      width: 380px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 30px;
+}
+
+.stats-number {
+      float: left;
+      margin-left: 15px;
+      line-height: 72px;
+      font-weight: 600;
+      color: #81AF30;
+      font-size: 68px;
+}
+
+.stats-headline {
+      margin-left: 5px;
+      margin-right: 5px;
+      line-height: 44px;
+      font-size: 32px;
+      font-weight: 800;
+      text-transform: uppercase;
+}
+
+.stats-text {
+      float: left;
+      display: block;
+}
 
 path { 
 	stroke: steelblue;
