@@ -9,14 +9,14 @@
             <img src="img/3.jpg" alt="">
 
             <div class="carousel-caption">
-                <h1><strong>249</strong> active users, <strong>52</strong> projects in <strong>9</strong> research fields.</h1>
+                <h1><strong id="goo-stats-registration-users"></strong> active users, <strong id="goo-stats-registration-projects"></strong> projects in <strong id="goo-stats-registration-fields"></strong> research fields.</h1>
             </div>
         </div>
 
         <div class="item">
             <img src="img/2.jpg" alt="">
             <div class="carousel-caption">
-                <h1><strong>368</strong> hosts, <strong>2944</strong> cores and <strong>33 TeraFlops</strong></h1>
+                <h1><strong id="goo-stats-resources-hosts"></strong> hosts, <strong id="goo-stats-resources-cores"></strong> cores and <strong id="goo-stats-resources-tflops"></strong> teraFLOPS</h1>
             </div>
 
         </div>
@@ -27,39 +27,48 @@
 
 <section class="container stats">
 <div class="row">
-<div class="col-md-4 span6">
-        <div class="fbox center span4">
-            <div class="ftext center">
-                <div class="ftext-number" id="goo-stats-jobs-running"></div>
-                <div class="ftext-title2">running</div>
-                <p>jobs in our resources.</p>
+<div class="span6">
+  <div class="row">
+        <div class="fbox center span6">
+            <div class="stats-box">
+                <div class="stats-number" id="goo-stats-jobs-running"></div>
+                <div class="stats-text">
+                    <div class="stats-headline">running</div>
+                    <p>jobs in our resources.</p>
+                </div>
             </div>
         </div>
 
-        <div class="fbox center span4">
-            <div class="ftext center">
-                <div class="ftext-number ftext-number-right" id="goo-stats-jobs-queue"></div>
-                <div class="ftext-title2">pending</div>
-                <p>jobs to be executed.</p>
+        <div class="fbox center span6">
+            <div class="stats-box">
+                <div class="stats-text">
+                    <div class="stats-headline">pending</div>
+                    <p>jobs to be executed.</p>
+                </div>
+                <div class="stats-number" id="goo-stats-jobs-queue"></div>
             </div>
         </div>
 
-        <div class="fbox center span4">
-            <div class="ftext center">
-                <div class="ftext-number" id="goo-stats-active-users"></div>
-                <div class="ftext-title2">active users</div>
-                <p>with jobs in running state.</p>
+        <div class="fbox center span6">
+            <div class="stats-box">
+                <div class="stats-number" id="goo-stats-active-users"></div>
+                <div class="stats-text">
+                    <div class="stats-headline">active users</div>
+                    <p>with jobs in running state.</p>
+                </div>
             </div>
         </div>
 
-        <div class="fbox center span4">
-            <div class="ftext center">
-                <div class="ftext-number ftext-number-right" id="goo-stats-cores-load"></div>
-                <div class="ftext-title2">load</div>
-                <p>in our clusters.</p>
+        <div class="fbox center span6">
+            <div class="stats-box">
+                <div class="stats-text">
+                    <div class="stats-headline">load</div>
+                    <p>in our clusters.</p>
+                </div>
+                <div class="stats-number" id="goo-stats-cores-load"></div>
             </div>
         </div>
-
+  </div>
 </div>
 
 <div class="col-md-6 span6">
@@ -214,13 +223,21 @@ draw_map("json/world.json", "#map");
 
 $.get('https://ncc.unesp.br/overview/goo.json').done(function(data) {
 
-
     $('#goo-stats-jobs-running').text(data.jobs_running);
     $('#goo-stats-jobs-queue').text(data.jobs_queue);
     $('#goo-stats-active-users').text(data.active_users);
     $('#goo-stats-cores-load').text(data.cores_load.toFixed(1)+'%');
+
+    $('#goo-stats-registration-users').text(data.registration.users);
+    $('#goo-stats-registration-projects').text(data.registration.projects);
+    $('#goo-stats-registration-fields').text(data.registration.fields);
+
+    $('#goo-stats-resources-hosts').text(data.resources.hosts);
+    $('#goo-stats-resources-cores').text(data.resources.cores);
+    $('#goo-stats-resources-tflops').text(data.resources.tflops);
 })
 
+$($('.carousel').carousel());
 
 </script>
 
