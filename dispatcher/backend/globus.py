@@ -69,9 +69,11 @@ def submit(pilot):
     args_lease_time = ['-env', 'GOO_LEASE_TIME=%d' % pilot.site.max_time]
 
     # shared filesystem quickfix (gridunesp specific)
-    args_tmp_dir = []
-    if pilot.hosts > 1:
-        args_tmp_dir = ['-env', 'GOO_TMPDIR=/store']
+    #args_tmp_dir = []
+    #if pilot.hosts > 1:
+    #    args_tmp_dir = ['-env', 'GOO_TMPDIR=/store']
+    # always set until handle diskspace usage correclly
+    args_tmp_dir = ['-env', 'GOO_TMPDIR=/store']
 
     exec_path = os.path.join(settings.PROJECT_PATH,'dispatcher/tools/goo-pilot.py')
     url = settings.BASE_URL
